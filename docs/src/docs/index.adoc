@@ -1,0 +1,13 @@
+= Grails Server Timing User Guide
+:source-highlighter: coderay
+:numbered:
+
+include::introduction.adoc[]
+
+include::specification.adoc[]
+
+include::configuration.adoc[]
+
+include::browser-tools.adoc[]
+
+include::how-it-works.adoc[]

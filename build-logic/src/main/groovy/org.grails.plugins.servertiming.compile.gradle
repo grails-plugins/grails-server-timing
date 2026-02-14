@@ -1,0 +1,49 @@
+import java.nio.charset.StandardCharsets
+
+plugins {
+    id 'groovy'
+}
+tasks.withType(JavaCompile).configureEach {
+    options.with {
+        encoding = StandardCharsets.UTF_8.name()
+        incremental = true
+        fork = true
+        compilerArgs += ['-parameters']
+        release = project.provider {
+            def sdkmanrc = project.rootProject.file(".sdkmanrc")
+            if (!sdkmanrc.exists()) {
+                throw new GradleException("Missing .sdkmanrc in root project")
+            }
+
+            Properties props = new Properties()
+            sdkmanrc.withInputStream {
+                props.load(it)
+            }
+
+            props.getProperty('java').split('[.]')[0].toInteger()
+        }
+    }
+    options.forkOptions.with {
+        memoryMaximumSize = "1g"
+        jvmArgs = ['-Xmx1g']
+    }
+}
+
+tasks.withType(GroovyCompile).configureEach {
+    options.with {
+        encoding = StandardCharsets.UTF_8.name()
+        incremental = true
+        fork = true
+        compilerArgs += ['-parameters']
+    }
+    groovyOptions.with {
+        encoding = StandardCharsets.UTF_8.name()
+        fork = true
+        optimizationOptions.indy = false
+        parameters = true
+    }
+    groovyOptions.forkOptions.with {
+        memoryMaximumSize = "1g"
+        jvmArgs = ['-Xmx1g']
+    }
+}

@@ -1,0 +1,83 @@
+name: "Coverage"
+on:
+  push:
+    branches:
+      - '[0-9]+.[0-9]+.x'
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  coverage:
+    name: "Code Coverage"
+    runs-on: ubuntu-24.04
+    steps:
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Export .sdkmanrc properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
+        with:
+          file: ".sdkmanrc"
+          prefix: "SDKMANRC_"
+      - name: "Determine Java Version"
+        run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
+        with:
+          distribution: liberica
+          java-version: ${{ env.SDKMANRC_java }}
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+      - name: "🔨 Build and run tests"
+        run: >
+          ./gradlew build
+          --continue
+          --stacktrace
+          -PskipCodeStyle
+      - name: "📊 Post coverage summary"
+        if: always()
+        run: |
+          REPORT="coverage/build/reports/jacoco/jacocoAggregatedReport/jacocoAggregatedReport.xml"
+          if [ ! -f "$REPORT" ]; then
+            echo "::warning::Coverage report not found at $REPORT"
+            exit 0
+          fi
+
+          # Parse coverage counters from the top-level <report> element
+          parse_counter() {
+            python3 -c "
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('$REPORT')
+          root = tree.getroot()
+          for c in root.findall('counter'):
+              if c.get('type') == '$1':
+                  missed = int(c.get('missed'))
+                  covered = int(c.get('covered'))
+                  total = missed + covered
+                  pct = (covered / total * 100) if total > 0 else 0
+                  print(f'{covered}|{missed}|{total}|{pct:.1f}')
+                  break
+          "
+          }
+
+          IFS='|' read -r INS_COV INS_MIS INS_TOT INS_PCT <<< "$(parse_counter INSTRUCTION)"
+          IFS='|' read -r BRN_COV BRN_MIS BRN_TOT BRN_PCT <<< "$(parse_counter BRANCH)"
+          IFS='|' read -r LIN_COV LIN_MIS LIN_TOT LIN_PCT <<< "$(parse_counter LINE)"
+          IFS='|' read -r MTD_COV MTD_MIS MTD_TOT MTD_PCT <<< "$(parse_counter METHOD)"
+          IFS='|' read -r CLS_COV CLS_MIS CLS_TOT CLS_PCT <<< "$(parse_counter CLASS)"
+
+          {
+            echo "## Code Coverage"
+            echo ""
+            echo "| Metric | Covered | Missed | Total | Coverage |"
+            echo "|--------|---------|--------|-------|----------|"
+            echo "| Instructions | $INS_COV | $INS_MIS | $INS_TOT | **${INS_PCT}%** |"
+            echo "| Branches | $BRN_COV | $BRN_MIS | $BRN_TOT | **${BRN_PCT}%** |"
+            echo "| Lines | $LIN_COV | $LIN_MIS | $LIN_TOT | **${LIN_PCT}%** |"
+            echo "| Methods | $MTD_COV | $MTD_MIS | $MTD_TOT | **${MTD_PCT}%** |"
+            echo "| Classes | $CLS_COV | $CLS_MIS | $CLS_TOT | **${CLS_PCT}%** |"
+            echo ""
+            echo "*Generated from aggregated JaCoCo report (unit + integration tests)*"
+          } >> "$GITHUB_STEP_SUMMARY"

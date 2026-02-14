@@ -1,0 +1,28 @@
+import org.apache.grails.gradle.publish.GrailsPublishExtension
+
+plugins {
+    id 'org.apache.grails.gradle.grails-publish'
+}
+
+extensions.configure(GrailsPublishExtension) {
+    it.artifactId = project.name
+    it.githubSlug = 'grails-plugins/grails-server-timing'
+    it.license.name = 'Apache-2.0'
+    it.title = 'Grails Server Timing Plugin'
+    it.desc = 'A Grails Plugin that populates the ServerTiming header for monitoring performance metrics'
+    it.organization {
+        it.name = 'Grails Plugins'
+        it.url = 'https://github.com/grails-plugins'
+    }
+    it.developers = [jdaugherty: 'James Daugherty']
+}
+
+// Useful when testing a release version locally and not wanting to setup signing
+project.pluginManager.withPlugin('signing') {
+    if (System.getenv('DISABLE_BUILD_SIGNING')) {
+        project.logger.lifecycle('Signing is disabled for this build per configuration.')
+        project.tasks.withType(Sign).configureEach {
+            it.enabled = false
+        }
+    }
+}

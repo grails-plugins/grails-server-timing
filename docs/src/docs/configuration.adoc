@@ -1,0 +1,97 @@
+== Configuration
+
+The Grails Server Timing plugin is designed to work out-of-the-box with sensible defaults, but can be customized to fit your needs.
+
+=== Default Behavior
+
+By default, the plugin is **automatically enabled** in `development` and `test` environments and **disabled** in `production`.
+This ensures that performance timing information is available during development without exposing potentially sensitive timing data in production.
+
+=== Configuration Options
+
+All configuration options are specified in your `application.yml` or `application.groovy` file under the `grails.plugins.servertiming` namespace.
+
+==== Enabling/Disabling the Plugin
+
+[source,yaml]
+----
+grails:
+    plugins:
+        servertiming:
+            enabled: true  # or false
+----
+
+|===
+| Property | Type | Default | Description
+
+| `grails.plugins.servertiming.enabled`
+| `Boolean`
+| `null` (auto-detect)
+| When `null`, the plugin is enabled in `development` and `test` environments only. Set to `true` to explicitly enable or `false` to explicitly disable regardless of environment.
+|===
+
+==== Metric Key
+
+The plugin stores timing metrics in the HTTP request attributes.
+You can customize the attribute key if needed:
+
+[source,yaml]
+----
+grails:
+    plugins:
+        servertiming:
+            metricKey: MyCustomTimingKey
+----
+
+|===
+| Property | Type | Default | Description
+
+| `grails.plugins.servertiming.metricKey`
+| `String`
+| `GrailsServerTiming`
+| The request attribute key used to store the `TimingMetric` object. Only change this if you have a naming conflict.
+|===
+
+=== Environment-Specific Configuration
+
+You can configure the plugin differently per environment:
+
+[source,yaml]
+----
+environments:
+    development:
+        grails:
+            plugins:
+                servertiming:
+                    enabled: true
+    test:
+        grails:
+            plugins:
+                servertiming:
+                    enabled: true
+    production:
+        grails:
+            plugins:
+                servertiming:
+                    enabled: false
+----
+
+=== Enabling in Production
+
+WARNING: Enabling Server-Timing in production may expose timing information that could be useful to attackers.
+Only enable in production if you understand the security implications and have appropriate access controls in place.
+
+If you need to enable timing headers in production (for example, behind an authenticated admin interface or internal network), you can do so:
+
+[source,yaml]
+----
+environments:
+    production:
+        grails:
+            plugins:
+                servertiming:
+                    enabled: true
+----
+
+Consider using conditional logic or feature flags to enable timing only for specific users or requests in production environments.
+

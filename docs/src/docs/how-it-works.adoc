@@ -1,0 +1,129 @@
+== How It Works
+
+This section explains the architecture of the plugin and how it handles different types of requests.
+
+=== Architecture Overview
+
+The plugin consists of three main components that work together:
+
+1. **ServerTimingFilter** - A servlet filter that wraps all HTTP responses
+2. **ServerTimingInterceptor** - A Grails interceptor that tracks controller action and view timing
+3. **ServerTimingResponseWrapper** - A response wrapper that ensures headers are added before the response is committed
+
+=== Request Flow
+
+==== Controller Requests
+
+When a request hits a Grails controller action, the following sequence occurs:
+
+[source,text]
+----
+1. ServerTimingFilter receives request
+   - Creates TimingMetric object
+   - Starts 'total' timer
+   - Starts 'other' timer
+   - Wraps response with ServerTimingResponseWrapper
+
+2. ServerTimingInterceptor.before() is called
+   - Starts 'action' timer
+
+3. Controller action executes
+   - Your business logic runs here
+
+4. ServerTimingInterceptor.after() is called
+   - Stops 'action' timer
+   - Starts 'view' timer
+
+5. View/GSP renders
+
+6. Response is committed
+   - ServerTimingResponseWrapper intercepts the commit
+   - Removes 'other' timer if an action/view was invoked, otherwise stops it
+   - Stops 'action' timer if still running (edge case: action committed the response directly)
+   - Stops 'view' timer if still running
+   - Stops 'total' timer
+   - Adds Server-Timing header to response
+----
+
+==== Static Resources and Other Requests
+
+For requests that do not hit a Grails controller (static assets, images, CSS, JavaScript, etc.):
+
+[source,text]
+----
+1. ServerTimingFilter receives request
+   - Creates TimingMetric object
+   - Starts 'total' timer
+   - Starts 'other' timer
+   - Wraps response with ServerTimingResponseWrapper
+
+2. ServerTimingInterceptor is NOT called
+   - 'action' and 'view' timers are never created
+
+3. Asset pipeline or other handler processes request
+
+4. Response is committed
+   - ServerTimingResponseWrapper intercepts the commit
+   - Stops 'other' timer
+   - Stops 'total' timer
+   - Adds Server-Timing header to response
+----
+
+=== The Response Wrapper
+
+A key technical challenge with Server-Timing is that HTTP headers must be sent *before* the response body.
+However, we do not know the final timing values until *after* the view has rendered.
+
+The `ServerTimingResponseWrapper` solves this by:
+
+1. Wrapping the original `HttpServletResponse`
+2. Intercepting calls to `getOutputStream()`, `getWriter()`, `flushBuffer()`, etc.
+3. Adding the `Server-Timing` header just before the first byte is written
+4. Delegating all other operations to the original response
+
+This ensures the header is always present, regardless of how the response is generated.
+
+=== Metric Descriptions
+
+Each metric in the `Server-Timing` header includes:
+
+* **name** - A short identifier (e.g., `action`, `view`, `total`)
+* **dur** - Duration in milliseconds
+* **desc** - A human-readable description
+
+NOTE: This plugin only includes metrics that have been started and stopped (i.e., have a duration).
+Metrics that were created but never started, or started but never stopped, are not included in the header.
+
+Example:
+
+[source,http]
+----
+Server-Timing: action;dur=45.2;desc="Action",view;dur=98.7;desc="View"
+----
+
+=== Controller vs Non-Controller Requests
+
+The plugin handles different request types automatically:
+
+|===
+| Request Type | Metrics Captured | Example
+
+| Controller with view
+| `total`, `action`, `view`
+| `/book/show/1`
+
+| Controller with render
+| `total`, `action`
+| `/api/books` (JSON response)
+
+| Static assets
+| `total`, `other`
+| `/assets/application.css`
+
+| Other resources
+| `total`, `other`
+| `/favicon.ico`
+|===
+
+
+

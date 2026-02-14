@@ -1,0 +1,52 @@
+Provider<Project> docProject = project.provider {
+    project(":${project.name - 'root' + 'docs'}" as String)
+}
+Provider<Project> pluginProject = project.provider {
+    project(":${project.name - '-root'}" as String)
+}
+
+tasks.register('cleanDocs', Delete) {
+    delete rootProject.layout.projectDirectory.dir('build/docs')
+}
+
+tasks.register('aggregateGroovyApiDoc', Groovydoc) {
+    def groovyDocProjects = [pluginProject.get()]
+    dependsOn = [tasks.named('cleanDocs'), pluginProject.get().tasks.named('groovydoc')]
+
+    description = 'Generates Groovy API Documentation for all plugin projects under rootDir/gapi'
+
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    access = GroovydocAccess.PROTECTED
+    includeAuthor = false
+    includeMainForScripts = true
+    processScripts = true
+    source = groovyDocProjects.groovydoc.source
+    destinationDir = rootProject.layout.buildDirectory.dir('docs/gapi').get().asFile
+    classpath = files(groovyDocProjects.groovydoc.classpath)
+    groovyClasspath = files(groovyDocProjects.groovydoc.groovyClasspath)
+    exclude '**/Application.groovy'
+}
+
+tasks.register('docs') {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    dependsOn = ['aggregateGroovyApiDoc', docProject.get().tasks.named('asciidoctor')]
+    finalizedBy 'copyAsciiDoctorDocs', 'ghPagesRootIndexPage'
+}
+
+tasks.register('copyAsciiDoctorDocs', Copy) {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    dependsOn = ['docs']
+    from docProject.get().layout.buildDirectory
+    includes = ['docs/**']
+    into rootProject.layout.buildDirectory
+    includeEmptyDirs = false
+}
+
+// provides a root index page for historical versions that are currently managed manually
+tasks.register('ghPagesRootIndexPage', Copy) {
+    group = 'documentation'
+    dependsOn = ['docs']
+    from docProject.get().layout.projectDirectory.file('src/docs/index.tmpl')
+    into rootProject.layout.buildDirectory.dir('docs')
+    rename 'index.tmpl', 'ghpages.html'
+}

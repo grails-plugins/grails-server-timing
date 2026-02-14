@@ -1,0 +1,57 @@
+== Introduction
+
+The Grails Server Timing plugin adds https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[Server-Timing^] HTTP headers to your Grails application responses.
+This allows you to see detailed server-side performance metrics directly in your browser's developer tools.
+
+=== What is Server-Timing?
+
+The `Server-Timing` header is part of the https://www.w3.org/TR/server-timing/[W3C Server Timing specification^] that enables servers to communicate performance metrics about the request-response cycle to the client.
+These metrics can include:
+
+* Total request processing time
+* Database query durations
+* Controller action execution time
+* View rendering time
+* Any custom metrics you want to track
+
+=== Why Use This Plugin?
+
+When developing and debugging Grails applications, understanding where time is spent during request processing is crucial.
+This plugin automatically captures:
+
+* **Action Timing** - How long your controller action takes to execute
+* **View Timing** - How long GSP/view rendering takes
+* **Total Timing** - The complete request lifecycle
+* **Other Timing** - Time spent on non-controller requests (static assets, etc.)
+
+All of this information is exposed via the standard `Server-Timing` header, which modern browsers display in their Network developer tools panel.
+
+=== Browser Support
+
+The Server-Timing header is supported by all modern browsers:
+
+* Chrome 65+
+* Firefox 61+
+* Edge 79+
+* Safari 16.4+
+* Opera 52+
+
+=== Quick Start
+
+Add the plugin dependency to your `build.gradle`:
+
+[source,groovy,subs="attributes"]
+----
+dependencies {
+    implementation 'org.grails.plugins:grails-server-timing:{version}'
+}
+----
+
+That's it!
+The plugin is automatically enabled in `development` and `test` environments only.
+No additional configuration is required to get started.
+
+NOTE: For security reasons, the plugin is **disabled by default in production**.
+Server-Timing headers can expose timing information that may be useful to attackers.
+See the <<Server-Timing Specification>> and <<Configuration>> sections for more details.
+

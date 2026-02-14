@@ -1,0 +1,6 @@
+plugins {
+    id 'org.apache.grails.gradle.grails-web'
+    id 'org.apache.grails.gradle.grails-gsp'
+    id 'org.grails.plugins.servertiming.assets'
+    id 'org.grails.plugins.servertiming.run'
+}

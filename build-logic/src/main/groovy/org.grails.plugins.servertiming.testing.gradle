@@ -1,0 +1,87 @@
+plugins {
+    id 'com.adarshr.test-logger'
+    id 'jacoco'
+}
+
+boolean isCi = System.getenv('CI') != null
+
+// This configures the 'pretty' test logging
+testlogger {
+    theme isCi ? 'plain-parallel' : 'mocha-parallel'
+    showExceptions true
+    showStandardStreams false
+    showSummary true
+    showPassed true
+    showSkipped true
+    showFailed true
+}
+
+jacoco {
+    toolVersion = '0.8.12'
+}
+
+tasks.withType(Test).configureEach {
+    onlyIf {
+        !project.hasProperty('skipTests')
+    }
+
+    useJUnitPlatform()
+
+    maxHeapSize = "1g" // set to match the groovy compile task to ensure the worker daemons are reused
+
+    reports {
+        junitXml.required = false
+        html.required = true
+    }
+
+    testLogging {
+        showStandardStreams = false
+        exceptionFormat = 'full'
+        stackTraceFilters = ['groovy']
+        events = ['failed', 'skipped', 'standardError']
+        showStackTraces = true
+        showCauses = true
+    }
+}
+
+// The jacoco plugin automatically creates 'jacocoTestReport' for the 'test' task.
+// Configure it to produce XML (for CI tools) and HTML reports.
+tasks.named('jacocoTestReport', JacocoReport) {
+    dependsOn tasks.named('test')
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+// Ensure coverage report runs after tests
+tasks.named('test') {
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+// When an integrationTest task is registered (e.g., via the Grails web plugin in example apps),
+// register a JaCoCo report task for it. Unlike the 'test' task, the JaCoCo plugin does not
+// auto-create report tasks for custom Test tasks.
+afterEvaluate {
+    def integrationTestTasks = tasks.withType(Test).matching { it.name == 'integrationTest' }
+    if (!integrationTestTasks.isEmpty()) {
+        def integrationTest = integrationTestTasks.first()
+        def execFile = integrationTest.extensions.getByType(JacocoTaskExtension).destinationFile
+        def reportTask = tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+            group = 'verification'
+            description = 'Generates code coverage report for the integrationTest task.'
+            dependsOn integrationTest
+            executionData.from(execFile)
+            sourceSets(project.sourceSets.main)
+
+            reports {
+                xml.required = true
+                html.required = true
+                csv.required = false
+            }
+        }
+        integrationTest.finalizedBy reportTask
+    }
+}

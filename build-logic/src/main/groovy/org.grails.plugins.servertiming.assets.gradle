@@ -1,0 +1,24 @@
+plugins {
+    id 'cloud.wondrify.asset-pipeline'
+}
+
+dependencies {
+    assetDevelopmentRuntime 'org.webjars.npm:bootstrap'
+    assetDevelopmentRuntime 'org.webjars.npm:bootstrap-icons'
+    assetDevelopmentRuntime 'org.webjars.npm:jquery'
+}
+
+assets {
+    excludes = [
+            'webjars/jquery/**',
+            'webjars/bootstrap/**',
+            'webjars/bootstrap-icons/**'
+    ]
+    includes = [
+            'webjars/jquery/*/dist/jquery.js',
+            'webjars/bootstrap/*/dist/js/bootstrap.bundle.js',
+            'webjars/bootstrap/*/dist/css/bootstrap.css',
+            'webjars/bootstrap-icons/*/font/bootstrap-icons.css',
+            'webjars/bootstrap-icons/*/font/fonts/*',
+    ]
+}

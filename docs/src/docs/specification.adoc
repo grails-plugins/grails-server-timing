@@ -1,0 +1,103 @@
+== Server-Timing Specification
+
+The `Server-Timing` header is a standardized way for servers to communicate performance metrics to clients.
+This section provides an overview of the specification and how this plugin implements it.
+
+=== W3C Server Timing Specification
+
+The Server-Timing header is defined by the https://www.w3.org/TR/server-timing/[W3C Server Timing specification^].
+This specification is a W3C Working Draft that enables servers to communicate performance metrics about the request-response cycle.
+
+=== Header Format
+
+The `Server-Timing` header follows this format:
+
+[source,http]
+----
+Server-Timing: metric-name;dur=duration;desc="description",...
+----
+
+==== Components
+
+* **metric-name** (required): A token identifying the metric.
+Must follow https://tools.ietf.org/html/rfc7230#section-3.2.6[RFC 7230 token rules^] (alphanumeric plus certain special characters).
+* **dur** (optional): Duration in milliseconds (can include decimals).
+* **desc** (optional): A human-readable description enclosed in quotes.
+
+==== Examples
+
+Single metric:
+
+[source,http]
+----
+Server-Timing: db;dur=53.2;desc="Database query"
+----
+
+Multiple metrics:
+
+[source,http]
+----
+Server-Timing: db;dur=53.2;desc="Database",render;dur=47.1;desc="Template rendering"
+----
+
+Metric without duration (for presence indication):
+
+[source,http]
+----
+Server-Timing: cache-hit
+----
+
+NOTE: This plugin only includes metrics that have durations.
+Metrics without durations (used for presence indication) are not currently supported.
+
+=== MDN Documentation
+
+For detailed browser-side documentation, see the https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[MDN Server-Timing documentation^].
+
+=== Security Considerations
+
+The specification includes important security considerations:
+
+==== Timing Attacks
+
+Detailed timing information can potentially be used in timing attacks to infer information about server-side operations.
+The specification recommends:
+
+* Only exposing timing information in development/staging environments
+* Using appropriate access controls if exposing in production
+* Being cautious about what metrics are exposed
+
+IMPORTANT: Due to these security considerations, this plugin is **only enabled by default in `development` and `test` environments**.
+In `production`, the plugin is disabled unless explicitly enabled via configuration.
+See the <<Configuration>> section for details on how to change this behavior.
+
+==== Cross-Origin Requests
+
+By default, `Server-Timing` information is only available to same-origin requests.
+For cross-origin requests, the server must include the `Timing-Allow-Origin` header:
+
+[source,http]
+----
+Timing-Allow-Origin: https://example.com
+----
+
+Or to allow all origins (use with caution):
+
+[source,http]
+----
+Timing-Allow-Origin: *
+----
+
+NOTE: This plugin does not automatically add `Timing-Allow-Origin`.
+If you need cross-origin access to timing data, you must configure this header separately.
+
+=== Related Specifications
+
+* https://www.w3.org/TR/navigation-timing-2/[Navigation Timing Level 2^] - Client-side navigation timing
+* https://www.w3.org/TR/resource-timing-2/[Resource Timing Level 2^] - Client-side resource timing
+* https://tools.ietf.org/html/rfc7230[RFC 7230^] - HTTP/1.1 Message Syntax and Routing
+
+
+
+
+

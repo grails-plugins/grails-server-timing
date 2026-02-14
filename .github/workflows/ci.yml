@@ -1,0 +1,89 @@
+name: "CI"
+on:
+  push:
+    branches:
+      - '[0-9]+.[0-9]+.x'
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  build:
+    name: "Build & Test"
+    runs-on: ubuntu-24.04
+    steps:
+      - name: "Output Agent IP" # in the event your agent has network issues, you can use this to debug
+        run: curl -s https://api.ipify.org
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Export .sdkmanrc properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
+        with:
+          file: ".sdkmanrc"
+          prefix: "SDKMANRC_"
+      - name: "Determine Java Version"
+        run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
+        with:
+          distribution: liberica
+          java-version: ${{ env.SDKMANRC_java }}
+      - name: 'Ensure Common Build Date' # to ensure a reproducible build
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "$GITHUB_ENV"
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+      - name: "🔨 Build project without tests"
+        if: ${{ contains(github.event.head_commit.message, '[skip tests]') }}
+        run: >
+          ./gradlew build
+          --continue
+          --stacktrace
+          -PskipTests
+          -PskipCodeStyle
+      - name: "🔨 Build project with tests"
+        if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
+        run: >
+          ./gradlew build
+          --continue
+          --stacktrace
+          --rerun-tasks
+          -PskipCodeStyle
+  publish:
+    # only run the publish task on this repo instead of forks
+    if: github.repository_owner == 'grails-plugins' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    needs: [ build ]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: "Output Agent IP" # in the event your agent has network issues, you can use this to debug
+        run: curl -s https://api.ipify.org
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Export .sdkmanrc properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
+        with:
+          file: ".sdkmanrc"
+          prefix: "SDKMANRC_"
+      - name: "Determine Java Version"
+        run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
+      - name: "☕️ Setup JDK"
+        uses: actions/setup-java@v4
+        with:
+          distribution: liberica
+          java-version: ${{ env.SDKMANRC_java }}
+      - name: 'Ensure Common Build Date' # to ensure a reproducible build
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "$GITHUB_ENV"
+      - name: "🐘 Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+      - name: "📤 Publish Gradle Snapshot Artifacts"
+        env:
+          GRAILS_PUBLISH_RELEASE: 'false'
+          MAVEN_PUBLISH_URL: 'https://central.sonatype.com/repository/maven-snapshots/'
+          MAVEN_PUBLISH_USERNAME: ${{ secrets.NEXUS_PUBLISH_USERNAME }}
+          MAVEN_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PUBLISH_PASSWORD }}
+        working-directory: './plugin'
+        run: >
+          ../gradlew publish
+          --no-build-cache
+          --rerun-tasks

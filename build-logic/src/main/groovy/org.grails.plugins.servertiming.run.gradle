@@ -1,0 +1,10 @@
+tasks.named('bootRun', JavaExec).configure {
+    doFirst {
+        if (project.hasProperty("debugWait")) {
+            jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")
+        }
+        if (project.hasProperty("debug")) {
+            jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
+        }
+    }
+}

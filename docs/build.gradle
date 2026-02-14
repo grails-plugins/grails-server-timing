@@ -1,0 +1,44 @@
+import org.asciidoctor.gradle.jvm.AsciidoctorTask
+
+plugins {
+    id "org.asciidoctor.jvm.convert" version "4.0.5"
+}
+
+version = projectVersion
+group = 'org.grails.plugins'
+
+String getGrailsDocumentationVersion(String version) {
+    if (version.endsWith('-SNAPSHOT')) {
+        return 'snapshot'
+    }
+
+    return version
+}
+
+def asciidoctorAttributes = [
+        'source-highlighter': 'coderay',
+        toc                 : 'left',
+        toclevels           : '2',
+        'toc-title'         : 'Table of Contents',
+        icons               : 'font',
+        id                  : (project.name - '-docs') + ':' + project.version,
+        idprefix            : '',
+        idseparator         : '-',
+        version             : project.version,
+        projectUrl          : "https://github.com/grails-plugins/grails-server-timing",
+        sourcedir           : "${rootProject.allprojects.find { it.name == 'grails-server-timing' }.projectDir}/src/main/groovy",
+        grailsDocBase       : "https://grails.apache.org/docs/${getGrailsDocumentationVersion(project.grailsVersion)}"
+]
+
+tasks.named('asciidoctor', AsciidoctorTask) { AsciidoctorTask it ->
+    it.jvm {
+        jvmArgs("--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED")
+    }
+
+    it.baseDirFollowsSourceDir()
+    it.sourceDir project.file('src/docs')
+    it.sources { include 'index.adoc' }
+    it.outputDir = project.layout.buildDirectory.dir('docs')
+    it.options doctype: 'book'
+    it.attributes asciidoctorAttributes
+}

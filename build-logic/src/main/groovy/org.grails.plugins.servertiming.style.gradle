@@ -1,0 +1,42 @@
+plugins {
+    id 'checkstyle'
+    id 'codenarc'
+}
+
+// Resolved relative to the root project directory, which is the parent of build-logic/.
+def codeStyleConfigDir = rootProject.file('build-logic/config')
+def checkstyleConfigDir = new File(codeStyleConfigDir, 'checkstyle')
+def codenarcConfigDir = new File(codeStyleConfigDir, 'codenarc')
+
+checkstyle {
+    toolVersion = checkstyleVersion
+    configDirectory = checkstyleConfigDir
+    maxWarnings = 0
+    showViolations = true
+    ignoreFailures = false
+}
+
+tasks.withType(Checkstyle).configureEach {
+    it.group = 'verification'
+    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+}
+
+codenarc {
+    toolVersion = codenarcVersion
+    configFile = new File(codenarcConfigDir, 'codenarc.groovy')
+    maxPriority1Violations = 0
+    maxPriority2Violations = 0
+    maxPriority3Violations = 0
+}
+
+tasks.withType(CodeNarc).configureEach {
+    it.group = 'verification'
+    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+}
+
+tasks.register('codeStyle').configure {
+    group = 'verification'
+    description = 'Runs all code style checks (Checkstyle + CodeNarc).'
+    dependsOn tasks.withType(Checkstyle)
+    dependsOn tasks.withType(CodeNarc)
+}
