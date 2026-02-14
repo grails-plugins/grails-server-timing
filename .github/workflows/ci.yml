@@ -87,3 +87,12 @@ jobs:
           ../gradlew publish
           --no-build-cache
           --rerun-tasks
+      - name: "📜 Generate Documentation"
+        if: success()
+        run: ./gradlew docs
+      - name: "🚀 Publish to Github Pages"
+        if: success()
+        uses: apache/grails-github-actions/deploy-github-pages@asf
+        env:
+          GRADLE_PUBLISH_RELEASE: 'false'
+          SOURCE_FOLDER: build/docs
