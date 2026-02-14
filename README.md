@@ -27,6 +27,39 @@ is required.
 > **Note:** The plugin is disabled by default in production to prevent exposing timing data that could
 > facilitate [timing attacks](https://w3c.github.io/server-timing/#security-considerations).
 
+### Using Snapshot Builds
+
+Snapshot builds are published to Maven Central Snapshots on every push to `main` and release branches. To use a snapshot
+version, add the Maven Central Snapshots repository to your `settings.gradle`:
+
+```groovy
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            url = 'https://central.sonatype.com/repository/maven-snapshots/'
+            mavenContent {
+                snapshotsOnly()
+            }
+            content {
+                includeModule('org.grails.plugins', 'grails-server-timing')
+            }
+        }
+    }
+}
+```
+
+Then reference the snapshot version in your `build.gradle`:
+
+```groovy
+dependencies {
+    implementation 'org.grails.plugins:grails-server-timing:0.0.1-SNAPSHOT'
+}
+```
+
+> **Note:** Snapshot versions are unstable and may change without notice. They are intended for testing
+> upcoming changes before a release.
+
 ## How It Works
 
 The plugin intercepts HTTP requests using a servlet filter and a Grails interceptor:
