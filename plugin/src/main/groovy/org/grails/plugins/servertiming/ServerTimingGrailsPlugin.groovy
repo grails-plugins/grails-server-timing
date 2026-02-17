@@ -31,7 +31,7 @@ import org.springframework.core.Ordered
 class ServerTimingGrailsPlugin extends Plugin {
 
     /** Minimum Grails version required for this plugin */
-    def grailsVersion = '7.0.7  > *'
+    def grailsVersion = '7.0.0  > *'
 
     /** Plugin title */
     def title = 'grails-server-timing'

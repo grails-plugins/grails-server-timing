@@ -7,7 +7,7 @@ the [W3C Server Timing specification](https://w3c.github.io/server-timing/). It 
 rendering time, and total request time, surfacing them in browser DevTools.
 
 - **Language:** Groovy 4.0.30 on Java 17
-- **Framework:** Grails 7.0.7
+- **Framework:** Grails 7.x
 - **Build System:** Gradle 8.14.4 (with wrapper)
 - **Current Version:** 0.0.1-SNAPSHOT
 - **License:** Apache 2.0
