@@ -10,7 +10,7 @@ import spock.lang.Specification
 /**
  * Integration tests verifying that the Server Timing HTTP header is NOT present
  * when the plugin is explicitly disabled via configuration
- * (grails.plugins.servertiming.enabled: false).
+ * (grails.plugins.serverTiming.enabled: false).
  */
 @Integration
 class ServerTimingDisabledIntegrationSpec extends Specification {

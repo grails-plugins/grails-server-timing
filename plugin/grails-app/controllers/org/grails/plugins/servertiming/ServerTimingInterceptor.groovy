@@ -19,10 +19,10 @@ class ServerTimingInterceptor implements Interceptor {
 
     ServerTimingInterceptor() {
         if (ServerTimingUtils.instance.enabled) {
-            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.servertiming.enabled' to false to disable them.")
+            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.serverTiming.enabled' to false to disable them.")
             matchAll()
         } else {
-            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.servertiming.enabled' to true to enable them.")
+            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.serverTiming.enabled' to true to enable them.")
         }
     }
 

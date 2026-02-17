@@ -105,12 +105,12 @@ environments:
     development:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: true
     production:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: false
 ```
 

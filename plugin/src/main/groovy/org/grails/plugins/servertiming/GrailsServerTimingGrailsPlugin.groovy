@@ -15,7 +15,7 @@ import org.springframework.core.Ordered
  * <h3>Configuration</h3>
  * <p>The plugin can be enabled or disabled via the configuration property:</p>
  * <pre>
- * grails.plugins.servertiming.enabled = true
+ * grails.plugins.serverTiming.enabled = true
  * </pre>
  *
  * <h3>Filter Registration</h3>
@@ -88,7 +88,7 @@ class GrailsServerTimingGrailsPlugin extends Plugin {
         if (ServerTimingUtils.instance.enabled) {
             log.debug('Applying {} plugin', title)
         } else {
-            log.debug('{} plugin is disabled. Set \'grails.plugins.servertiming.enabled\' to true to enable it.', title)
+            log.debug('{} plugin is disabled. Set \'grails.plugins.serverTiming.enabled\' to true to enable it.', title)
         }
     }
 }

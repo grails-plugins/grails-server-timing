@@ -132,8 +132,8 @@ Set in `application.yml`:
 
 | Property                                | Default                                    | Description                               |
 |-----------------------------------------|--------------------------------------------|-------------------------------------------|
-| `grails.plugins.servertiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
-| `grails.plugins.servertiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
+| `grails.plugins.serverTiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
+| `grails.plugins.serverTiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
 
 **Security note:** The plugin is disabled in production by default because timing data could facilitate timing attacks.
 

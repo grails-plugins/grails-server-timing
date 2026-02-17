@@ -9,7 +9,7 @@ grails:
       # Disabled by default for performance reasons
       events: false
   plugins:
-    servertiming:
+    serverTiming:
       enabled: false
 info:
   app:

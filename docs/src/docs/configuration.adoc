@@ -17,14 +17,14 @@ All configuration options are specified in your `application.yml` or `applicatio
 ----
 grails:
     plugins:
-        servertiming:
+        serverTiming:
             enabled: true  # or false
 ----
 
 |===
 | Property | Type | Default | Description
 
-| `grails.plugins.servertiming.enabled`
+| `grails.plugins.serverTiming.enabled`
 | `Boolean`
 | `null` (auto-detect)
 | When `null`, the plugin is enabled in `development` and `test` environments only. Set to `true` to explicitly enable or `false` to explicitly disable regardless of environment.
@@ -46,7 +46,7 @@ grails:
 |===
 | Property | Type | Default | Description
 
-| `grails.plugins.servertiming.metricKey`
+| `grails.plugins.serverTiming.metricKey`
 | `String`
 | `GrailsServerTiming`
 | The request attribute key used to store the `TimingMetric` object. Only change this if you have a naming conflict.
@@ -62,17 +62,17 @@ environments:
     development:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: true
     test:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: true
     production:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: false
 ----
 
@@ -89,7 +89,7 @@ environments:
     production:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: true
 ----
 
