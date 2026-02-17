@@ -5,11 +5,14 @@ plugins {
     id 'jacoco'
 }
 
-boolean isCi = System.getenv('CI') != null
+def isCi = System.getenv('CI') != null
+def isWindows = System.getProperty('os.name')?.toLowerCase()?.contains('windows')
 
 // This configures the 'pretty' test logging
+// mocha-parallel uses Unicode symbols that require special config on Windows;
+// standard-parallel is a safe fallback there.
 testlogger {
-    theme isCi ? 'plain-parallel' : 'mocha-parallel'
+    theme isCi ? 'plain-parallel' : (isWindows ? 'standard-parallel' : 'mocha-parallel')
     showExceptions true
     showStandardStreams false
     showSummary true
