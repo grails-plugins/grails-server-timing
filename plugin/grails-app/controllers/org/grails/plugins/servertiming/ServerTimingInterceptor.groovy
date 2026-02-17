@@ -1,7 +1,8 @@
 package org.grails.plugins.servertiming
 
+import groovy.transform.CompileStatic
+
 import grails.artefact.Interceptor
-import grails.compiler.GrailsCompileStatic
 import groovy.util.logging.Slf4j
 import org.grails.plugins.servertiming.core.TimingMetric
 
@@ -10,7 +11,7 @@ import org.grails.plugins.servertiming.core.TimingMetric
  * Works in conjunction with ServerTimingFilter which handles adding the HTTP header.
  */
 @Slf4j
-@GrailsCompileStatic
+@CompileStatic
 class ServerTimingInterceptor implements Interceptor {
 
     static String HEADER_NAME = 'Server-Timing'
