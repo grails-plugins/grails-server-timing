@@ -28,7 +28,7 @@ import org.springframework.core.Ordered
  * @see ServerTimingFilter* @see ServerTimingUtils
  */
 @Slf4j
-class GrailsServerTimingGrailsPlugin extends Plugin {
+class ServerTimingGrailsPlugin extends Plugin {
 
     /** Minimum Grails version required for this plugin */
     def grailsVersion = '7.0.7  > *'
