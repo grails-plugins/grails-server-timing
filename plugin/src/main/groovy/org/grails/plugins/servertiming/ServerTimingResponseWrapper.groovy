@@ -6,7 +6,6 @@ import jakarta.servlet.ServletOutputStream
 import jakarta.servlet.WriteListener
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpServletResponseWrapper
-import org.grails.plugins.servertiming.core.Metric
 import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
@@ -40,7 +39,7 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
 
             stopTimings()
 
-            String headerValue = timing.toHeaderValue()
+            def headerValue = timing.toHeaderValue()
             log.trace('{} header value: {}', ServerTimingInterceptor.HEADER_NAME, headerValue)
             if (headerValue) {
                 originalResponse.addHeader(ServerTimingInterceptor.HEADER_NAME, headerValue)
@@ -58,13 +57,13 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
             timing.get('other')?.stop()
         }
 
-        Metric actionTiming = timing.get('action')
+        def actionTiming = timing.get('action')
         if (actionTiming?.running) {
             actionTiming.stop()
         }
 
         // view won't exist if the action committed the request
-        Metric viewTiming = timing.get('view')
+        def viewTiming = timing.get('view')
         if (viewTiming?.running) {
             viewTiming.stop()
         }

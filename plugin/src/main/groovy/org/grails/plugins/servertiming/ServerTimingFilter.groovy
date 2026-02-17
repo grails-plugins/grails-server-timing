@@ -37,24 +37,24 @@ class ServerTimingFilter implements Filter, Ordered {
             throws IOException, ServletException {
 
         if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
-            log.warn("Could not apply Server Timing Filter because request or response was not an expected HttpServlet type: {} / {}", request.class, response.class)
+            log.warn('Could not apply Server Timing Filter because request or response was not an expected HttpServlet type: {} / {}', request.class, response.class)
             chain.doFilter(request, response)
             return
         }
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request
-        HttpServletResponse httpResponse = (HttpServletResponse) response
+        def httpRequest = (HttpServletRequest) request
+        def httpResponse = (HttpServletResponse) response
 
         // Create the timing metric and store it in the request
         // The interceptor will add 'action' and 'view' metrics for controller requests
         // For non-controller requests (static resources), we track as 'other'
-        TimingMetric timing = new TimingMetric()
+        def timing = new TimingMetric()
         httpRequest.setAttribute(metricKey, timing)
         timing.create('total', 'Total').start()
         timing.create('other', 'Non-Grails Controller Action/View').start()
 
         // Wrap the response to intercept commits and add the header
-        ServerTimingResponseWrapper wrappedResponse = new ServerTimingResponseWrapper(httpResponse, timing)
+        def wrappedResponse = new ServerTimingResponseWrapper(httpResponse, timing)
         try {
             chain.doFilter(request, wrappedResponse)
         } finally {

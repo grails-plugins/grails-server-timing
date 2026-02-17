@@ -145,11 +145,11 @@ class ServerTimingIntegrationSpec extends Specification {
 
     void "fast action should include Server Timing header"() {
         when:
-        ResponseEntity<String> response = doGet('/serverTimingTest/fast')
+        def response = doGet('/serverTimingTest/fast')
 
         then:
         response.headers.getFirst('Server-Timing') != null
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming.contains('action')
         serverTiming.contains('view')
     }

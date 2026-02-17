@@ -29,7 +29,7 @@ class ServerTimingInterceptor implements Interceptor {
 
     @Override
     boolean before() {
-        TimingMetric timing = request.getAttribute(metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.create('action', 'Action')
                     .start()
@@ -44,7 +44,7 @@ class ServerTimingInterceptor implements Interceptor {
             return true
         }
 
-        TimingMetric timing = request.getAttribute(metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.get('action')?.stop()
             timing.create('view', 'View')

@@ -16,7 +16,7 @@ class TimingMetric implements Serializable {
     private LinkedHashMap<String, Metric> metrics = [:]
 
     Metric create(String name, String description = null) {
-        Metric metric = new Metric(name: name, description: description)
+        def metric = new Metric(name: name, description: description)
         metrics.put(name, metric)
 
         if (!metric.validate()) {

@@ -186,6 +186,9 @@ Convention plugins in `build-logic/src/main/groovy/` standardize build configura
 
 - Groovy source files use standard Grails conventions (domain classes, controllers, interceptors, services in
   `grails-app/`, other classes in `src/main/groovy/`).
+- **Use `def` for local variables** where the type is inferred from the right-hand side (e.g., constructor calls, casts,
+  factory methods). Explicit types should only be used for local variables when the type cannot be inferred or when
+  needed for `@CompileStatic` compilation. This applies to both production code and tests.
 - Metric names must conform to RFC 7230 token rules (alphanumeric plus `!#$%&'*+-.^_`|~`).
 - Description strings follow HTTP quoted-string escaping rules.
 - The plugin uses `System.nanoTime()` for timing precision.

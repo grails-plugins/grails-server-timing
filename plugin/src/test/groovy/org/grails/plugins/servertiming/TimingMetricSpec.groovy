@@ -9,10 +9,10 @@ class TimingMetricSpec extends Specification {
 
     def "test create() returns a new Metric"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric metric = timingMetric.create('db')
+        def metric = timingMetric.create('db')
 
         then:
         metric != null
@@ -21,10 +21,10 @@ class TimingMetricSpec extends Specification {
 
     def "test create() with name and description"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric metric = timingMetric.create('db', 'Database Query')
+        def metric = timingMetric.create('db', 'Database Query')
 
         then:
         metric != null
@@ -34,11 +34,11 @@ class TimingMetricSpec extends Specification {
 
     def "test create() stores metric for later retrieval"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric created = timingMetric.create('cache')
-        Metric retrieved = timingMetric.get('cache')
+        def created = timingMetric.create('cache')
+        def retrieved = timingMetric.get('cache')
 
         then:
         created.is(retrieved)
@@ -46,10 +46,10 @@ class TimingMetricSpec extends Specification {
 
     def "test create() indicates metric exists"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric created = timingMetric.create('cache')
+        def created = timingMetric.create('cache')
 
         then:
         timingMetric.has('cache')
@@ -57,7 +57,7 @@ class TimingMetricSpec extends Specification {
 
     def "test remove() removes a metric"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
         timingMetric.create('cache')
@@ -69,7 +69,7 @@ class TimingMetricSpec extends Specification {
 
     def "test create() throws ValidationException for invalid metric name"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
         timingMetric.create('invalid name') // space not allowed
@@ -80,7 +80,7 @@ class TimingMetricSpec extends Specification {
 
     def "test create() throws ValidationException for null name"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
         timingMetric.create(null)
@@ -91,7 +91,7 @@ class TimingMetricSpec extends Specification {
 
     def "test create() throws ValidationException for blank name"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
         timingMetric.create('')
@@ -102,7 +102,7 @@ class TimingMetricSpec extends Specification {
 
     def "test create() throws ValidationException for blank description"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
         timingMetric.create('valid', '')
@@ -113,10 +113,10 @@ class TimingMetricSpec extends Specification {
 
     def "test create() allows null description"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric metric = timingMetric.create('valid', null)
+        def metric = timingMetric.create('valid', null)
 
         then:
         notThrown(ValidationException)
@@ -125,11 +125,11 @@ class TimingMetricSpec extends Specification {
 
     def "test create() overwrites existing metric with same name"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when:
-        Metric first = timingMetric.create('db', 'First')
-        Metric second = timingMetric.create('db', 'Second')
+        def first = timingMetric.create('db', 'First')
+        def second = timingMetric.create('db', 'Second')
 
         then:
         timingMetric.get('db').is(second)
@@ -138,7 +138,7 @@ class TimingMetricSpec extends Specification {
 
     def "test get() returns null for non-existent metric"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         expect:
         timingMetric.get('nonexistent') == null
@@ -146,7 +146,7 @@ class TimingMetricSpec extends Specification {
 
     def "test get() returns the correct metric"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('db', 'Database')
         timingMetric.create('cache', 'Cache')
 
@@ -159,7 +159,7 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() returns null when no metrics"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         expect:
         timingMetric.toHeaderValue() == null
@@ -167,7 +167,7 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() with single metric (name only)"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('miss')
 
         expect:
@@ -176,7 +176,7 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() with single metric (name and description)"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('cache', 'Cache Read')
 
         expect:
@@ -185,13 +185,13 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() with single metric (name and duration)"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
-        Metric metric = timingMetric.create('db')
+        def timingMetric = new TimingMetric()
+        def metric = timingMetric.create('db')
         metric.start()
         metric.stop()
 
         when:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
 
         then:
         header ==~ /db;dur=\d+\.\d/
@@ -199,7 +199,7 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() with multiple metrics"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('db', 'Database')
         timingMetric.create('cache', 'Cache')
 
@@ -209,18 +209,18 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() with multiple metrics including durations"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
-        Metric db = timingMetric.create('db', 'Database')
+        def db = timingMetric.create('db', 'Database')
         db.start()
         db.stop()
 
-        Metric cache = timingMetric.create('cache', 'Cache')
+        def cache = timingMetric.create('cache', 'Cache')
         cache.start()
         cache.stop()
 
         when:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
 
         then:
         header.contains('db;dur=')
@@ -232,13 +232,13 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() preserves metric order"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('first')
         timingMetric.create('second')
         timingMetric.create('third')
 
         when:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
 
         then:
         header == 'first,second,third'
@@ -248,19 +248,19 @@ class TimingMetricSpec extends Specification {
 
     def "test TimingMetric is serializable"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('db', 'Database')
         timingMetric.create('cache', 'Cache')
 
         when:
-        ByteArrayOutputStream bos = new ByteArrayOutputStream()
-        ObjectOutputStream oos = new ObjectOutputStream(bos)
+        def bos = new ByteArrayOutputStream()
+        def oos = new ObjectOutputStream(bos)
         oos.writeObject(timingMetric)
         oos.close()
 
-        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray())
-        ObjectInputStream ois = new ObjectInputStream(bis)
-        TimingMetric deserialized = (TimingMetric) ois.readObject()
+        def bis = new ByteArrayInputStream(bos.toByteArray())
+        def ois = new ObjectInputStream(bis)
+        def deserialized = (TimingMetric) ois.readObject()
 
         then:
         deserialized.get('db') != null
@@ -272,9 +272,9 @@ class TimingMetricSpec extends Specification {
     def "test toHeaderValue() format matches Server Timing spec"() {
         // Server-Timing header format: metric-name;dur=value;desc="description", ...
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
-        Metric db = timingMetric.create('db', 'Database Query')
+        def db = timingMetric.create('db', 'Database Query')
         db.start()
         Thread.sleep(5)
         db.stop()
@@ -282,7 +282,7 @@ class TimingMetricSpec extends Specification {
         timingMetric.create('miss')
 
         when:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
 
         then:
         // Should produce: db;dur=X.X;desc="Database Query",miss
@@ -291,12 +291,12 @@ class TimingMetricSpec extends Specification {
 
     def "test toHeaderValue() handles special characters in descriptions"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
         timingMetric.create('api', 'GET /users?id=1')
         timingMetric.create('db', 'Query: "SELECT *"')
 
         when:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
 
         then:
         header.contains('api;desc="GET /users?id=1"')
@@ -305,16 +305,16 @@ class TimingMetricSpec extends Specification {
 
     def "test typical usage pattern"() {
         given:
-        TimingMetric timingMetric = new TimingMetric()
+        def timingMetric = new TimingMetric()
 
         when: 'Create and time a database operation'
-        Metric db = timingMetric.create('db', 'Database')
+        def db = timingMetric.create('db', 'Database')
         db.start()
         Thread.sleep(10)
         db.stop()
 
         and: 'Create and time a cache operation'
-        Metric cache = timingMetric.create('cache', 'Cache')
+        def cache = timingMetric.create('cache', 'Cache')
         cache.start()
         Thread.sleep(5)
         cache.stop()
@@ -323,7 +323,7 @@ class TimingMetricSpec extends Specification {
         timingMetric.create('miss')
 
         then:
-        String header = timingMetric.toHeaderValue()
+        def header = timingMetric.toHeaderValue()
         header.contains('db;dur=')
         header.contains('cache;dur=')
         header.contains('miss')
