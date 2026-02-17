@@ -6,7 +6,7 @@ import grails.validation.Validateable
 import java.time.Duration
 
 /**
- * Implements a metric for the Server-Timing header
+ * Implements a metric for the Server Timing header
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing
  */

@@ -42,7 +42,7 @@ When a request hits a Grails controller action, the following sequence occurs:
    - Stops 'action' timer if still running (edge case: action committed the response directly)
    - Stops 'view' timer if still running
    - Stops 'total' timer
-   - Adds Server-Timing header to response
+   - Adds Server Timing header to response
 ----
 
 ==== Static Resources and Other Requests
@@ -66,12 +66,12 @@ For requests that do not hit a Grails controller (static assets, images, CSS, Ja
    - ServerTimingResponseWrapper intercepts the commit
    - Stops 'other' timer
    - Stops 'total' timer
-   - Adds Server-Timing header to response
+   - Adds Server Timing header to response
 ----
 
 === The Response Wrapper
 
-A key technical challenge with Server-Timing is that HTTP headers must be sent *before* the response body.
+A key technical challenge with Server Timing is that HTTP headers must be sent *before* the response body.
 However, we do not know the final timing values until *after* the view has rendered.
 
 The `ServerTimingResponseWrapper` solves this by:

@@ -14,11 +14,11 @@ import org.grails.plugins.servertiming.core.TimingMetric
 import org.springframework.core.Ordered
 
 /**
- * A Servlet Filter that wraps responses to ensure Server-Timing headers are added to HTTP responses.
+ * A Servlet Filter that wraps responses to ensure Server Timing headers are added to HTTP responses.
  *
  * This filter works in conjunction with the TimingMetricInterceptor & ServerTimingResponseWrapper.
  * The interceptor assists in creating initial timing metrics for actions & views
- * The response wrapper ensures the Server-Timing header is added before the response is committed.
+ * The response wrapper ensures the Server Timing header is added before the response is committed.
  * For non-controller requests (static resources, etc.), the filter tracks timing as 'other'.
  */
 @Slf4j

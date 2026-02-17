@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a **Grails Plugin** that injects `Server-Timing` HTTP headers into responses, implementing
+This is a **Grails Plugin** that injects Server Timing HTTP headers into responses, implementing
 the [W3C Server Timing specification](https://w3c.github.io/server-timing/). It automatically tracks action time, view
 rendering time, and total request time, surfacing them in browser DevTools.
 

@@ -269,7 +269,7 @@ class TimingMetricSpec extends Specification {
         deserialized.get('cache').name == 'cache'
     }
 
-    def "test toHeaderValue() format matches Server-Timing spec"() {
+    def "test toHeaderValue() format matches Server Timing spec"() {
         // Server-Timing header format: metric-name;dur=value;desc="description", ...
         given:
         TimingMetric timingMetric = new TimingMetric()

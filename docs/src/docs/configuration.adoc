@@ -78,7 +78,7 @@ environments:
 
 === Enabling in Production
 
-WARNING: Enabling Server-Timing in production may expose timing information that could be useful to attackers.
+WARNING: Enabling Server Timing in production may expose timing information that could be useful to attackers.
 Only enable in production if you understand the security implications and have appropriate access controls in place.
 
 If you need to enable timing headers in production (for example, behind an authenticated admin interface or internal network), you can do so:

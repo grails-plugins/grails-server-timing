@@ -143,7 +143,7 @@ class ServerTimingIntegrationSpec extends Specification {
         restTemplate.exchange("${baseUrl}${path}", HttpMethod.GET, null, String)
     }
 
-    void "fast action should include Server-Timing header"() {
+    void "fast action should include Server Timing header"() {
         when:
         ResponseEntity<String> response = doGet('/serverTimingTest/fast')
 
@@ -162,7 +162,7 @@ class ServerTimingIntegrationSpec extends Specification {
 - Timing values are within expected ranges (e.g., slow action >= 200ms)
 - Different response types (GSP views, JSON, plain text) all include headers
 - Static assets include `other`/`total` metrics but not `action`/`view`
-- Header format matches the W3C Server-Timing specification
+- Header format matches the W3C Server Timing specification
 - Plugin behavior under different controller patterns (fast, slow, variable delay)
 - Multiple operations accumulate timing correctly
 

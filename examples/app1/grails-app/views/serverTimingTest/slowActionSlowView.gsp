@@ -20,7 +20,7 @@
 
     <p>View delay was: <strong>${viewDelay ?: 100}ms</strong></p>
 
-    <p class="text-muted">The Server-Timing header should show significant time for both action and view.</p>
+    <p class="text-muted">The Server Timing header should show significant time for both action and view.</p>
 </div>
 </body>
 </html>

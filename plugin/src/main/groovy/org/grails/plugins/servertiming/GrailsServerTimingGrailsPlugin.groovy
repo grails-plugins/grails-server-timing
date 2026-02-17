@@ -6,10 +6,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.core.Ordered
 
 /**
- * Grails plugin that provides Server-Timing header support for HTTP responses.
+ * Grails plugin that provides Server Timing header support for HTTP responses.
  *
  * <p>This plugin automatically registers a {@link ServerTimingFilter} that adds
- * <a href="https://www.w3.org/TR/server-timing/">Server-Timing</a> headers to HTTP responses,
+ * <a href="https://www.w3.org/TR/server-timing/">Server Timing</a> headers to HTTP responses,
  * allowing developers to communicate backend server performance metrics to the browser.</p>
  *
  * <h3>Configuration</h3>
@@ -40,7 +40,7 @@ class GrailsServerTimingGrailsPlugin extends Plugin {
     def author = 'James Daugherty'
 
     /** Plugin description */
-    def description = 'A Grails plugin to generate Server-Timing headers for HTTP responses.'
+    def description = 'A Grails plugin to generate Server Timing headers for HTTP responses.'
 
     /** URL to the plugin documentation */
     def documentation = 'https://grails-plugins.github.io/grails-server-timing/'
@@ -52,7 +52,7 @@ class GrailsServerTimingGrailsPlugin extends Plugin {
     def scm = [url: 'https://github.com/grails-plugins/grails-server-timing']
 
     /**
-     * Registers Spring beans for the Server-Timing functionality.
+     * Registers Spring beans for the Server Timing functionality.
      *
      * <p>When the plugin is enabled, this method registers:</p>
      * <ul>

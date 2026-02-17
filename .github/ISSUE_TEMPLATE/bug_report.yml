@@ -41,7 +41,7 @@ body:
     id: actual
     attributes:
       label: Actual Behavior
-      description: What actually happened? Include the Server-Timing header value if relevant.
+      description: What actually happened? Include the `Server-Timing` header value if relevant.
     validations:
       required: true
 

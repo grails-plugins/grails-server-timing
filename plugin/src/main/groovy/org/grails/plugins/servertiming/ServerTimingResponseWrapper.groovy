@@ -10,7 +10,7 @@ import org.grails.plugins.servertiming.core.Metric
 import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
- * A response wrapper that intercepts the response commit to add the Server-Timing header
+ * A response wrapper that intercepts the response commit to add the Server Timing header
  * before the response is actually committed.
  */
 @Slf4j
@@ -30,7 +30,7 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
     }
 
     /**
-     * Adds the Server-Timing header if not already added.
+     * Adds the Server Timing header if not already added.
      */
     private void addServerTimingHeaderIfNeeded() {
         if (!headerAdded && timing) {

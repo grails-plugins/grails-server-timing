@@ -349,7 +349,7 @@ class MetricSpec extends Specification {
         metric.duration != null
     }
 
-    // Server-Timing spec compliance tests
+    // Server Timing spec compliance tests
     // See: https://w3c.github.io/server-timing/#the-server-timing-header-field
 
     def "test toHeaderValue() duration is in milliseconds with decimal precision"() {
@@ -367,7 +367,7 @@ class MetricSpec extends Specification {
         header ==~ /db;dur=\d+\.\d/
     }
 
-    def "test toHeaderValue() format matches Server-Timing spec"() {
+    def "test toHeaderValue() format matches Server Timing spec"() {
         given:
         Metric metric = new Metric(name: 'cache', description: 'Cache Read')
         metric.start()
@@ -447,7 +447,7 @@ class MetricSpec extends Specification {
     }
 
     def "test header value with only name is valid per spec"() {
-        // Server-Timing allows metrics with just a name (no dur or desc)
+        // Server Timing allows metrics with just a name (no dur or desc)
         given:
         Metric metric = new Metric(name: 'miss')
 
