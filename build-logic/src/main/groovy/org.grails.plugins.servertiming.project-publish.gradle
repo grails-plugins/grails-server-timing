@@ -22,7 +22,7 @@ project.pluginManager.withPlugin('signing') {
     if (System.getenv('DISABLE_BUILD_SIGNING')) {
         project.logger.lifecycle('Signing is disabled for this build per configuration.')
         project.tasks.withType(Sign).configureEach {
-            it.enabled = false
+            enabled = false
         }
     }
 }

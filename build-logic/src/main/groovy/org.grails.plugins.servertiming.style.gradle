@@ -20,8 +20,8 @@ extensions.configure(CheckstyleExtension) {
 }
 
 tasks.withType(Checkstyle).configureEach {
-    it.group = 'verification'
-    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+    group = 'verification'
+    onlyIf { !project.hasProperty('skipCodeStyle') }
 }
 
 extensions.configure(CodeNarcExtension) {
@@ -33,11 +33,11 @@ extensions.configure(CodeNarcExtension) {
 }
 
 tasks.withType(CodeNarc).configureEach {
-    it.group = 'verification'
-    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+    group = 'verification'
+    onlyIf { !project.hasProperty('skipCodeStyle') }
 }
 
-tasks.register('codeStyle').configure {
+tasks.register('codeStyle') {
     group = 'verification'
     description = 'Runs all code style checks (Checkstyle + CodeNarc).'
     dependsOn tasks.withType(Checkstyle)
