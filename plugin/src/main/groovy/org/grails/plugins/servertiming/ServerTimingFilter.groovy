@@ -37,7 +37,7 @@ class ServerTimingFilter implements Filter, Ordered {
             throws IOException, ServletException {
 
         if (!(request instanceof HttpServletRequest) || !(response instanceof HttpServletResponse)) {
-            log.warn("Could not apply Server Timing Filter because request or response was not an expected HttpServlet type: ${request.getClass()} / ${response.getClass()}")
+            log.warn("Could not apply Server Timing Filter because request or response was not an expected HttpServlet type: {} / {}", request.class, response.class)
             chain.doFilter(request, response)
             return
         }
