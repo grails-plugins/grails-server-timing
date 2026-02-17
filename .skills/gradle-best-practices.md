@@ -1,9 +1,10 @@
-# Gradle Convention Plugins Best Practices
+# Gradle Best Practices
 
 ## Purpose
 
-Convention plugins eliminate duplication across subprojects by centralizing shared build logic. They live in the
-`build-logic/` composite build and are applied by ID in each subproject's `build.gradle`.
+This skill covers Gradle best practices for this project, including convention plugins, extension configuration,
+lazy APIs, and build structure. Convention plugins eliminate duplication across subprojects by centralizing shared
+build logic. They live in the `build-logic/` composite build and are applied by ID in each subproject's `build.gradle`.
 
 ## Core Rules
 
@@ -149,6 +150,45 @@ Key APIs to use:
 - `tasks.withType(X).configureEach {}` instead of `tasks.withType(X) {}`
 - `project.provider {}` for lazy values
 - `layout.buildDirectory` instead of `buildDir`
+
+## Extension Configuration with Type Hints
+
+When configuring project extensions (like publishing metadata or third-party plugin configurations), use
+`extensions.configure(Type)` with explicit parameter hints for better IDE support and type safety:
+
+```groovy
+// GOOD - explicit type hint in extension configuration
+extensions.configure(GrailsPublishExtension) {
+    it.artifactId = project.name
+    it.githubSlug = 'grails-plugins/grails-server-timing'
+    it.license.name = 'Apache-2.0'
+    it.title = 'My Plugin'
+    it.developers = [name: 'Developer Name']
+}
+
+// GOOD - configuring standard Gradle extensions with type hints
+tasks.named('bootRun', JavaExec).configure {
+    doFirst {
+        jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
+    }
+}
+
+// GOOD - property-style DSL extensions without type hints (acceptable for simple cases)
+checkstyle {
+    toolVersion = checkstyleVersion
+    maxWarnings = 0
+}
+```
+
+**Benefits:**
+
+- IDE auto-completion and type-checking for extension properties
+- Clearer intent: code readers immediately see the extension type being configured
+- Reduces runtime errors from typos in property names
+- Works well with `@GrailsCompileStatic` in Groovy convention plugins
+
+Note: Simple property-style DSL configurations (like `checkstyle {}` or `jacoco {}`) don't require type hints—use
+them when you're accessing nested properties or methods where IDE support is most valuable.
 
 ## Composition Over Inheritance
 

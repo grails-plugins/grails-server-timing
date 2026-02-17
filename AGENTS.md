@@ -19,7 +19,7 @@ Detailed best practices are documented in `.skills/`:
 | Skill File                                                                     | Purpose                                               |
 |--------------------------------------------------------------------------------|-------------------------------------------------------|
 | [`.skills/repository-structure.md`](.skills/repository-structure.md)           | Canonical directory layout and architectural rules    |
-| [`.skills/gradle-convention-plugins.md`](.skills/gradle-convention-plugins.md) | Convention plugin patterns, naming, and anti-patterns |
+| [`.skills/gradle-best-practices.md`](.skills/gradle-best-practices.md)         | Gradle best practices, convention plugins, and idioms |
 | [`.skills/plugin-project.md`](.skills/plugin-project.md)                       | Plugin project scope: source code + unit tests only   |
 | [`.skills/example-apps.md`](.skills/example-apps.md)                           | Example app patterns: integration & functional tests  |
 
