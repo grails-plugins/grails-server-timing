@@ -130,7 +130,7 @@ tasks.named('bootRun', JavaExec).configure {
 }
 
 tasks.register('docs') {
-    dependsOn = [/* ... */]
+    dependsOn(/* ... */)
 }
 
 // BAD - eager resolution
@@ -150,6 +150,7 @@ Key APIs to use:
 - `tasks.withType(X).configureEach {}` instead of `tasks.withType(X) {}`
 - `project.provider {}` for lazy values
 - `layout.buildDirectory` instead of `buildDir`
+- `dependsOn()` method instead of `dependsOn =` setter (setter replaces all dependencies; the method adds to them)
 
 ## Extension Configuration with Type Hints
 
