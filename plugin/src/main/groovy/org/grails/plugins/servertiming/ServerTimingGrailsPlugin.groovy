@@ -34,7 +34,7 @@ class ServerTimingGrailsPlugin extends Plugin {
     def grailsVersion = '7.0.0  > *'
 
     /** Plugin title */
-    def title = 'grails-server-timing'
+    def title = 'Server Timing'
 
     /** Plugin author */
     def author = 'James Daugherty'
