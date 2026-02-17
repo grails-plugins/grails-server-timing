@@ -4,11 +4,15 @@ This section explains the architecture of the plugin and how it handles differen
 
 === Architecture Overview
 
-The plugin consists of three main components that work together:
+The plugin consists of four main components that work together:
 
-1. **ServerTimingFilter** - A servlet filter that wraps all HTTP responses
-2. **ServerTimingInterceptor** - A Grails interceptor that tracks controller action and view timing
-3. **ServerTimingResponseWrapper** - A response wrapper that ensures headers are added before the response is committed
+1. **ServerTimingAutoConfiguration** - A Spring Boot `@AutoConfiguration` that conditionally registers the filter and its `FilterRegistrationBean` when the plugin is enabled (gated by `ServerTimingEnabledCondition`)
+2. **ServerTimingFilter** - A servlet filter that wraps all HTTP responses
+3. **ServerTimingInterceptor** - A Grails interceptor that tracks controller action and view timing
+4. **ServerTimingResponseWrapper** - A response wrapper that ensures headers are added before the response is committed
+
+Bean wiring uses standard Spring Boot auto-configuration rather than the Grails plugin descriptor's `doWithSpring()`.
+The `ServerTimingGrailsPlugin` class provides plugin metadata only.
 
 === Request Flow
 

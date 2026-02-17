@@ -104,27 +104,33 @@ Run `sdk env install` to set up the environment.
 
 ## Architecture
 
-The plugin intercepts HTTP requests via a servlet filter and Grails interceptor:
+The plugin intercepts HTTP requests via a servlet filter and Grails interceptor. Bean wiring uses
+Spring Boot `@AutoConfiguration` (not the Grails plugin descriptor's `doWithSpring()`):
 
-1. **`ServerTimingFilter`** (servlet filter, highest precedence + 100) wraps every request, starts `total` and `other`
+1. **`ServerTimingAutoConfiguration`** (Spring Boot auto-configuration) conditionally registers the
+   `ServerTimingFilter` and its `FilterRegistrationBean` when enabled, gated by
+   `ServerTimingEnabledCondition`.
+2. **`ServerTimingFilter`** (servlet filter, highest precedence + 100) wraps every request, starts `total` and `other`
    timers.
-2. **`ServerTimingInterceptor`** (Grails interceptor) starts an `action` timer in `before()`, stops it and starts a
+3. **`ServerTimingInterceptor`** (Grails interceptor) starts an `action` timer in `before()`, stops it and starts a
    `view` timer in `after()`.
-3. **`ServerTimingResponseWrapper`** intercepts response commit to inject the `Server-Timing` header before the first
+4. **`ServerTimingResponseWrapper`** intercepts response commit to inject the `Server-Timing` header before the first
    byte is written.
-4. For non-controller requests (e.g., static assets), only `total` and `other` metrics appear.
+5. For non-controller requests (e.g., static assets), only `total` and `other` metrics appear.
 
 ### Core Classes (plugin/src/main/groovy/org/grails/plugins/servertiming/)
 
-| Class                            | Purpose                                                            |
-|----------------------------------|--------------------------------------------------------------------|
-| `GrailsServerTimingGrailsPlugin` | Plugin descriptor; registers the filter bean when enabled          |
-| `ServerTimingFilter`             | Servlet filter; creates `TimingMetric` per request, wraps response |
-| `ServerTimingResponseWrapper`    | Response wrapper; injects `Server-Timing` header on commit         |
-| `ServerTimingInterceptor`        | Grails interceptor; tracks action and view timing                  |
-| `ServerTimingUtils`              | Reads plugin configuration; auto-enables in DEV/TEST environments  |
-| `core/Metric`                    | Single timing metric model with RFC 7230 name validation           |
-| `core/TimingMetric`              | Collection of metrics; generates header value                      |
+| Class                            | Purpose                                                                   |
+|----------------------------------|---------------------------------------------------------------------------|
+| `ServerTimingAutoConfiguration`  | Spring Boot `@AutoConfiguration`; registers filter beans when enabled     |
+| `ServerTimingEnabledCondition`   | Spring `Condition`; checks enabled via Spring Environment + Grails env    |
+| `ServerTimingGrailsPlugin`       | Plugin descriptor; metadata only (no bean wiring)                         |
+| `ServerTimingFilter`             | Servlet filter; creates `TimingMetric` per request, wraps response        |
+| `ServerTimingResponseWrapper`    | Response wrapper; injects `Server-Timing` header on commit                |
+| `ServerTimingInterceptor`        | Grails interceptor; tracks action and view timing                         |
+| `ServerTimingUtils`              | Reads plugin configuration; auto-enables in DEV/TEST environments         |
+| `core/Metric`                    | Single timing metric model with RFC 7230 name validation                  |
+| `core/TimingMetric`              | Collection of metrics; generates header value                             |
 
 ## Configuration
 
