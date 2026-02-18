@@ -50,10 +50,10 @@ plugin/
 └── src/
     ├── main/groovy/                      # Core plugin classes
     │   └── org/grails/plugins/servertiming/
-    │       ├── ServerTimingAutoConfiguration.groovy
+    │       ├── GrailsServerTimingGrailsPlugin.groovy
     │       ├── ServerTimingFilter.groovy
-    │       ├── ServerTimingProperties.groovy
     │       ├── ServerTimingResponseWrapper.groovy
+    │       ├── ServerTimingUtils.groovy
     │       └── core/
     │           ├── Metric.groovy
     │           └── TimingMetric.groovy
@@ -103,6 +103,7 @@ Key patterns:
 Unit tests in the plugin project test individual classes in isolation:
 
 - Test domain logic, validation, and data structures (e.g., `Metric`, `TimingMetric`)
+- Test utility classes (e.g., `ServerTimingUtils`)
 - Use Spock Framework with `@Unroll` for data-driven tests
 - Do NOT start the Grails application context for unit tests
 - Do NOT make HTTP requests in unit tests
@@ -126,10 +127,18 @@ Unit tests in the plugin project test individual classes in isolation:
 
 ## Plugin Descriptor
 
-The `ServerTimingGrailsPlugin` class extends `grails.plugins.Plugin` and provides plugin metadata.
-Bean wiring is handled by `ServerTimingAutoConfiguration` using Spring Boot auto-configuration.
-Configuration is managed by `ServerTimingProperties` (`@ConfigurationProperties`), with
-environment-based defaults set in `plugin.yml`.
+The `GrailsServerTimingGrailsPlugin` class extends `grails.plugins.Plugin` and registers Spring beans. It uses
+`ServerTimingUtils` to check whether the plugin is enabled before registering the filter:
+
+```groovy
+Closure doWithSpring() {
+    { ->
+        if (ServerTimingUtils.instance.isEnabled(grailsApplication)) {
+            // register filter beans
+        }
+    }
+}
+```
 
 ## Dependency Scoping
 

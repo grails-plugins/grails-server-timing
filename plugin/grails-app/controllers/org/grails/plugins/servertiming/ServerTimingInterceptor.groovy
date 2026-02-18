@@ -5,7 +5,6 @@ import groovy.transform.CompileStatic
 import grails.artefact.Interceptor
 import groovy.util.logging.Slf4j
 import org.grails.plugins.servertiming.core.TimingMetric
-import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * Interceptor that tracks timing for controller actions and view rendering.
@@ -17,20 +16,20 @@ class ServerTimingInterceptor implements Interceptor {
 
     static String HEADER_NAME = 'Server-Timing'
 
-    @Autowired
-    ServerTimingProperties serverTimingProperties
+    String metricKey = ServerTimingUtils.instance.metricKey
 
     ServerTimingInterceptor() {
-        matchAll()
+        if (ServerTimingUtils.instance.enabled) {
+            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.serverTiming.enabled' to false to disable them.")
+            matchAll()
+        } else {
+            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.serverTiming.enabled' to true to enable them.")
+        }
     }
 
     @Override
     boolean before() {
-        if (!serverTimingProperties.enabled) {
-            return true
-        }
-
-        def timing = request.getAttribute(serverTimingProperties.metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.create('action', 'Action')
                     .start()
@@ -40,16 +39,12 @@ class ServerTimingInterceptor implements Interceptor {
 
     @Override
     boolean after() {
-        if (!serverTimingProperties.enabled) {
-            return true
-        }
-
         if (response.committed) {
             // no view could be rendered
             return true
         }
 
-        def timing = request.getAttribute(serverTimingProperties.metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.get('action')?.stop()
             timing.create('view', 'View')
