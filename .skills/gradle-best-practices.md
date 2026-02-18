@@ -90,7 +90,7 @@ plugins {
 dependencies {
     implementation platform("org.apache.grails:grails-bom:${gradleProperties.grailsVersion}")
     implementation 'org.apache.grails:grails-gradle-plugins'
-    implementation 'com.adarshr:gradle-test-logger-plugin:4.0.0'
+    implementation "com.adarshr:gradle-test-logger-plugin:${gradleProperties.testLoggerVersion}"
     implementation 'cloud.wondrify:asset-pipeline-gradle'
     implementation 'org.apache.grails.gradle:grails-publish'
 }
