@@ -85,8 +85,10 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
     @Override
     PrintWriter getWriter() throws IOException {
         if (wrappedWriter == null) {
-            addServerTimingHeaderIfNeeded()
-            wrappedWriter = originalResponse.getWriter()
+            wrappedWriter = new ServerTimingPrintWriter(
+                    originalResponse.getWriter(),
+                    this
+            )
         }
         return wrappedWriter
     }
@@ -188,6 +190,59 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
         @Override
         void setWriteListener(WriteListener writeListener) {
             delegate.setWriteListener(writeListener)
+        }
+    }
+
+    /**
+     * Wrapped PrintWriter that triggers header addition before first write,
+     * consistent with the deferred approach used by ServerTimingServletOutputStream.
+     */
+    @CompileStatic
+    private static class ServerTimingPrintWriter extends PrintWriter {
+
+        private final ServerTimingResponseWrapper wrapper
+        private boolean firstWrite = true
+
+        ServerTimingPrintWriter(PrintWriter delegate, ServerTimingResponseWrapper wrapper) {
+            super(delegate)
+            this.wrapper = wrapper
+        }
+
+        private void beforeWrite() {
+            if (firstWrite) {
+                firstWrite = false
+                wrapper.beforeCommit()
+            }
+        }
+
+        @Override
+        void write(int c) {
+            beforeWrite()
+            super.write(c)
+        }
+
+        @Override
+        void write(char[] buf, int off, int len) {
+            beforeWrite()
+            super.write(buf, off, len)
+        }
+
+        @Override
+        void write(String s, int off, int len) {
+            beforeWrite()
+            super.write(s, off, len)
+        }
+
+        @Override
+        void flush() {
+            beforeWrite()
+            super.flush()
+        }
+
+        @Override
+        void close() {
+            beforeWrite()
+            super.close()
         }
     }
 }
