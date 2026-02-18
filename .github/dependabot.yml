@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Gradle dependencies (root + all subprojects)
+  # Gradle dependencies and wrapper
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
@@ -13,15 +13,8 @@ updates:
       gradle-dependencies:
         patterns:
           - "*"
-
-  # Gradle wrapper
-  - package-ecosystem: "gradle"
-    directory: "/gradle/wrapper"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    labels:
-      - "deps"
+        exclude-patterns:
+          - "gradle"
     ignore:
       - dependency-name: "gradle"
         versions: [ ">= 9" ]
