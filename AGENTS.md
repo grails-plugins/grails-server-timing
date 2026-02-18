@@ -107,9 +107,9 @@ Run `sdk env install` to set up the environment.
 The plugin intercepts HTTP requests via a servlet filter and Grails interceptor. Bean wiring uses
 Spring Boot `@AutoConfiguration` (not the Grails plugin descriptor's `doWithSpring()`):
 
-1. **`ServerTimingAutoConfiguration`** (Spring Boot auto-configuration) conditionally registers the
-   `ServerTimingFilter` and its `FilterRegistrationBean` when enabled, gated by
-   `ServerTimingEnabledCondition`.
+1. **`ServerTimingAutoConfiguration`** (Spring Boot auto-configuration) unconditionally registers
+   `ServerTimingProperties` and conditionally registers the `ServerTimingFilter` and its
+   `FilterRegistrationBean` when enabled (via `@ConditionalOnProperty`).
 2. **`ServerTimingFilter`** (servlet filter, highest precedence + 100) wraps every request, starts `total` and `other`
    timers.
 3. **`ServerTimingInterceptor`** (Grails interceptor) starts an `action` timer in `before()`, stops it and starts a
@@ -122,13 +122,12 @@ Spring Boot `@AutoConfiguration` (not the Grails plugin descriptor's `doWithSpri
 
 | Class                            | Purpose                                                                   |
 |----------------------------------|---------------------------------------------------------------------------|
-| `ServerTimingAutoConfiguration`  | Spring Boot `@AutoConfiguration`; registers filter beans when enabled     |
-| `ServerTimingEnabledCondition`   | Spring `Condition`; checks enabled via Spring Environment + Grails env    |
+| `ServerTimingAutoConfiguration`  | Spring Boot `@AutoConfiguration`; registers properties and filter beans   |
+| `ServerTimingProperties`         | `@ConfigurationProperties` for `grails.plugins.serverTiming.*` settings   |
 | `ServerTimingGrailsPlugin`       | Plugin descriptor; metadata only (no bean wiring)                         |
 | `ServerTimingFilter`             | Servlet filter; creates `TimingMetric` per request, wraps response        |
 | `ServerTimingResponseWrapper`    | Response wrapper; injects `Server-Timing` header on commit                |
 | `ServerTimingInterceptor`        | Grails interceptor; tracks action and view timing                         |
-| `ServerTimingUtils`              | Reads plugin configuration; auto-enables in DEV/TEST environments         |
 | `core/Metric`                    | Single timing metric model with RFC 7230 name validation                  |
 | `core/TimingMetric`              | Collection of metrics; generates header value                             |
 
@@ -138,10 +137,12 @@ Set in `application.yml`:
 
 | Property                                | Default                                    | Description                               |
 |-----------------------------------------|--------------------------------------------|-------------------------------------------|
-| `grails.plugins.serverTiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
+| `grails.plugins.serverTiming.enabled`   | `true` in DEV/TEST, `false` in PROD       | Enable/disable the plugin                 |
 | `grails.plugins.serverTiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
 
 **Security note:** The plugin is disabled in production by default because timing data could facilitate timing attacks.
+
+Default values per environment are set in `plugin.yml` using Grails environment-based configuration.
 
 ## Testing
 

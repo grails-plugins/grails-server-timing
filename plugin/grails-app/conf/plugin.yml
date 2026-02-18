@@ -1,0 +1,21 @@
+grails:
+  plugins:
+    serverTiming:
+      metricKey: GrailsServerTiming
+
+environments:
+  development:
+    grails:
+      plugins:
+        serverTiming:
+          enabled: true
+  test:
+    grails:
+      plugins:
+        serverTiming:
+          enabled: true
+  production:
+    grails:
+      plugins:
+        serverTiming:
+          enabled: false

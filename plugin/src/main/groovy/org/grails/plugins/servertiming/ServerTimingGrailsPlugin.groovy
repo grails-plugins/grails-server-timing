@@ -10,11 +10,11 @@ import groovy.util.logging.Slf4j
  * for the Grails plugin framework.</p>
  *
  * <p>Bean wiring is handled by {@link ServerTimingAutoConfiguration} using standard
- * Spring Boot auto-configuration rather than the Grails {@code doWithSpring()} mechanism.</p>
+ * Spring Boot auto-configuration rather than the Grails {@code doWithSpring()} mechanism.
+ * Configuration properties are managed by {@link ServerTimingProperties}.</p>
  *
  * @see ServerTimingAutoConfiguration
- * @see ServerTimingFilter
- * @see ServerTimingUtils
+ * @see ServerTimingProperties
  */
 @Slf4j
 class ServerTimingGrailsPlugin extends Plugin {
@@ -47,7 +47,8 @@ class ServerTimingGrailsPlugin extends Plugin {
      */
     @Override
     void doWithApplicationContext() {
-        if (ServerTimingUtils.instance.enabled) {
+        def properties = applicationContext.getBean(ServerTimingProperties)
+        if (properties.enabled) {
             log.debug('Applying {} plugin', title)
         } else {
             log.debug('{} plugin is disabled. Set \'grails.plugins.serverTiming.enabled\' to true to enable it.', title)

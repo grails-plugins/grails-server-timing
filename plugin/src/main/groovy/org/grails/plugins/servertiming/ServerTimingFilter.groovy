@@ -16,20 +16,30 @@ import org.springframework.core.Ordered
 /**
  * A Servlet Filter that wraps responses to ensure Server Timing headers are added to HTTP responses.
  *
- * This filter works in conjunction with the TimingMetricInterceptor & ServerTimingResponseWrapper.
- * The interceptor assists in creating initial timing metrics for actions & views
- * The response wrapper ensures the Server Timing header is added before the response is committed.
- * For non-controller requests (static resources, etc.), the filter tracks timing as 'other'.
+ * <p>This filter is only registered when the plugin is enabled, as determined by
+ * {@code @ConditionalOnProperty} in {@link ServerTimingAutoConfiguration}. When
+ * disabled, no filter is registered and there is zero request-processing overhead.</p>
+ *
+ * <p>Works in conjunction with {@link ServerTimingInterceptor} and
+ * {@link ServerTimingResponseWrapper}. The interceptor creates timing metrics for
+ * controller actions and views. The response wrapper injects the {@code Server-Timing}
+ * header before the response is committed. For non-controller requests (static
+ * resources, etc.), the filter tracks timing as {@code other}.</p>
+ *
+ * @see ServerTimingAutoConfiguration
  */
 @Slf4j
 @CompileStatic
 class ServerTimingFilter implements Filter, Ordered {
 
-    private String metricKey
+    private final ServerTimingProperties properties
+
+    ServerTimingFilter(ServerTimingProperties properties) {
+        this.properties = properties
+    }
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {
-        metricKey = ServerTimingUtils.instance.metricKey
     }
 
     @Override
@@ -49,7 +59,7 @@ class ServerTimingFilter implements Filter, Ordered {
         // The interceptor will add 'action' and 'view' metrics for controller requests
         // For non-controller requests (static resources), we track as 'other'
         def timing = new TimingMetric()
-        httpRequest.setAttribute(metricKey, timing)
+        httpRequest.setAttribute(properties.metricKey, timing)
         timing.create('total', 'Total').start()
         timing.create('other', 'Non-Grails Controller Action/View').start()
 
@@ -75,4 +85,3 @@ class ServerTimingFilter implements Filter, Ordered {
         Ordered.HIGHEST_PRECEDENCE + 100
     }
 }
-
