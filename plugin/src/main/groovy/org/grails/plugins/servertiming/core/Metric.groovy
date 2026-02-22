@@ -49,7 +49,7 @@ class Metric implements Validateable, Serializable {
     }
 
     Metric start() {
-        if (duration) {
+        if (startTimeNanos || duration) {
             throw new IllegalStateException('The metric has already started.')
         }
 
