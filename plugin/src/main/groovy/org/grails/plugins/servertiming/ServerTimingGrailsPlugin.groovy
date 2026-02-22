@@ -25,7 +25,8 @@ import org.springframework.core.Ordered
  *   <li>Order: <code>Ordered.HIGHEST_PRECEDENCE + 100</code> (executes early in the filter chain)</li>
  * </ul>
  *
- * @see ServerTimingFilter* @see ServerTimingUtils
+ * @see ServerTimingFilter
+ * @see ServerTimingUtils
  */
 @Slf4j
 class ServerTimingGrailsPlugin extends Plugin {
