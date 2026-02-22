@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-This is a **Grails Plugin** that injects `Server-Timing` HTTP headers into responses, implementing
+This is a **Grails Plugin** that injects Server Timing HTTP headers into responses, implementing
 the [W3C Server Timing specification](https://w3c.github.io/server-timing/). It automatically tracks action time, view
 rendering time, and total request time, surfacing them in browser DevTools.
 
 - **Language:** Groovy 4.0.30 on Java 17
-- **Framework:** Grails 7.0.7
+- **Framework:** Grails 7.x
 - **Build System:** Gradle 8.14.4 (with wrapper)
 - **Current Version:** 0.0.1-SNAPSHOT
 - **License:** Apache 2.0
@@ -19,7 +19,7 @@ Detailed best practices are documented in `.skills/`:
 | Skill File                                                                     | Purpose                                               |
 |--------------------------------------------------------------------------------|-------------------------------------------------------|
 | [`.skills/repository-structure.md`](.skills/repository-structure.md)           | Canonical directory layout and architectural rules    |
-| [`.skills/gradle-convention-plugins.md`](.skills/gradle-convention-plugins.md) | Convention plugin patterns, naming, and anti-patterns |
+| [`.skills/gradle-best-practices.md`](.skills/gradle-best-practices.md)         | Gradle best practices, convention plugins, and idioms |
 | [`.skills/plugin-project.md`](.skills/plugin-project.md)                       | Plugin project scope: source code + unit tests only   |
 | [`.skills/example-apps.md`](.skills/example-apps.md)                           | Example app patterns: integration & functional tests  |
 
@@ -132,8 +132,8 @@ Set in `application.yml`:
 
 | Property                                | Default                                    | Description                               |
 |-----------------------------------------|--------------------------------------------|-------------------------------------------|
-| `grails.plugins.servertiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
-| `grails.plugins.servertiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
+| `grails.plugins.serverTiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
+| `grails.plugins.serverTiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
 
 **Security note:** The plugin is disabled in production by default because timing data could facilitate timing attacks.
 
@@ -186,6 +186,9 @@ Convention plugins in `build-logic/src/main/groovy/` standardize build configura
 
 - Groovy source files use standard Grails conventions (domain classes, controllers, interceptors, services in
   `grails-app/`, other classes in `src/main/groovy/`).
+- **Use `def` for local variables** where the type is inferred from the right-hand side (e.g., constructor calls, casts,
+  factory methods). Explicit types should only be used for local variables when the type cannot be inferred or when
+  needed for `@CompileStatic` compilation. This applies to both production code and tests.
 - Metric names must conform to RFC 7230 token rules (alphanumeric plus `!#$%&'*+-.^_`|~`).
 - Description strings follow HTTP quoted-string escaping rules.
 - The plugin uses `System.nanoTime()` for timing precision.

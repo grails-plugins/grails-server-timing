@@ -1,8 +1,8 @@
 == Using Browser Developer Tools
 
-One of the primary benefits of the Server-Timing header is that modern browsers automatically display this information in their developer tools.
+One of the primary benefits of the Server Timing header is that modern browsers automatically display this information in their developer tools.
 
-=== Viewing Server-Timing in Chrome
+=== Viewing Server Timing in Chrome
 
 1. Open Chrome Developer Tools (F12 or Ctrl+Shift+I / Cmd+Option+I)
 2. Navigate to the **Network** tab
@@ -12,7 +12,7 @@ One of the primary benefits of the Server-Timing header is that modern browsers 
 
 You'll see a breakdown of the request timing, including the custom metrics from this plugin displayed under "Server Timing".
 
-=== Viewing Server-Timing in Firefox
+=== Viewing Server Timing in Firefox
 
 1. Open Firefox Developer Tools (F12 or Ctrl+Shift+I / Cmd+Option+I)
 2. Navigate to the **Network** tab
@@ -20,19 +20,19 @@ You'll see a breakdown of the request timing, including the custom metrics from 
 4. Click on the request in the list
 5. Select the **Timings** tab in the details panel
 
-The Server-Timing metrics appear at the bottom of the timing breakdown.
+The Server Timing metrics appear at the bottom of the timing breakdown.
 
-=== Viewing Server-Timing in Safari
+=== Viewing Server Timing in Safari
 
 1. Open Safari Web Inspector (Cmd+Option+I)
 2. Navigate to the **Network** tab
 3. Make a request to your Grails application
 4. Click on the request in the list
-5. Look for the Server-Timing section in the timing details
+5. Look for the Server Timing section in the timing details
 
 === Understanding the Metrics
 
-When viewing the Server-Timing data for a Grails controller request, you'll typically see:
+When viewing the Server Timing data for a Grails controller request, you'll typically see:
 
 [cols="1,3"]
 |===
@@ -88,7 +88,7 @@ If `view` timing is high, investigate:
 
 === Programmatic Client Side Access
 
-You can access Server-Timing data programmatically in JavaScript using the https://developer.mozilla.org/en-US/docs/Web/API/PerformanceServerTiming[Performance API^]:
+You can access Server Timing data programmatically in JavaScript using the https://developer.mozilla.org/en-US/docs/Web/API/PerformanceServerTiming[Performance API^]:
 
 [source,javascript]
 ----

@@ -85,7 +85,7 @@ jobs:
     name: "Make Release Files Available"
     environment: release # this step will be delayed until approved
     needs: [ publish ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -124,7 +124,7 @@ jobs:
     environment: docs # this step will be delayed until approved
     name: "Publish Documentation"
     needs: [ publish, release ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write # required to publish documentation to github pages branches
     steps:
@@ -162,7 +162,7 @@ jobs:
     name: "To Next Version"
     environment: close # this step will be delayed until approved
     needs: [ publish, docs, release ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write # required for gradle.properties revert
       issues: write # required for milestone closing

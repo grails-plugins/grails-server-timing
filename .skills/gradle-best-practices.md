@@ -1,9 +1,10 @@
-# Gradle Convention Plugins Best Practices
+# Gradle Best Practices
 
 ## Purpose
 
-Convention plugins eliminate duplication across subprojects by centralizing shared build logic. They live in the
-`build-logic/` composite build and are applied by ID in each subproject's `build.gradle`.
+This skill covers Gradle best practices for this project, including convention plugins, extension configuration,
+lazy APIs, and build structure. Convention plugins eliminate duplication across subprojects by centralizing shared
+build logic. They live in the `build-logic/` composite build and are applied by ID in each subproject's `build.gradle`.
 
 ## Core Rules
 
@@ -89,7 +90,7 @@ plugins {
 dependencies {
     implementation platform("org.apache.grails:grails-bom:${gradleProperties.grailsVersion}")
     implementation 'org.apache.grails:grails-gradle-plugins'
-    implementation 'com.adarshr:gradle-test-logger-plugin:4.0.0'
+    implementation "com.adarshr:gradle-test-logger-plugin:${gradleProperties.testLoggerVersion}"
     implementation 'cloud.wondrify:asset-pipeline-gradle'
     implementation 'org.apache.grails.gradle:grails-publish'
 }
@@ -124,12 +125,12 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = StandardCharsets.UTF_8.name()
 }
 
-tasks.named('bootRun', JavaExec).configure {
+tasks.named('bootRun', JavaExec) {
     doFirst { /* ... */ }
 }
 
 tasks.register('docs') {
-    dependsOn = [/* ... */]
+    dependsOn(/* ... */)
 }
 
 // BAD - eager resolution
@@ -149,6 +150,47 @@ Key APIs to use:
 - `tasks.withType(X).configureEach {}` instead of `tasks.withType(X) {}`
 - `project.provider {}` for lazy values
 - `layout.buildDirectory` instead of `buildDir`
+- `dependsOn()` method instead of `dependsOn =` setter (setter replaces all dependencies; the method adds to them)
+- Do NOT chain `.configure {}` on `tasks.register()` or `tasks.named()` — pass the closure directly to preserve type hints
+
+## Extension Configuration with Type Hints
+
+When configuring project extensions (like publishing metadata or third-party plugin configurations), use
+`extensions.configure(Type)` with explicit `it` for type hints and better IDE support:
+
+```groovy
+// GOOD - explicit it in extensions.configure() for type hints
+extensions.configure(GrailsPublishExtension) {
+    it.artifactId = project.name
+    it.githubSlug = 'grails-plugins/grails-server-timing'
+    it.license.name = 'Apache-2.0'
+    it.title = 'My Plugin'
+    it.developers = [name: 'Developer Name']
+}
+```
+
+Explicit `it` is NOT required in `tasks.named()`, `tasks.register()`, or `configureEach` — these already have typed
+delegates:
+
+```groovy
+// GOOD - no explicit it needed, delegate is already typed
+tasks.withType(Checkstyle).configureEach {
+    group = 'verification'
+    onlyIf { !project.hasProperty('skipCodeStyle') }
+}
+
+tasks.named('bootRun', JavaExec) {
+    doFirst {
+        jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
+    }
+}
+```
+
+**Benefits of `extensions.configure(Type)` with explicit `it`:**
+
+- IDE auto-completion and type-checking for extension properties
+- Clearer intent: code readers immediately see the extension type being configured
+- Reduces runtime errors from typos in property names
 
 ## Composition Over Inheritance
 

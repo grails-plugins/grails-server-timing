@@ -6,17 +6,17 @@ import jakarta.servlet.ServletOutputStream
 import jakarta.servlet.WriteListener
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpServletResponseWrapper
-import org.grails.plugins.servertiming.core.Metric
 import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
- * A response wrapper that intercepts the response commit to add the Server-Timing header
+ * A response wrapper that intercepts the response commit to add the Server Timing header
  * before the response is actually committed.
  */
 @Slf4j
 @CompileStatic
 class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
 
+    static String HEADER_NAME = 'Server-Timing'
     private final TimingMetric timing
     private final HttpServletResponse originalResponse
     private boolean headerAdded = false
@@ -30,23 +30,23 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
     }
 
     /**
-     * Adds the Server-Timing header if not already added.
+     * Adds the Server Timing header if not already added.
      */
     private void addServerTimingHeaderIfNeeded() {
         if (!headerAdded && timing) {
-            log.debug('Adding {} header with timing metrics', ServerTimingInterceptor.HEADER_NAME)
+            log.debug('Adding {} header with timing metrics', HEADER_NAME)
 
             headerAdded = true
 
             stopTimings()
 
-            String headerValue = timing.toHeaderValue()
-            log.trace('{} header value: {}', ServerTimingInterceptor.HEADER_NAME, headerValue)
+            def headerValue = timing.toHeaderValue()
+            log.trace('{} header value: {}', HEADER_NAME, headerValue)
             if (headerValue) {
-                originalResponse.addHeader(ServerTimingInterceptor.HEADER_NAME, headerValue)
+                originalResponse.addHeader(HEADER_NAME, headerValue)
             }
         } else {
-            log.debug('{} header already added or timing metric not available, skipping header addition', ServerTimingInterceptor.HEADER_NAME)
+            log.debug('{} header already added or timing metric not available, skipping header addition', HEADER_NAME)
         }
     }
 
@@ -58,13 +58,13 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
             timing.get('other')?.stop()
         }
 
-        Metric actionTiming = timing.get('action')
+        def actionTiming = timing.get('action')
         if (actionTiming?.running) {
             actionTiming.stop()
         }
 
         // view won't exist if the action committed the request
-        Metric viewTiming = timing.get('view')
+        def viewTiming = timing.get('view')
         if (viewTiming?.running) {
             viewTiming.stop()
         }
@@ -86,8 +86,10 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
     @Override
     PrintWriter getWriter() throws IOException {
         if (wrappedWriter == null) {
-            addServerTimingHeaderIfNeeded()
-            wrappedWriter = originalResponse.getWriter()
+            wrappedWriter = new ServerTimingPrintWriter(
+                    originalResponse.getWriter(),
+                    this
+            )
         }
         return wrappedWriter
     }
@@ -189,6 +191,59 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
         @Override
         void setWriteListener(WriteListener writeListener) {
             delegate.setWriteListener(writeListener)
+        }
+    }
+
+    /**
+     * Wrapped PrintWriter that triggers header addition before first write,
+     * consistent with the deferred approach used by ServerTimingServletOutputStream.
+     */
+    @CompileStatic
+    private static class ServerTimingPrintWriter extends PrintWriter {
+
+        private final ServerTimingResponseWrapper wrapper
+        private boolean firstWrite = true
+
+        ServerTimingPrintWriter(PrintWriter delegate, ServerTimingResponseWrapper wrapper) {
+            super(delegate)
+            this.wrapper = wrapper
+        }
+
+        private void beforeWrite() {
+            if (firstWrite) {
+                firstWrite = false
+                wrapper.beforeCommit()
+            }
+        }
+
+        @Override
+        void write(int c) {
+            beforeWrite()
+            super.write(c)
+        }
+
+        @Override
+        void write(char[] buf, int off, int len) {
+            beforeWrite()
+            super.write(buf, off, len)
+        }
+
+        @Override
+        void write(String s, int off, int len) {
+            beforeWrite()
+            super.write(s, off, len)
+        }
+
+        @Override
+        void flush() {
+            beforeWrite()
+            super.flush()
+        }
+
+        @Override
+        void close() {
+            beforeWrite()
+            super.close()
         }
     }
 }

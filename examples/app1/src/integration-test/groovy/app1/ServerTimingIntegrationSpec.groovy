@@ -8,7 +8,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 /**
- * Integration tests for the Server-Timing HTTP header functionality.
+ * Integration tests for the Server Timing HTTP header functionality.
  * Tests verify that the plugin correctly adds timing information
  * for controller actions and view rendering.
  */
@@ -26,25 +26,25 @@ class ServerTimingIntegrationSpec extends Specification {
         restTemplate.exchange("${baseUrl}${path}", HttpMethod.GET, null, String)
     }
 
-    void "fast action should include Server-Timing header"() {
+    void "fast action should include Server Timing header"() {
         when: 'we request the fast action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/fast')
+        def response = doGet('/serverTimingTest/fast')
 
-        then: 'the response should have a Server-Timing header'
+        then: 'the response should have a Server Timing header'
         response.headers.getFirst('Server-Timing') != null
 
         and: 'the header should contain action and view metrics'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming.contains('action')
         serverTiming.contains('view')
     }
 
     void "slow action (200ms) should show action timing >= 200ms"() {
         when: 'we request the slow action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/slowAction')
+        def response = doGet('/serverTimingTest/slowAction')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least 200ms'
@@ -57,10 +57,10 @@ class ServerTimingIntegrationSpec extends Specification {
         int requestedDelay = 150
 
         when: 'we request the variable delay action'
-        ResponseEntity<String> response = doGet("/serverTimingTest/variableDelay?delay=${requestedDelay}")
+        def response = doGet("/serverTimingTest/variableDelay?delay=${requestedDelay}")
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least the requested delay'
@@ -70,10 +70,10 @@ class ServerTimingIntegrationSpec extends Specification {
 
     void "fast action with slow view should show view timing >= 150ms"() {
         when: 'we request the fast action with slow view'
-        ResponseEntity<String> response = doGet('/serverTimingTest/fastActionSlowView?viewDelay=150')
+        def response = doGet('/serverTimingTest/fastActionSlowView?viewDelay=150')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the view timing should be at least 150ms'
@@ -87,10 +87,10 @@ class ServerTimingIntegrationSpec extends Specification {
 
     void "slow action slow view should show both timings being significant"() {
         when: 'we request the slow action with slow view'
-        ResponseEntity<String> response = doGet('/serverTimingTest/slowActionSlowView?viewDelay=100')
+        def response = doGet('/serverTimingTest/slowActionSlowView?viewDelay=100')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least 100ms'
@@ -104,10 +104,10 @@ class ServerTimingIntegrationSpec extends Specification {
 
     void "multiple operations should accumulate in action timing"() {
         when: 'we request the multiple operations action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/multipleOperations')
+        def response = doGet('/serverTimingTest/multipleOperations')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least 150ms (sum of 50+75+25)'
@@ -115,12 +115,12 @@ class ServerTimingIntegrationSpec extends Specification {
         actionDur >= 150.0
     }
 
-    void "JSON response should include Server-Timing header"() {
+    void "JSON response should include Server Timing header"() {
         when: 'we request the JSON action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/jsonResponse')
+        def response = doGet('/serverTimingTest/jsonResponse')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least 50ms'
@@ -128,12 +128,12 @@ class ServerTimingIntegrationSpec extends Specification {
         actionDur >= 50.0
     }
 
-    void "text response should include Server-Timing header"() {
+    void "text response should include Server Timing header"() {
         when: 'we request the text action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/textResponse')
+        def response = doGet('/serverTimingTest/textResponse')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the action timing should be at least 30ms'
@@ -141,12 +141,12 @@ class ServerTimingIntegrationSpec extends Specification {
         actionDur >= 30.0
     }
 
-    void "Server-Timing header format should be correct"() {
+    void "Server Timing header format should be correct"() {
         when: 'we request any action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/fast')
+        def response = doGet('/serverTimingTest/fast')
 
-        then: 'the Server-Timing header should follow the spec format'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the Server Timing header should follow the spec format'
+        def serverTiming = response.headers.getFirst('Server-Timing')
 
         // Header should contain metric name, duration, and description
         // Format: name;dur=X;desc="description"
@@ -154,21 +154,21 @@ class ServerTimingIntegrationSpec extends Specification {
         serverTiming =~ /view;dur=[\d.]+;desc="[^"]+"/
     }
 
-    void "index page should include Server-Timing header"() {
+    void "index page should include Server Timing header"() {
         when: 'we request the index page'
-        ResponseEntity<String> response = doGet('/')
+        def response = doGet('/')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
     }
 
-    void "static asset should include Server-Timing header with other metric"() {
+    void "static asset should include Server Timing header with other metric"() {
         when: 'we request a static asset'
-        ResponseEntity<String> response = doGet('/assets/application.css?compile=false')
+        def response = doGet('/assets/application.css?compile=false')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: "the header should contain 'other' metric (not action/view)"
@@ -178,12 +178,12 @@ class ServerTimingIntegrationSpec extends Specification {
         serverTiming.contains('total')
     }
 
-    void "redirect response should include Server-Timing header"() {
+    void "redirect response should include Server Timing header"() {
         when: 'we request an action that redirects'
-        ResponseEntity<String> response = doGet('/serverTimingTest/redirectToFast')
+        def response = doGet('/serverTimingTest/redirectToFast')
 
-        then: 'the final response (after following redirect) should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the final response (after following redirect) should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the header should contain action and view metrics from the target action'
@@ -191,24 +191,24 @@ class ServerTimingIntegrationSpec extends Specification {
         serverTiming.contains('view')
     }
 
-    void "redirect response should include Server-Timing header with timing >= 50ms"() {
+    void "redirect response should include Server Timing header with timing >= 50ms"() {
         when: 'we request an action that sleeps 50ms then redirects'
-        ResponseEntity<String> response = doGet('/serverTimingTest/redirectToFast')
+        def response = doGet('/serverTimingTest/redirectToFast')
 
-        then: 'the final response should have a Server-Timing header with total time'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the final response should have a Server Timing header with total time'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'total should be present'
         serverTiming.contains('total')
     }
 
-    void "forward should include Server-Timing header"() {
+    void "forward should include Server Timing header"() {
         when: 'we request an action that forwards to another action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/forwardToTarget')
+        def response = doGet('/serverTimingTest/forwardToTarget')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the header should contain action metrics'
@@ -218,24 +218,24 @@ class ServerTimingIntegrationSpec extends Specification {
         serverTiming.contains('total')
     }
 
-    void "forward should include Server-Timing header with view metric"() {
+    void "forward should include Server Timing header with view metric"() {
         when: 'we request an action that forwards to another action with a view'
-        ResponseEntity<String> response = doGet('/serverTimingTest/forwardToTarget')
+        def response = doGet('/serverTimingTest/forwardToTarget')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the header should contain view metric since the target action renders a view'
         serverTiming.contains('view')
     }
 
-    void "chain should include Server-Timing header"() {
+    void "chain should include Server Timing header"() {
         when: 'we request an action that chains to another action'
-        ResponseEntity<String> response = doGet('/serverTimingTest/chainToTarget')
+        def response = doGet('/serverTimingTest/chainToTarget')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the header should contain action metrics'
@@ -245,12 +245,12 @@ class ServerTimingIntegrationSpec extends Specification {
         serverTiming.contains('total')
     }
 
-    void "chain should include Server-Timing header with view metric"() {
+    void "chain should include Server Timing header with view metric"() {
         when: 'we request an action that chains to another action with a view'
-        ResponseEntity<String> response = doGet('/serverTimingTest/chainToTarget')
+        def response = doGet('/serverTimingTest/chainToTarget')
 
-        then: 'the response should have a Server-Timing header'
-        String serverTiming = response.headers.getFirst('Server-Timing')
+        then: 'the response should have a Server Timing header'
+        def serverTiming = response.headers.getFirst('Server-Timing')
         serverTiming != null
 
         and: 'the header should contain view metric since the chain target renders a view'
@@ -258,8 +258,8 @@ class ServerTimingIntegrationSpec extends Specification {
     }
 
     /**
-     * Extracts the duration value for a given metric name from the Server-Timing header.
-     * @param serverTimingHeader The full Server-Timing header value
+     * Extracts the duration value for a given metric name from the Server Timing header.
+     * @param serverTimingHeader The full Server Timing header value
      * @param metricName The name of the metric to extract
      * @return The duration value in milliseconds, or null if not found
      */
@@ -273,4 +273,3 @@ class ServerTimingIntegrationSpec extends Specification {
         return null
     }
 }
-

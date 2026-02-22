@@ -1,9 +1,9 @@
 == Introduction
 
-The Grails Server Timing plugin adds https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[Server-Timing^] HTTP headers to your Grails application responses.
+The Grails Server Timing plugin adds https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[Server Timing^] HTTP headers to your Grails application responses.
 This allows you to see detailed server-side performance metrics directly in your browser's developer tools.
 
-=== What is Server-Timing?
+=== What is Server Timing?
 
 The `Server-Timing` header is part of the https://www.w3.org/TR/server-timing/[W3C Server Timing specification^] that enables servers to communicate performance metrics about the request-response cycle to the client.
 These metrics can include:
@@ -28,7 +28,7 @@ All of this information is exposed via the standard `Server-Timing` header, whic
 
 === Browser Support
 
-The Server-Timing header is supported by all modern browsers:
+The Server Timing header is supported by all modern browsers:
 
 * Chrome 65+
 * Firefox 61+
@@ -52,6 +52,6 @@ The plugin is automatically enabled in `development` and `test` environments onl
 No additional configuration is required to get started.
 
 NOTE: For security reasons, the plugin is **disabled by default in production**.
-Server-Timing headers can expose timing information that may be useful to attackers.
-See the <<Server-Timing Specification>> and <<Configuration>> sections for more details.
+Server Timing headers can expose timing information that may be useful to attackers.
+See the <<Server Timing Specification>> and <<Configuration>> sections for more details.
 

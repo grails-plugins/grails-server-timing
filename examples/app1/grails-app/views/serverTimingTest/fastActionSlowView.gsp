@@ -16,7 +16,7 @@
     %>
     <p>View delay was: <strong>${viewDelay ?: 150}ms</strong></p>
 
-    <p class="text-muted">The Server-Timing header should show a fast action time and a slow view time.</p>
+    <p class="text-muted">The Server Timing header should show a fast action time and a slow view time.</p>
 </div>
 </body>
 </html>

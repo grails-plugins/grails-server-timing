@@ -1,11 +1,11 @@
-== Server-Timing Specification
+== Server Timing Specification
 
 The `Server-Timing` header is a standardized way for servers to communicate performance metrics to clients.
 This section provides an overview of the specification and how this plugin implements it.
 
 === W3C Server Timing Specification
 
-The Server-Timing header is defined by the https://www.w3.org/TR/server-timing/[W3C Server Timing specification^].
+The Server Timing header is defined by the https://www.w3.org/TR/server-timing/[W3C Server Timing specification^].
 This specification is a W3C Working Draft that enables servers to communicate performance metrics about the request-response cycle.
 
 === Header Format
@@ -52,7 +52,7 @@ Metrics without durations (used for presence indication) are not currently suppo
 
 === MDN Documentation
 
-For detailed browser-side documentation, see the https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[MDN Server-Timing documentation^].
+For detailed browser-side documentation, see the https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing[MDN Server Timing documentation^].
 
 === Security Considerations
 
@@ -73,7 +73,7 @@ See the <<Configuration>> section for details on how to change this behavior.
 
 ==== Cross-Origin Requests
 
-By default, `Server-Timing` information is only available to same-origin requests.
+By default, Server Timing information is only available to same-origin requests.
 For cross-origin requests, the server must include the `Timing-Allow-Origin` header:
 
 [source,http]

@@ -5,8 +5,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.grails.plugins/grails-server-timing)](https://central.sonatype.com/artifact/org.grails.plugins/grails-server-timing)
 [![License](https://img.shields.io/github/license/grails-plugins/grails-server-timing)](https://www.apache.org/licenses/LICENSE-2.0)
 
-A Grails plugin that injects [
-`Server-Timing`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing) HTTP headers into
+A Grails plugin that injects [Server Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing) HTTP headers into
 responses, implementing the [W3C Server Timing specification](https://w3c.github.io/server-timing/). It automatically
 tracks controller action time, view rendering time, and total request time -- surfacing them directly in your browser's
 DevTools.
@@ -83,7 +82,7 @@ Server-Timing: total;dur=156.3;desc="Total", action;dur=45.2;desc="Action", view
 
 ## Viewing in Browser DevTools
 
-Open DevTools (F12), go to the **Network** tab, click a request, and select the **Timing** tab. Server-Timing metrics
+Open DevTools (F12), go to the **Network** tab, click a request, and select the **Timing** tab. Metrics
 appear under "Server Timing":
 
 - **Chrome** 65+ / **Edge** 79+ / **Opera** 52+
@@ -106,12 +105,12 @@ environments:
     development:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: true
     production:
         grails:
             plugins:
-                servertiming:
+                serverTiming:
                     enabled: false
 ```
 

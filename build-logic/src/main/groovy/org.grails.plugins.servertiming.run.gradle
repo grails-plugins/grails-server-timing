@@ -1,4 +1,4 @@
-tasks.named('bootRun', JavaExec).configure {
+tasks.named('bootRun', JavaExec) {
     doFirst {
         if (project.hasProperty("debugWait")) {
             jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")

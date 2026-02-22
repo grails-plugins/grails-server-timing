@@ -4,7 +4,7 @@ import grails.validation.ValidationException
 import groovy.transform.CompileStatic
 
 /**
- * Implements a collection of metrics for the Server-Timing header
+ * Implements a collection of metrics for the Server Timing header
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing
  */
@@ -16,7 +16,7 @@ class TimingMetric implements Serializable {
     private LinkedHashMap<String, Metric> metrics = [:]
 
     Metric create(String name, String description = null) {
-        Metric metric = new Metric(name: name, description: description)
+        def metric = new Metric(name: name, description: description)
         metrics.put(name, metric)
 
         if (!metric.validate()) {

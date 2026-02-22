@@ -1,3 +1,6 @@
+import org.gradle.api.plugins.quality.CheckstyleExtension
+import org.gradle.api.plugins.quality.CodeNarcExtension
+
 plugins {
     id 'checkstyle'
     id 'codenarc'
@@ -8,33 +11,33 @@ def codeStyleConfigDir = rootProject.file('build-logic/config')
 def checkstyleConfigDir = new File(codeStyleConfigDir, 'checkstyle')
 def codenarcConfigDir = new File(codeStyleConfigDir, 'codenarc')
 
-checkstyle {
-    toolVersion = checkstyleVersion
-    configDirectory = checkstyleConfigDir
-    maxWarnings = 0
-    showViolations = true
-    ignoreFailures = false
+extensions.configure(CheckstyleExtension) {
+    it.toolVersion = checkstyleVersion
+    it.configDirectory = checkstyleConfigDir
+    it.maxWarnings = 0
+    it.showViolations = true
+    it.ignoreFailures = false
 }
 
 tasks.withType(Checkstyle).configureEach {
-    it.group = 'verification'
-    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+    group = 'verification'
+    onlyIf { !project.hasProperty('skipCodeStyle') }
 }
 
-codenarc {
-    toolVersion = codenarcVersion
-    configFile = new File(codenarcConfigDir, 'codenarc.groovy')
-    maxPriority1Violations = 0
-    maxPriority2Violations = 0
-    maxPriority3Violations = 0
+extensions.configure(CodeNarcExtension) {
+    it.toolVersion = codenarcVersion
+    it.configFile = new File(codenarcConfigDir, 'codenarc.groovy')
+    it.maxPriority1Violations = 0
+    it.maxPriority2Violations = 0
+    it.maxPriority3Violations = 0
 }
 
 tasks.withType(CodeNarc).configureEach {
-    it.group = 'verification'
-    it.onlyIf { !project.hasProperty('skipCodeStyle') }
+    group = 'verification'
+    onlyIf { !project.hasProperty('skipCodeStyle') }
 }
 
-tasks.register('codeStyle').configure {
+tasks.register('codeStyle') {
     group = 'verification'
     description = 'Runs all code style checks (Checkstyle + CodeNarc).'
     dependsOn tasks.withType(Checkstyle)

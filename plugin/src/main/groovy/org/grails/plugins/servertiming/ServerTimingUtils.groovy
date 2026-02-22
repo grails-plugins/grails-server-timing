@@ -12,7 +12,7 @@ import groovy.transform.CompileStatic
 class ServerTimingUtils {
 
     boolean isEnabled() {
-        Boolean explicitlyEnabled = Holders.config.getProperty('grails.plugins.servertiming.enabled', Boolean, null)
+        Boolean explicitlyEnabled = Holders.config.getProperty('grails.plugins.serverTiming.enabled', Boolean, null)
         if (explicitlyEnabled != null) {
             return explicitlyEnabled
         }
@@ -21,6 +21,6 @@ class ServerTimingUtils {
     }
 
     String getMetricKey() {
-        Holders.config.getProperty('grails.plugins.servertiming.metricKey', String, 'GrailsServerTiming')
+        Holders.config.getProperty('grails.plugins.serverTiming.metricKey', String, 'GrailsServerTiming')
     }
 }
