@@ -16,6 +16,7 @@ import org.grails.plugins.servertiming.core.TimingMetric
 @CompileStatic
 class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
 
+    static String HEADER_NAME = 'Server-Timing'
     private final TimingMetric timing
     private final HttpServletResponse originalResponse
     private boolean headerAdded = false
@@ -33,19 +34,19 @@ class ServerTimingResponseWrapper extends HttpServletResponseWrapper {
      */
     private void addServerTimingHeaderIfNeeded() {
         if (!headerAdded && timing) {
-            log.debug('Adding {} header with timing metrics', ServerTimingInterceptor.HEADER_NAME)
+            log.debug('Adding {} header with timing metrics', HEADER_NAME)
 
             headerAdded = true
 
             stopTimings()
 
             def headerValue = timing.toHeaderValue()
-            log.trace('{} header value: {}', ServerTimingInterceptor.HEADER_NAME, headerValue)
+            log.trace('{} header value: {}', HEADER_NAME, headerValue)
             if (headerValue) {
-                originalResponse.addHeader(ServerTimingInterceptor.HEADER_NAME, headerValue)
+                originalResponse.addHeader(HEADER_NAME, headerValue)
             }
         } else {
-            log.debug('{} header already added or timing metric not available, skipping header addition', ServerTimingInterceptor.HEADER_NAME)
+            log.debug('{} header already added or timing metric not available, skipping header addition', HEADER_NAME)
         }
     }
 

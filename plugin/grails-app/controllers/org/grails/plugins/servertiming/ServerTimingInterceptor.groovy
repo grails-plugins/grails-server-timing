@@ -14,8 +14,6 @@ import org.grails.plugins.servertiming.core.TimingMetric
 @CompileStatic
 class ServerTimingInterceptor implements Interceptor {
 
-    static String HEADER_NAME = 'Server-Timing'
-
     String metricKey = ServerTimingUtils.instance.metricKey
 
     ServerTimingInterceptor() {
