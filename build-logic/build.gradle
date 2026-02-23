@@ -2,23 +2,28 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-file('../gradle.properties').withInputStream {
-    Properties props = new Properties()
-    props.load(it)
-    project.ext.gradleProperties = props
+file('../gradle.properties').withInputStream { is ->
+    extensions.extraProperties.set(
+            'gradleProperties',
+            new Properties().tap { load(is) }
+    )
 }
 
-allprojects {
-    for (String key : gradleProperties.stringPropertyNames()) {
-        ext.set(key, gradleProperties.getProperty(key))
+allprojects {project ->
+    gradleProperties.stringPropertyNames().each { key ->
+        project.extensions.extraProperties.set(
+                key,
+                gradleProperties.getProperty(key)
+        )
     }
 }
 
 dependencies {
     implementation platform("org.apache.grails:grails-bom:${gradleProperties.grailsVersion}")
-    implementation 'org.apache.grails:grails-gradle-plugins'
-    implementation "com.adarshr:gradle-test-logger-plugin:${gradleProperties.testLoggerVersion}"
-    implementation "org.asciidoctor.jvm.convert:org.asciidoctor.jvm.convert.gradle.plugin:${gradleProperties.asciidoctorVersion}"
     implementation 'cloud.wondrify:asset-pipeline-gradle'
+    implementation "com.adarshr:gradle-test-logger-plugin:${gradleProperties.testLoggerVersion}"
+    implementation 'org.apache.grails:grails-gradle-plugins'
     implementation 'org.apache.grails.gradle:grails-publish'
+    implementation "org.asciidoctor.jvm.convert:org.asciidoctor.jvm.convert.gradle.plugin:${gradleProperties.asciidoctorVersion}"
 }
+

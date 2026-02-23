@@ -1,0 +1,84 @@
+plugins {
+    id 'base'
+    id 'jacoco'
+}
+
+extensions.configure(JacocoPluginExtension) {
+    it.toolVersion = '0.8.12'
+}
+
+// Configuration for declaring which projects contribute coverage data.
+def coverageDataProjects = configurations.register('coverageDataProjects') {
+    canBeConsumed = false
+    canBeResolved = true
+}
+
+// Lazily collect source directories and class files from all coverageDataProjects dependencies.
+def covProjectList = coverageDataProjects.map {
+    it.dependencies.withType(ProjectDependency).collect {
+        project.project(it.path)
+    }
+}
+
+def allSourceDirs = covProjectList.map {
+    it.findAll { it.plugins.hasPlugin('java') }
+            .collectMany {
+                it.extensions.getByType(SourceSetContainer).named('main').get()
+                        .allSource.sourceDirectories.files
+            }
+}
+
+def allClassDirs = covProjectList.map {
+    it.findAll { it.plugins.hasPlugin('java') }
+            .collectMany {
+                it.extensions.getByType(SourceSetContainer).named('main').get()
+                        .output.files
+            }
+}
+
+def allExecFiles = covProjectList.map {
+    it.collectMany {
+        it.fileTree(it.layout.buildDirectory.dir('jacoco')) {
+            include('**/*.exec')
+        }.files
+    }
+}
+
+// Register the aggregated coverage report task.
+// This merges JaCoCo execution data from all coverageDataProjects into a single report.
+// Task dependencies on all Test tasks (test, integrationTest, etc.) in the declared
+// projects are derived automatically — no hard-coded project paths needed.
+tasks.register('jacocoAggregatedReport', JacocoReport) {
+    description = 'Generates aggregated JaCoCo coverage report across all subprojects.'
+    group = 'verification'
+
+    classDirectories.from(allClassDirs)
+    executionData.from(allExecFiles)
+    sourceDirectories.from(allSourceDirs)
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+// After evaluation, wire dependsOn for every Test task in every coverage project.
+// This ensures all .exec files exist before the aggregated report collects them.
+afterEvaluate {
+    def projects = coverageDataProjects.get().dependencies
+            .withType(ProjectDependency)
+            .collect { project.project(it.path) }
+
+    tasks.named('jacocoAggregatedReport') {reportTask ->
+        projects.each {
+            it.tasks.withType(Test).configureEach { testTask ->
+                reportTask.dependsOn(testTask)
+            }
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn('jacocoAggregatedReport')
+}
