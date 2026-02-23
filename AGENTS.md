@@ -130,10 +130,10 @@ The plugin intercepts HTTP requests via a servlet filter and Grails interceptor:
 
 Set in `application.yml`:
 
-| Property                                | Default                                    | Description                               |
-|-----------------------------------------|--------------------------------------------|-------------------------------------------|
-| `grails.plugins.serverTiming.enabled`   | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
-| `grails.plugins.serverTiming.metricKey` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
+| Property                                  | Default                                    | Description                               |
+|-------------------------------------------|--------------------------------------------|-------------------------------------------|
+| `grails.plugins.server-timing.enabled`    | `null` (auto: on in DEV/TEST, off in PROD) | Explicitly enable/disable the plugin      |
+| `grails.plugins.server-timing.metric-key` | `GrailsServerTiming`                       | Request attribute key for storing metrics |
 
 **Security note:** The plugin is disabled in production by default because timing data could facilitate timing attacks.
 

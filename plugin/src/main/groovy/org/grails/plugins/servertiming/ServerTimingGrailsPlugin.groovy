@@ -1,9 +1,8 @@
 package org.grails.plugins.servertiming
 
-import grails.plugins.Plugin
 import groovy.util.logging.Slf4j
-import org.springframework.boot.web.servlet.FilterRegistrationBean
-import org.springframework.core.Ordered
+
+import grails.plugins.Plugin
 
 /**
  * Grails plugin that provides Server Timing header support for HTTP responses.
@@ -15,7 +14,7 @@ import org.springframework.core.Ordered
  * <h3>Configuration</h3>
  * <p>The plugin can be enabled or disabled via the configuration property:</p>
  * <pre>
- * grails.plugins.serverTiming.enabled = true
+ * grails.plugins.server-timing.enabled = true
  * </pre>
  *
  * <h3>Filter Registration</h3>
@@ -26,16 +25,17 @@ import org.springframework.core.Ordered
  * </ul>
  *
  * @see ServerTimingFilter
- * @see ServerTimingUtils
  */
 @Slf4j
 class ServerTimingGrailsPlugin extends Plugin {
+
+    static final pluginName = 'Server Timing'
 
     /** Minimum Grails version required for this plugin */
     def grailsVersion = '7.0.0  > *'
 
     /** Plugin title */
-    def title = 'Server Timing'
+    def title = pluginName
 
     /** Plugin author */
     def author = 'James Daugherty'
@@ -51,45 +51,4 @@ class ServerTimingGrailsPlugin extends Plugin {
 
     /** Source control management information */
     def scm = [url: 'https://github.com/grails-plugins/grails-server-timing']
-
-    /**
-     * Registers Spring beans for the Server Timing functionality.
-     *
-     * <p>When the plugin is enabled, this method registers:</p>
-     * <ul>
-     *   <li><strong>serverTimingFilter</strong> - The {@link ServerTimingFilter} bean</li>
-     *   <li><strong>serverTimingFilterRegistration</strong> - A {@link FilterRegistrationBean}
-     *       that configures the filter to intercept all requests</li>
-     * </ul>
-     *
-     * @return a closure that defines the Spring bean configuration
-     */
-    Closure doWithSpring() {
-        { ->
-            if (ServerTimingUtils.instance.enabled) {
-                serverTimingFilter(ServerTimingFilter)
-
-                serverTimingFilterRegistration(FilterRegistrationBean) {
-                    filter = ref('serverTimingFilter')
-                    urlPatterns = ['/*']
-                    order = Ordered.HIGHEST_PRECEDENCE + 100
-                    name = 'serverTimingFilter'
-                }
-            }
-        }
-    }
-
-    /**
-     * Performs initialization tasks after the Spring application context is available.
-     *
-     * <p>Logs whether the plugin is enabled or disabled based on the configuration.</p>
-     */
-    @Override
-    void doWithApplicationContext() {
-        if (ServerTimingUtils.instance.enabled) {
-            log.debug('Applying {} plugin', title)
-        } else {
-            log.debug('{} plugin is disabled. Set \'grails.plugins.serverTiming.enabled\' to true to enable it.', title)
-        }
-    }
 }
