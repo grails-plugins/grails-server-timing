@@ -9,7 +9,7 @@ This ensures that performance timing information is available during development
 
 === Configuration Options
 
-All configuration options are specified in your `application.yml` or `application.groovy` file under the `grails.plugins.server-timing` namespace.
+All configuration options are specified in your `application.yml` or `application.groovy` file under the `grails.plugins.serverTiming` namespace.
 
 ==== Enabling/Disabling the Plugin
 
@@ -24,7 +24,7 @@ grails:
 |===
 | Property | Type | Default | Description
 
-| `grails.plugins.server-timing.enabled`
+| `grails.plugins.serverTiming.enabled`
 | `Boolean`
 | `null` (auto-detect)
 | When `null`, the plugin is enabled in `development` and `test` environments only. Set to `true` to explicitly enable or `false` to explicitly disable regardless of environment.
@@ -46,7 +46,7 @@ grails:
 |===
 | Property | Type | Default | Description
 
-| `grails.plugins.server-timing.metric-key`
+| `grails.plugins.serverTiming.metricKey`
 | `String`
 | `GrailsServerTiming`
 | The request attribute key used to store the `TimingMetric` object. Only change this if you have a naming conflict.

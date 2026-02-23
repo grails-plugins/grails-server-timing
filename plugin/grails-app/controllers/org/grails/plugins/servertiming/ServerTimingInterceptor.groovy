@@ -24,10 +24,10 @@ class ServerTimingInterceptor implements Interceptor {
     @Autowired
     ServerTimingInterceptor(Environment env, ServerTimingConfig config) {
         if (EnabledCondition.matches(env)) {
-            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.server-timing.enabled' to false to disable them.")
+            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.serverTiming.enabled' to false to disable them.")
             matchAll()
         } else {
-            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.server-timing.enabled' to true to enable them.")
+            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.serverTiming.enabled' to true to enable them.")
         }
 
         metricKey = config.metricKey

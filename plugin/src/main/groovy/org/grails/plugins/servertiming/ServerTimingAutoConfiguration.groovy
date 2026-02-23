@@ -47,7 +47,7 @@ class ServerTimingAutoConfiguration {
             def applied = !context.getBeanProvider(ServerTimingFilter).stream().findAny().empty
             def message = applied ?
                     'Applying {} plugin' :
-                    '{} plugin is disabled. Set \'grails.plugins.server-timing.enabled\' to true to enable it.'
+                    '{} plugin is disabled. Set \'grails.plugins.serverTiming.enabled\' to true to enable it.'
             log.debug(message, ServerTimingGrailsPlugin.pluginName)
         } as ApplicationListener
     }

@@ -14,7 +14,7 @@ import grails.plugins.Plugin
  * <h3>Configuration</h3>
  * <p>The plugin can be enabled or disabled via the configuration property:</p>
  * <pre>
- * grails.plugins.server-timing.enabled = true
+ * grails.plugins.serverTiming.enabled = true
  * </pre>
  *
  * <h3>Filter Registration</h3>
