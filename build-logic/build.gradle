@@ -9,7 +9,7 @@ file('../gradle.properties').withInputStream { is ->
     )
 }
 
-allprojects {project ->
+allprojects { project ->
     gradleProperties.stringPropertyNames().each { key ->
         project.extensions.extraProperties.set(
                 key,
