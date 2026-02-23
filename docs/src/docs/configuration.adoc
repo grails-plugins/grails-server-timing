@@ -9,7 +9,7 @@ This ensures that performance timing information is available during development
 
 === Configuration Options
 
-All configuration options are specified in your `application.yml` or `application.groovy` file under the `grails.plugins.servertiming` namespace.
+All configuration options are specified in your `application.yml` or `application.groovy` file under the `grails.plugins.serverTiming` namespace.
 
 ==== Enabling/Disabling the Plugin
 

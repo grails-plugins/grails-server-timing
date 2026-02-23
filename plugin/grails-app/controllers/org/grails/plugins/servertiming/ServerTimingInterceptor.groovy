@@ -1,9 +1,14 @@
 package org.grails.plugins.servertiming
 
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
 
 import grails.artefact.Interceptor
-import groovy.util.logging.Slf4j
+import org.grails.plugins.servertiming.config.EnabledCondition
+import org.grails.plugins.servertiming.config.ServerTimingConfig
 import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
@@ -14,15 +19,18 @@ import org.grails.plugins.servertiming.core.TimingMetric
 @CompileStatic
 class ServerTimingInterceptor implements Interceptor {
 
-    String metricKey = ServerTimingUtils.instance.metricKey
+    private String metricKey
 
-    ServerTimingInterceptor() {
-        if (ServerTimingUtils.instance.enabled) {
+    @Autowired
+    ServerTimingInterceptor(Environment env, ServerTimingConfig config) {
+        if (EnabledCondition.matches(env)) {
             log.debug("Server Timing metrics are enabled. Set 'grails.plugins.serverTiming.enabled' to false to disable them.")
             matchAll()
         } else {
             log.debug("Server Timing metrics are disabled. Set 'grails.plugins.serverTiming.enabled' to true to enable them.")
         }
+
+        metricKey = config.metricKey
     }
 
     @Override

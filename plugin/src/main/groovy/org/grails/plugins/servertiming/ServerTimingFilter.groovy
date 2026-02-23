@@ -2,6 +2,7 @@ package org.grails.plugins.servertiming
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.FilterConfig
@@ -10,8 +11,12 @@ import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.grails.plugins.servertiming.core.TimingMetric
+
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.Ordered
+
+import org.grails.plugins.servertiming.config.ServerTimingConfig
+import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
  * A Servlet Filter that wraps responses to ensure Server Timing headers are added to HTTP responses.
@@ -25,11 +30,14 @@ import org.springframework.core.Ordered
 @CompileStatic
 class ServerTimingFilter implements Filter, Ordered {
 
+    @Autowired
+    ServerTimingConfig config
+
     private String metricKey
 
     @Override
     void init(FilterConfig filterConfig) throws ServletException {
-        metricKey = ServerTimingUtils.instance.metricKey
+        metricKey = config.metricKey
     }
 
     @Override
