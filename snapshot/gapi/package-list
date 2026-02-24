@@ -1,2 +1,3 @@
 org.grails.plugins.servertiming
+org.grails.plugins.servertiming.config
 org.grails.plugins.servertiming.core

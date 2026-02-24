@@ -537,13 +537,13 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <ul class="sectlevel1">
 <li><a href="#introduction">1. Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#what-is-server-timing">1.1. What is Server-Timing?</a></li>
+<li><a href="#what-is-server-timing">1.1. What is Server Timing?</a></li>
 <li><a href="#why-use-this-plugin">1.2. Why Use This Plugin?</a></li>
 <li><a href="#browser-support">1.3. Browser Support</a></li>
 <li><a href="#quick-start">1.4. Quick Start</a></li>
 </ul>
 </li>
-<li><a href="#server-timing-specification">2. Server-Timing Specification</a>
+<li><a href="#server-timing-specification">2. Server Timing Specification</a>
 <ul class="sectlevel2">
 <li><a href="#w3c-server-timing-specification">2.1. W3C Server Timing Specification</a></li>
 <li><a href="#header-format">2.2. Header Format</a></li>
@@ -562,9 +562,9 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 </li>
 <li><a href="#using-browser-developer-tools">4. Using Browser Developer Tools</a>
 <ul class="sectlevel2">
-<li><a href="#viewing-server-timing-in-chrome">4.1. Viewing Server-Timing in Chrome</a></li>
-<li><a href="#viewing-server-timing-in-firefox">4.2. Viewing Server-Timing in Firefox</a></li>
-<li><a href="#viewing-server-timing-in-safari">4.3. Viewing Server-Timing in Safari</a></li>
+<li><a href="#viewing-server-timing-in-chrome">4.1. Viewing Server Timing in Chrome</a></li>
+<li><a href="#viewing-server-timing-in-firefox">4.2. Viewing Server Timing in Firefox</a></li>
+<li><a href="#viewing-server-timing-in-safari">4.3. Viewing Server Timing in Safari</a></li>
 <li><a href="#understanding-the-metrics">4.4. Understanding the Metrics</a></li>
 <li><a href="#example-header-value">4.5. Example Header Value</a></li>
 <li><a href="#interpreting-results">4.6. Interpreting Results</a></li>
@@ -588,11 +588,11 @@ table.CodeRay td.code{padding:0 0 0 .75em}
 <h2 id="introduction">1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Grails Server Timing plugin adds <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing" target="_blank" rel="noopener">Server-Timing</a> HTTP headers to your Grails application responses.
+<p>The Grails Server Timing plugin adds <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing" target="_blank" rel="noopener">Server Timing</a> HTTP headers to your Grails application responses.
 This allows you to see detailed server-side performance metrics directly in your browser&#8217;s developer tools.</p>
 </div>
 <div class="sect2">
-<h3 id="what-is-server-timing">1.1. What is Server-Timing?</h3>
+<h3 id="what-is-server-timing">1.1. What is Server Timing?</h3>
 <div class="paragraph">
 <p>The <code>Server-Timing</code> header is part of the <a href="https://www.w3.org/TR/server-timing/" target="_blank" rel="noopener">W3C Server Timing specification</a> that enables servers to communicate performance metrics about the request-response cycle to the client.
 These metrics can include:</p>
@@ -646,7 +646,7 @@ This plugin automatically captures:</p>
 <div class="sect2">
 <h3 id="browser-support">1.3. Browser Support</h3>
 <div class="paragraph">
-<p>The Server-Timing header is supported by all modern browsers:</p>
+<p>The Server Timing header is supported by all modern browsers:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -693,8 +693,8 @@ No additional configuration is required to get started.</p>
 </td>
 <td class="content">
 For security reasons, the plugin is <strong>disabled by default in production</strong>.
-Server-Timing headers can expose timing information that may be useful to attackers.
-See the <a href="#server-timing-specification">Server-Timing Specification</a> and <a href="#configuration">Configuration</a> sections for more details.
+Server Timing headers can expose timing information that may be useful to attackers.
+See the <a href="#server-timing-specification">Server Timing Specification</a> and <a href="#configuration">Configuration</a> sections for more details.
 </td>
 </tr>
 </table>
@@ -703,7 +703,7 @@ See the <a href="#server-timing-specification">Server-Timing Specification</a> a
 </div>
 </div>
 <div class="sect1">
-<h2 id="server-timing-specification">2. Server-Timing Specification</h2>
+<h2 id="server-timing-specification">2. Server Timing Specification</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <code>Server-Timing</code> header is a standardized way for servers to communicate performance metrics to clients.
@@ -712,7 +712,7 @@ This section provides an overview of the specification and how this plugin imple
 <div class="sect2">
 <h3 id="w3c-server-timing-specification">2.1. W3C Server Timing Specification</h3>
 <div class="paragraph">
-<p>The Server-Timing header is defined by the <a href="https://www.w3.org/TR/server-timing/" target="_blank" rel="noopener">W3C Server Timing specification</a>.
+<p>The Server Timing header is defined by the <a href="https://www.w3.org/TR/server-timing/" target="_blank" rel="noopener">W3C Server Timing specification</a>.
 This specification is a W3C Working Draft that enables servers to communicate performance metrics about the request-response cycle.</p>
 </div>
 </div>
@@ -787,7 +787,7 @@ Metrics without durations (used for presence indication) are not currently suppo
 <div class="sect2">
 <h3 id="mdn-documentation">2.3. MDN Documentation</h3>
 <div class="paragraph">
-<p>For detailed browser-side documentation, see the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing" target="_blank" rel="noopener">MDN Server-Timing documentation</a>.</p>
+<p>For detailed browser-side documentation, see the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server-Timing" target="_blank" rel="noopener">MDN Server Timing documentation</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -832,7 +832,7 @@ See the <a href="#configuration">Configuration</a> section for details on how to
 <div class="sect3">
 <h4 id="cross-origin-requests">2.4.2. Cross-Origin Requests</h4>
 <div class="paragraph">
-<p>By default, <code>Server-Timing</code> information is only available to same-origin requests.
+<p>By default, Server Timing information is only available to same-origin requests.
 For cross-origin requests, the server must include the <code>Timing-Allow-Origin</code> header:</p>
 </div>
 <div class="listingblock">
@@ -897,7 +897,7 @@ This ensures that performance timing information is available during development
 <div class="sect2">
 <h3 id="configuration-options">3.2. Configuration Options</h3>
 <div class="paragraph">
-<p>All configuration options are specified in your <code>application.yml</code> or <code>application.groovy</code> file under the <code>grails.plugins.servertiming</code> namespace.</p>
+<p>All configuration options are specified in your <code>application.yml</code> or <code>application.groovy</code> file under the <code>grails.plugins.serverTiming</code> namespace.</p>
 </div>
 <div class="sect3">
 <h4 id="enablingdisabling-the-plugin">3.2.1. Enabling/Disabling the Plugin</h4>
@@ -905,7 +905,7 @@ This ensures that performance timing information is available during development
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">grails</span>:
     <span class="key">plugins</span>:
-        <span class="key">servertiming</span>:
+        <span class="key">serverTiming</span>:
             <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>  <span class="comment"># or false</span></code></pre>
 </div>
 </div>
@@ -926,7 +926,7 @@ This ensures that performance timing information is available during development
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugins.servertiming.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugins.serverTiming.enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code> (auto-detect)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">When <code>null</code>, the plugin is enabled in <code>development</code> and <code>test</code> environments only. Set to <code>true</code> to explicitly enable or <code>false</code> to explicitly disable regardless of environment.</p></td>
@@ -965,7 +965,7 @@ You can customize the attribute key if needed:</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugins.servertiming.metricKey</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>grails.plugins.serverTiming.metricKey</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>GrailsServerTiming</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The request attribute key used to store the <code>TimingMetric</code> object. Only change this if you have a naming conflict.</p></td>
@@ -985,17 +985,17 @@ You can customize the attribute key if needed:</p>
     <span class="key">development</span>:
         <span class="key">grails</span>:
             <span class="key">plugins</span>:
-                <span class="key">servertiming</span>:
+                <span class="key">serverTiming</span>:
                     <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
     <span class="key">test</span>:
         <span class="key">grails</span>:
             <span class="key">plugins</span>:
-                <span class="key">servertiming</span>:
+                <span class="key">serverTiming</span>:
                     <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
     <span class="key">production</span>:
         <span class="key">grails</span>:
             <span class="key">plugins</span>:
-                <span class="key">servertiming</span>:
+                <span class="key">serverTiming</span>:
                     <span class="key">enabled</span>: <span class="string"><span class="content">false</span></span></code></pre>
 </div>
 </div>
@@ -1009,7 +1009,7 @@ You can customize the attribute key if needed:</p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Enabling Server-Timing in production may expose timing information that could be useful to attackers.
+Enabling Server Timing in production may expose timing information that could be useful to attackers.
 Only enable in production if you understand the security implications and have appropriate access controls in place.
 </td>
 </tr>
@@ -1024,7 +1024,7 @@ Only enable in production if you understand the security implications and have a
     <span class="key">production</span>:
         <span class="key">grails</span>:
             <span class="key">plugins</span>:
-                <span class="key">servertiming</span>:
+                <span class="key">serverTiming</span>:
                     <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
 </div>
@@ -1038,10 +1038,10 @@ Only enable in production if you understand the security implications and have a
 <h2 id="using-browser-developer-tools">4. Using Browser Developer Tools</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>One of the primary benefits of the Server-Timing header is that modern browsers automatically display this information in their developer tools.</p>
+<p>One of the primary benefits of the Server Timing header is that modern browsers automatically display this information in their developer tools.</p>
 </div>
 <div class="sect2">
-<h3 id="viewing-server-timing-in-chrome">4.1. Viewing Server-Timing in Chrome</h3>
+<h3 id="viewing-server-timing-in-chrome">4.1. Viewing Server Timing in Chrome</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1066,7 +1066,7 @@ Only enable in production if you understand the security implications and have a
 </div>
 </div>
 <div class="sect2">
-<h3 id="viewing-server-timing-in-firefox">4.2. Viewing Server-Timing in Firefox</h3>
+<h3 id="viewing-server-timing-in-firefox">4.2. Viewing Server Timing in Firefox</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1087,11 +1087,11 @@ Only enable in production if you understand the security implications and have a
 </ol>
 </div>
 <div class="paragraph">
-<p>The Server-Timing metrics appear at the bottom of the timing breakdown.</p>
+<p>The Server Timing metrics appear at the bottom of the timing breakdown.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="viewing-server-timing-in-safari">4.3. Viewing Server-Timing in Safari</h3>
+<h3 id="viewing-server-timing-in-safari">4.3. Viewing Server Timing in Safari</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1107,7 +1107,7 @@ Only enable in production if you understand the security implications and have a
 <p>Click on the request in the list</p>
 </li>
 <li>
-<p>Look for the Server-Timing section in the timing details</p>
+<p>Look for the Server Timing section in the timing details</p>
 </li>
 </ol>
 </div>
@@ -1115,7 +1115,7 @@ Only enable in production if you understand the security implications and have a
 <div class="sect2">
 <h3 id="understanding-the-metrics">4.4. Understanding the Metrics</h3>
 <div class="paragraph">
-<p>When viewing the Server-Timing data for a Grails controller request, you&#8217;ll typically see:</p>
+<p>When viewing the Server Timing data for a Grails controller request, you&#8217;ll typically see:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1225,7 +1225,7 @@ Only enable in production if you understand the security implications and have a
 <div class="sect2">
 <h3 id="programmatic-client-side-access">4.7. Programmatic Client Side Access</h3>
 <div class="paragraph">
-<p>You can access Server-Timing data programmatically in JavaScript using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceServerTiming" target="_blank" rel="noopener">Performance API</a>:</p>
+<p>You can access Server Timing data programmatically in JavaScript using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/PerformanceServerTiming" target="_blank" rel="noopener">Performance API</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1300,7 +1300,7 @@ entries.forEach(entry =&gt; {
    - Stops 'action' timer if still running (edge case: action committed the response directly)
    - Stops 'view' timer if still running
    - Stops 'total' timer
-   - Adds Server-Timing header to response</code></pre>
+   - Adds Server Timing header to response</code></pre>
 </div>
 </div>
 </div>
@@ -1326,7 +1326,7 @@ entries.forEach(entry =&gt; {
    - ServerTimingResponseWrapper intercepts the commit
    - Stops 'other' timer
    - Stops 'total' timer
-   - Adds Server-Timing header to response</code></pre>
+   - Adds Server Timing header to response</code></pre>
 </div>
 </div>
 </div>
@@ -1334,30 +1334,66 @@ entries.forEach(entry =&gt; {
 <div class="sect2">
 <h3 id="the-response-wrapper">5.3. The Response Wrapper</h3>
 <div class="paragraph">
-<p>A key technical challenge with Server-Timing is that HTTP headers must be sent <strong>before</strong> the response body.
+<p>A key technical challenge with Server Timing is that HTTP headers must be sent <strong>before</strong> the response body.
 However, we do not know the final timing values until <strong>after</strong> the view has rendered.</p>
 </div>
 <div class="paragraph">
-<p>The <code>ServerTimingResponseWrapper</code> solves this by:</p>
+<p>The <code>ServerTimingResponseWrapper</code> solves this by wrapping the original <code>HttpServletResponse</code> and deferring the
+<code>Server-Timing</code> header injection until the last possible moment&#8201;&#8212;&#8201;just before the first byte of body content is
+written. This maximizes timing accuracy because all metrics (action, view, etc.) have as much time as possible to
+accumulate before the header value is computed and frozen.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="sect3">
+<h4 id="deferred-header-injection">5.3.1. Deferred Header Injection</h4>
+<div class="paragraph">
+<p>Both output paths use the same deferred strategy:</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
-<p>Wrapping the original <code>HttpServletResponse</code></p>
+<p><strong><code>getOutputStream()</code></strong> returns a <code>ServerTimingServletOutputStream</code> that intercepts <code>write()</code>, <code>flush()</code>, and
+<code>close()</code>. On the first call, it triggers header injection before delegating to the underlying stream.</p>
 </li>
 <li>
-<p>Intercepting calls to <code>getOutputStream()</code>, <code>getWriter()</code>, <code>flushBuffer()</code>, etc.</p>
+<p><strong><code>getWriter()</code></strong> returns a <code>ServerTimingPrintWriter</code> that intercepts <code>write()</code>, <code>flush()</code>, and <code>close()</code> in the
+same way. All higher-level <code>PrintWriter</code> methods (<code>print()</code>, <code>println()</code>, <code>printf()</code>, etc.) route through the
+overridden <code>write()</code> methods, so they are also covered.</p>
 </li>
-<li>
-<p>Adding the <code>Server-Timing</code> header just before the first byte is written</p>
-</li>
-<li>
-<p>Delegating all other operations to the original response</p>
-</li>
-</ol>
+</ul>
 </div>
 <div class="paragraph">
-<p>This ensures the header is always present, regardless of how the response is generated.</p>
+<p>In both cases, subsequent writes pass through directly without any overhead.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="other-commit-points">5.3.2. Other Commit Points</h4>
+<div class="paragraph">
+<p>The wrapper also intercepts methods that commit the response without writing body content:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>sendError()</code>&#8201;&#8212;&#8201;error responses</p>
+</li>
+<li>
+<p><code>sendRedirect()</code>&#8201;&#8212;&#8201;redirect responses</p>
+</li>
+<li>
+<p><code>flushBuffer()</code>&#8201;&#8212;&#8201;explicit buffer flushes</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These inject the header eagerly since the response is being committed immediately.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="safety-net">5.3.3. Safety Net</h4>
+<div class="paragraph">
+<p>As a final safeguard, the <code>ServerTimingFilter</code> calls <code>beforeCommit()</code> in a <code>finally</code> block after the filter chain
+completes. This handles edge cases where no output was written (e.g., 204 No Content responses). The header
+injection is idempotent&#8201;&#8212;&#8201;a boolean flag ensures it only runs once regardless of how many commit points are hit.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1448,7 +1484,7 @@ Metrics that were created but never started, or started but never stopped, are n
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2026-02-14 23:34:21 UTC
+Last updated 2026-02-24 16:16:40 UTC
 </div>
 </div>
 </body>

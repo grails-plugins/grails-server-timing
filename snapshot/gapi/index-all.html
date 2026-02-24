@@ -127,7 +127,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html#after()" title="Method in ServerTimingInterceptor">after()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html">ServerTimingInterceptor</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#author" title="Property in GrailsServerTimingGrailsPlugin">author</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#author" title="Property in ServerTimingGrailsPlugin">author</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">Plugin author</div></dd>
 </dl>
 
@@ -149,6 +149,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#calculateElapsedTime()" title="Method in Metric">calculateElapsedTime()</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#config" title="Property in ServerTimingFilter">config</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#constraints" title="Property in Metric">constraints</a></span> - Property in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/TimingMetric.html#create(java.lang.String, java.lang.String)" title="Method in TimingMetric">create(java.lang.String, java.lang.String)</a></span> - Method in <a href="org/grails/plugins/servertiming/core/TimingMetric.html">TimingMetric</a>
@@ -160,20 +162,16 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">D</h2>
 <dl>
 
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#description" title="Property in GrailsServerTimingGrailsPlugin">description</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
-</dt><dd> <div class="block">Plugin description</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#description" title="Property in Metric">description</a></span> - Property in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block">A human-readable description of the metric</div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#description" title="Property in ServerTimingGrailsPlugin">description</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
+</dt><dd> <div class="block">Plugin description</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#destroy()" title="Method in ServerTimingFilter">destroy()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#documentation" title="Property in GrailsServerTimingGrailsPlugin">documentation</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#documentation" title="Property in ServerTimingGrailsPlugin">documentation</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">URL to the plugin documentation</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#doFilter(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)" title="Method in ServerTimingFilter">doFilter(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#doWithApplicationContext()" title="Method in GrailsServerTimingGrailsPlugin">doWithApplicationContext()</a></span> - Method in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
-</dt><dd> <div class="block">Performs initialization tasks after the Spring application context is available.</div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#doWithSpring()" title="Method in GrailsServerTimingGrailsPlugin">doWithSpring()</a></span> - Method in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
-</dt><dd> <div class="block">Registers Spring beans for the Server-Timing functionality.</div></dd>
 </dl>
 
     
@@ -181,6 +179,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">E</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html#enabled" title="Property in ServerTimingConfig">enabled</a></span> - Property in <a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html">ServerTimingConfig</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/EnabledCondition.html" title="Class in org.grails.plugins.servertiming.config">EnabledCondition</a></span> - Class in <a href="./org/grails/plugins/servertiming/config/package-summary.html">org.grails.plugins.servertiming.config</a>
+</dt><dd><div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/EnabledCondition.html#EnabledCondition()" title="Constructor in EnabledCondition">EnabledCondition()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/config/EnabledCondition.html">EnabledCondition</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#equals(java.lang.Object)" title="Method in Metric">equals(java.lang.Object)</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
@@ -203,19 +207,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#getDuration()" title="Method in Metric">getDuration()</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block">The time the metric took to process</div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingUtils.html#getMetricKey()" title="Method in ServerTimingUtils">getMetricKey()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingUtils.html">ServerTimingUtils</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#getOrder()" title="Method in ServerTimingFilter">getOrder()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#getOutputStream()" title="Method in ServerTimingResponseWrapper">getOutputStream()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#getWriter()" title="Method in ServerTimingResponseWrapper">getWriter()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html" title="Class in org.grails.plugins.servertiming">GrailsServerTimingGrailsPlugin</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
-</dt><dd><div class="block">Grails plugin that provides Server-Timing header support for HTTP responses.</div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#GrailsServerTimingGrailsPlugin()" title="Constructor in GrailsServerTimingGrailsPlugin">GrailsServerTimingGrailsPlugin()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#grailsVersion" title="Property in GrailsServerTimingGrailsPlugin">grailsVersion</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#grailsVersion" title="Property in ServerTimingGrailsPlugin">grailsVersion</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">Minimum Grails version required for this plugin</div></dd>
 </dl>
 
@@ -228,7 +226,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#hashCode()" title="Method in Metric">hashCode()</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html#HEADER_NAME" title="Property in ServerTimingInterceptor">HEADER_NAME</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html">ServerTimingInterceptor</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#HEADER_NAME" title="Property in ServerTimingResponseWrapper">HEADER_NAME</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
 
@@ -238,8 +236,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dl>
 
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#init(jakarta.servlet.FilterConfig)" title="Method in ServerTimingFilter">init(jakarta.servlet.FilterConfig)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingUtils.html#isEnabled()" title="Method in ServerTimingUtils">isEnabled()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingUtils.html">ServerTimingUtils</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#isRan()" title="Method in Metric">isRan()</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
@@ -266,7 +262,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">L</h2>
 <dl>
 
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#license" title="Property in GrailsServerTimingGrailsPlugin">license</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#license" title="Property in ServerTimingGrailsPlugin">license</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">Plugin license type</div></dd>
 </dl>
 
@@ -275,11 +271,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">M</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/EnabledCondition.html#matches(org.springframework.core.env.Environment)" title="Method in EnabledCondition">matches(org.springframework.core.env.Environment)</a></span> - Method in <a href="org/grails/plugins/servertiming/config/EnabledCondition.html">EnabledCondition</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html" title="Class in org.grails.plugins.servertiming.core">Metric</a></span> - Class in <a href="./org/grails/plugins/servertiming/core/package-summary.html">org.grails.plugins.servertiming.core</a>
-</dt><dd><div class="block">Implements a metric for the Server-Timing header</div></dd>
+</dt><dd><div class="block">Implements a metric for the Server Timing header</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#Metric()" title="Constructor in Metric">Metric()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html#metricKey" title="Property in ServerTimingInterceptor">metricKey</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html">ServerTimingInterceptor</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html#metricKey" title="Property in ServerTimingConfig">metricKey</a></span> - Property in <a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html">ServerTimingConfig</a>
 </dt><dd> <div class="block"></div></dd>
 </dl>
 
@@ -304,6 +302,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">P</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#pluginName" title="Property in ServerTimingGrailsPlugin">pluginName</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
+</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -329,29 +329,43 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">S</h2>
 <dl>
 
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#scm" title="Property in GrailsServerTimingGrailsPlugin">scm</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#scm" title="Property in ServerTimingGrailsPlugin">scm</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">Source control management information</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#sendError(int)" title="Method in ServerTimingResponseWrapper">sendError(int)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#sendRedirect(java.lang.String)" title="Method in ServerTimingResponseWrapper">sendRedirect(java.lang.String)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html#serverTimingAutoConfigLogger(org.springframework.context.ConfigurableApplicationContext)" title="Method in ServerTimingAutoConfiguration">serverTimingAutoConfigLogger(org.springframework.context.ConfigurableApplicationContext)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html">ServerTimingAutoConfiguration</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html" title="Class in org.grails.plugins.servertiming">ServerTimingAutoConfiguration</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
+</dt><dd><div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html#ServerTimingAutoConfiguration()" title="Constructor in ServerTimingAutoConfiguration">ServerTimingAutoConfiguration()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html">ServerTimingAutoConfiguration</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html" title="Class in org.grails.plugins.servertiming.config">ServerTimingConfig</a></span> - Class in <a href="./org/grails/plugins/servertiming/config/package-summary.html">org.grails.plugins.servertiming.config</a>
+</dt><dd><div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html#ServerTimingConfig()" title="Constructor in ServerTimingConfig">ServerTimingConfig()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/config/ServerTimingConfig.html">ServerTimingConfig</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html" title="Class in org.grails.plugins.servertiming">ServerTimingFilter</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
-</dt><dd><div class="block">A Servlet Filter that wraps responses to ensure Server-Timing headers are added to HTTP responses.</div></dd>
+</dt><dd><div class="block">A Servlet Filter that wraps responses to ensure Server Timing headers are added to HTTP responses.</div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html#serverTimingFilter()" title="Method in ServerTimingAutoConfiguration">serverTimingFilter()</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html">ServerTimingAutoConfiguration</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingFilter.html#ServerTimingFilter()" title="Constructor in ServerTimingFilter">ServerTimingFilter()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingFilter.html">ServerTimingFilter</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html#serverTimingFilterRegistration(org.grails.plugins.servertiming.ServerTimingFilter)" title="Method in ServerTimingAutoConfiguration">serverTimingFilterRegistration(org.grails.plugins.servertiming.ServerTimingFilter)</a></span> - Method in <a href="org/grails/plugins/servertiming/ServerTimingAutoConfiguration.html">ServerTimingAutoConfiguration</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html" title="Class in org.grails.plugins.servertiming">ServerTimingGrailsPlugin</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
+</dt><dd><div class="block">Grails plugin that provides Server Timing header support for HTTP responses.</div></dd>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#ServerTimingGrailsPlugin()" title="Constructor in ServerTimingGrailsPlugin">ServerTimingGrailsPlugin()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html" title="Class in org.grails.plugins.servertiming">ServerTimingInterceptor</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
 </dt><dd><div class="block">Interceptor that tracks timing for controller actions and view rendering.
  </div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html#ServerTimingInterceptor()" title="Constructor in ServerTimingInterceptor">ServerTimingInterceptor()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html">ServerTimingInterceptor</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html#ServerTimingInterceptor(org.springframework.core.env.Environment, org.grails.plugins.servertiming.config.ServerTimingConfig)" title="Constructor in ServerTimingInterceptor">ServerTimingInterceptor(org.springframework.core.env.Environment, org.grails.plugins.servertiming.config.ServerTimingConfig)</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingInterceptor.html">ServerTimingInterceptor</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html" title="Class in org.grails.plugins.servertiming">ServerTimingResponseWrapper</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
-</dt><dd><div class="block">A response wrapper that intercepts the response commit to add the Server-Timing header
+</dt><dd><div class="block">A response wrapper that intercepts the response commit to add the Server Timing header
  before the response is actually committed.</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html#ServerTimingResponseWrapper(jakarta.servlet.http.HttpServletResponse, org.grails.plugins.servertiming.core.TimingMetric)" title="Constructor in ServerTimingResponseWrapper">ServerTimingResponseWrapper(jakarta.servlet.http.HttpServletResponse, org.grails.plugins.servertiming.core.TimingMetric)</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingResponseWrapper.html">ServerTimingResponseWrapper</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingUtils.html" title="Class in org.grails.plugins.servertiming">ServerTimingUtils</a></span> - Class in <a href="./org/grails/plugins/servertiming/package-summary.html">org.grails.plugins.servertiming</a>
-</dt><dd><div class="block">Various utilities for configuring the Server Timing plugin</div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingUtils.html#ServerTimingUtils()" title="Constructor in ServerTimingUtils">ServerTimingUtils()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/ServerTimingUtils.html">ServerTimingUtils</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#setName(java.lang.String)" title="Method in Metric">setName(java.lang.String)</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
@@ -367,10 +381,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dl>
 
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/TimingMetric.html" title="Class in org.grails.plugins.servertiming.core">TimingMetric</a></span> - Class in <a href="./org/grails/plugins/servertiming/core/package-summary.html">org.grails.plugins.servertiming.core</a>
-</dt><dd><div class="block">Implements a collection of metrics for the Server-Timing header</div></dd>
+</dt><dd><div class="block">Implements a collection of metrics for the Server Timing header</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/TimingMetric.html#TimingMetric()" title="Constructor in TimingMetric">TimingMetric()</a></span> - Constructor in <a href="org/grails/plugins/servertiming/core/TimingMetric.html">TimingMetric</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html#title" title="Property in GrailsServerTimingGrailsPlugin">title</a></span> - Property in <a href="org/grails/plugins/servertiming/GrailsServerTimingGrailsPlugin.html">GrailsServerTimingGrailsPlugin</a>
+<dt><span class="strong"><a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html#title" title="Property in ServerTimingGrailsPlugin">title</a></span> - Property in <a href="org/grails/plugins/servertiming/ServerTimingGrailsPlugin.html">ServerTimingGrailsPlugin</a>
 </dt><dd> <div class="block">Plugin title</div></dd>
 <dt><span class="strong"><a href="org/grails/plugins/servertiming/core/Metric.html#toHeaderValue()" title="Method in Metric">toHeaderValue()</a></span> - Method in <a href="org/grails/plugins/servertiming/core/Metric.html">Metric</a>
 </dt><dd> <div class="block"></div></dd>
