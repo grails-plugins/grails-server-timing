@@ -98,7 +98,7 @@ jobs:
           MAVEN_PUBLISH_USERNAME: ${{ secrets.NEXUS_PUBLISH_USERNAME }}
           MAVEN_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PUBLISH_PASSWORD }}
         run: >
-          ../gradlew publish
+          ./gradlew publish
           --no-build-cache
           --rerun-tasks
       - name: "📜 Generate Documentation"
