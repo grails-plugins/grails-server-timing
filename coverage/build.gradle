@@ -1,5 +1,5 @@
 plugins {
-    id 'config.coverage-aggregation'
+    id 'config.code-coverage'
 }
 
 dependencies {
@@ -7,7 +7,7 @@ dependencies {
     coverageDataProjects project(':grails-server-timing')
 
     // Auto-discover all example apps under examples/
-    rootDir.toPath().resolve('examples').toFile().list()?.each { example ->
-        coverageDataProjects project(":$example")
+    rootDir.toPath().resolve('examples').toFile().list()?.each { exampleApp ->
+        coverageDataProjects project(":$exampleApp")
     }
 }

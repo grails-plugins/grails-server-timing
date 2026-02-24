@@ -1,10 +1,9 @@
 plugins {
-    id 'base'
     id 'jacoco'
 }
 
 extensions.configure(JacocoPluginExtension) {
-    it.toolVersion = '0.8.12'
+    it.toolVersion = jacocoVersion
 }
 
 // Configuration for declaring which projects contribute coverage data.
@@ -79,6 +78,9 @@ afterEvaluate {
     }
 }
 
-tasks.named('check') {
-    dependsOn('jacocoAggregatedReport')
+pluginManager.withPlugin('base') {
+    tasks.named('check') {
+        dependsOn('jacocoAggregatedReport')
+    }
 }
+
