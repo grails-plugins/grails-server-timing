@@ -83,7 +83,7 @@ jobs:
       - name: "Generate Build Date file"
         run: echo "$SOURCE_DATE_EPOCH" >> build/BUILD_DATE.txt
       - name: "Upload Build Date file"
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b
         with:
           files: build/BUILD_DATE.txt
         env:
