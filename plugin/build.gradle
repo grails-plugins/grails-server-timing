@@ -1,6 +1,7 @@
 import org.apache.grails.gradle.publish.GrailsPublishExtension
 
 plugins {
+    id 'config.code-coverage'
     id 'config.code-style'
     id 'config.compile'
     id 'config.grails-plugin'

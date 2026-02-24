@@ -1,8 +1,5 @@
 plugins {
-    id 'config.code-style'
-    id 'config.compile'
     id 'config.example-app'
-    id 'config.testing'
 }
 
 version = projectVersion

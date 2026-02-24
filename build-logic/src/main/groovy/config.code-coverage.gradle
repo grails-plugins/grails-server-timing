@@ -6,81 +6,52 @@ extensions.configure(JacocoPluginExtension) {
     it.toolVersion = jacocoVersion
 }
 
-// Configuration for declaring which projects contribute coverage data.
-def coverageDataProjects = configurations.register('coverageDataProjects') {
-    canBeConsumed = false
-    canBeResolved = true
-}
-
-// Lazily collect source directories and class files from all coverageDataProjects dependencies.
-def covProjectList = coverageDataProjects.map {
-    it.dependencies.withType(ProjectDependency).collect {
-        project.project(it.path)
-    }
-}
-
-def allSourceDirs = covProjectList.map {
-    it.findAll { it.plugins.hasPlugin('java') }
-            .collectMany {
-                it.extensions.getByType(SourceSetContainer).named('main').get()
-                        .allSource.sourceDirectories.files
-            }
-}
-
-def allClassDirs = covProjectList.map {
-    it.findAll { it.plugins.hasPlugin('java') }
-            .collectMany {
-                it.extensions.getByType(SourceSetContainer).named('main').get()
-                        .output.files
-            }
-}
-
-def allExecFiles = covProjectList.map {
-    it.collectMany {
-        it.fileTree(it.layout.buildDirectory.dir('jacoco')) {
-            include('**/*.exec')
-        }.files
-    }
-}
-
-// Register the aggregated coverage report task.
-// This merges JaCoCo execution data from all coverageDataProjects into a single report.
-// Task dependencies on all Test tasks (test, integrationTest, etc.) in the declared
-// projects are derived automatically — no hard-coded project paths needed.
-tasks.register('jacocoAggregatedReport', JacocoReport) {
-    description = 'Generates aggregated JaCoCo coverage report across all subprojects.'
-    group = 'verification'
-
-    classDirectories.from(allClassDirs)
-    executionData.from(allExecFiles)
-    sourceDirectories.from(allSourceDirs)
-
-    reports {
-        xml.required = true
-        html.required = true
-        csv.required = false
-    }
-}
-
-// After evaluation, wire dependsOn for every Test task in every coverage project.
-// This ensures all .exec files exist before the aggregated report collects them.
-afterEvaluate {
-    def projects = coverageDataProjects.get().dependencies
-            .withType(ProjectDependency)
-            .collect { project.project(it.path) }
-
-    tasks.named('jacocoAggregatedReport') {reportTask ->
-        projects.each {
-            it.tasks.withType(Test).configureEach { testTask ->
-                reportTask.dependsOn(testTask)
-            }
+pluginManager.withPlugin('groovy') {
+    // The jacoco plugin automatically creates 'jacocoTestReport' for the 'test' task.
+    // Configure it to produce XML (for CI tools) and HTML reports.
+    tasks.named('jacocoTestReport', JacocoReport) {
+        reports {
+            xml.required = true
+            html.required = true
+            csv.required = false
         }
+
+        dependsOn(tasks.named('test'))
+    }
+
+    // Ensure coverage report runs after tests
+    tasks.named('test') {
+        finalizedBy(tasks.named('jacocoTestReport'))
     }
 }
 
-pluginManager.withPlugin('base') {
-    tasks.named('check') {
-        dependsOn('jacocoAggregatedReport')
+// When an integrationTest task is registered (e.g., via the Grails web plugin in example apps),
+// register a JaCoCo report task for it. Unlike the 'test' task, the JaCoCo plugin does not
+// auto-create report tasks for custom Test tasks.
+afterEvaluate { proj ->
+
+    def integrationTestTasks = tasks.withType(Test).matching { it.name == 'integrationTest' }
+    if (!integrationTestTasks.isEmpty()) {
+
+        def integrationTest = integrationTestTasks.first()
+        def execFile = integrationTest.extensions.getByType(JacocoTaskExtension).destinationFile
+
+        def reportTask = tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+            description = 'Generates code coverage report for the integrationTest task.'
+            group = 'verification'
+
+            executionData.from(execFile)
+            sourceSets(proj.extensions.getByType(SourceSetContainer).named('main').get())
+
+            reports {
+                xml.required = true
+                html.required = true
+                csv.required = false
+            }
+
+            dependsOn(integrationTest)
+        }
+
+        integrationTest.finalizedBy(reportTask)
     }
 }
-
