@@ -34,8 +34,14 @@ jobs:
           java-version: ${{ env.SDKMANRC_java }}
       - name: 'Ensure Common Build Date' # to ensure a reproducible build
         run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "$GITHUB_ENV"
+      - name: "Export gradle.properties properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v5
+        with:
+          build-scan-publish: ${{ env.ciBuildScanPublish }}
+          build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
+          build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "🔨 Build project without tests"
         if: ${{ contains(github.event.head_commit.message, '[skip tests]') }}
         run: >
@@ -77,8 +83,14 @@ jobs:
           java-version: ${{ env.SDKMANRC_java }}
       - name: 'Ensure Common Build Date' # to ensure a reproducible build
         run: echo "SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)" >> "$GITHUB_ENV"
+      - name: "Export gradle.properties properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v5
+        with:
+          build-scan-publish: ${{ env.ciBuildScanPublish }}
+          build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
+          build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "📤 Publish Gradle Snapshot Artifacts"
         env:
           GRAILS_PUBLISH_RELEASE: 'false'
