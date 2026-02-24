@@ -35,5 +35,8 @@ extensions.configure(GrailsPublishExtension) {
         it.name = 'Grails Plugins'
         it.url = 'https://github.com/grails-plugins'
     }
-    it.developers = [jdaugherty: 'James Daugherty']
+    it.developers = [
+            jdaugherty: 'James Daugherty',
+            matrei: 'Mattias Reichel',
+    ]
 }
