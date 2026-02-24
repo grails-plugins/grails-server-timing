@@ -91,7 +91,7 @@ jobs:
           build-scan-publish: ${{ env.ciBuildScanPublish }}
           build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
           build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
-      - name: "📤 Publish Gradle Snapshot Artifacts"
+      - name: "📤 Publish Snapshot Artifacts"
         env:
           GRAILS_PUBLISH_RELEASE: 'false'
           MAVEN_PUBLISH_URL: 'https://central.sonatype.com/repository/maven-snapshots/'

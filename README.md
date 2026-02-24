@@ -3,7 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.grails.plugins/grails-server-timing)](https://central.sonatype.com/artifact/org.grails.plugins/grails-server-timing)
 [![License](https://img.shields.io/github/license/grails-plugins/grails-server-timing)](https://www.apache.org/licenses/LICENSE-2.0)
 [![CI](https://github.com/grails-plugins/grails-server-timing/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/grails-plugins/grails-server-timing/actions/workflows/ci.yml)
-[![Coverage](https://github.com/grails-plugins/grails-server-timing/actions/workflows/coverage.yml/badge.svg?event=push)](https://github.com/grails-plugins/grails-server-timing/actions/workflows/coverage.yml)
+[![Coverage](https://github.com/grails-plugins/grails-server-timing/actions/workflows/code-coverage.yml/badge.svg?event=push)](https://github.com/grails-plugins/grails-server-timing/actions/workflows/code-coverage.yml)
 
 A Grails plugin that injects [Server Timing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing)
 HTTP headers into responses, implementing the [W3C Server Timing specification](https://w3c.github.io/server-timing/).
