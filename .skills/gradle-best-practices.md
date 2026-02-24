@@ -3,7 +3,7 @@
 ## Purpose
 
 This skill covers Gradle best practices for this project, including convention plugins, extension configuration,
-lazy APIs, and build structure. Convention plugins eliminate duplication across subprojects by centralizing shared
+lazy APIs, and build structure. Convention plugins remove duplication across subprojects by centralizing shared
 build logic. They live in the `build-logic/` composite build and are applied by ID in each subproject's `build.gradle`.
 
 ## Core Rules
@@ -11,7 +11,7 @@ build logic. They live in the `build-logic/` composite build and are applied by 
 ### NEVER configure subprojects from the root build.gradle
 
 The root `build.gradle` must NEVER use `subprojects {}`, `allprojects {}`, or `configure(subprojects.matching {...}) {}`
-to apply plugins or configure subproject behavior. This is an anti-pattern that causes ordering issues, breaks project
+to apply plugins or configure subproject behavior. This is an antipattern that causes ordering issues, breaks project
 isolation, and makes builds harder to reason about.
 
 ```groovy
@@ -34,7 +34,7 @@ allprojects {
 Instead, create a convention plugin in `build-logic/` and apply it in each subproject that needs it:
 
 ```groovy
-// GOOD - build-logic/src/main/groovy/org.grails.plugins.servertiming.compile.gradle
+// GOOD - build-logic/src/main/groovy/config.compile.gradle
 plugins {
     id 'groovy'
 }
@@ -44,7 +44,7 @@ plugins {
 ```groovy
 // GOOD - plugin/build.gradle
 plugins {
-    id 'org.grails.plugins.servertiming.compile'
+    id 'config.compile'
 }
 ```
 
@@ -69,12 +69,12 @@ pluginManagement {
 Convention plugin files follow the pattern:
 
 ```
-build-logic/src/main/groovy/org.grails.plugins.servertiming.<purpose>.gradle
+build-logic/src/main/groovy/config.<purpose>.gradle
 ```
 
 The plugin ID matches the filename (minus the `.gradle` extension). For example:
 
-- `org.grails.plugins.servertiming.compile.gradle` -> plugin ID `org.grails.plugins.servertiming.compile`
+- `config.compile.gradle` -> plugin ID `config.compile`
 
 ### Declare external plugin dependencies in build-logic/build.gradle
 
@@ -102,15 +102,19 @@ The `build-logic/build.gradle` reads the root `gradle.properties` and exposes th
 convention plugins can reference them (e.g., `grailsVersion`):
 
 ```groovy
-file('../gradle.properties').withInputStream {
-    Properties props = new Properties()
-    props.load(it)
-    project.ext.gradleProperties = props
+file('../gradle.properties').withInputStream { is ->
+    extensions.extraProperties.set(
+            'gradleProperties',
+            new Properties().tap { load(is) }
+    )
 }
 
-allprojects {
-    for (String key : gradleProperties.stringPropertyNames()) {
-        ext.set(key, gradleProperties.getProperty(key))
+allprojects { project ->
+    gradleProperties.stringPropertyNames().each { key ->
+        project.extensions.extraProperties.set(
+                key,
+                gradleProperties.getProperty(key)
+        )
     }
 }
 ```
@@ -201,26 +205,27 @@ Convention plugins should compose by applying other convention plugins rather th
 plugins {
     id 'org.apache.grails.gradle.grails-web'
     id 'org.apache.grails.gradle.grails-gsp'
-    id 'org.grails.plugins.servertiming.assets'
-    id 'org.grails.plugins.servertiming.run'
+    id 'config.grails-assets'
+    id 'config.app-run'
 }
 ```
 
 ## Existing Convention Plugins
 
-| Plugin                        | Purpose                                                                                               |
-|-------------------------------|-------------------------------------------------------------------------------------------------------|
-| `compile.gradle`              | Java/Groovy compilation: UTF-8, incremental, forked JVM, `-parameters`, Java release from `.sdkmanrc` |
-| `testing.gradle`              | Test framework: Spock, JUnit Platform, test-logger (mocha-parallel locally, plain-parallel in CI)     |
-| `plugin.gradle`               | Applies `grails-plugin` profile, disables Spring dependency management                                |
-| `example.gradle`              | Applies grails-web, grails-gsp, assets, and run plugins for example apps                              |
-| `project-publish.gradle`      | Maven publishing metadata (artifact ID, license, developers, GitHub slug)                             |
-| `root-publish.gradle`         | Nexus publishing workaround (root-level only)                                                         |
-| `docs.gradle`                 | Documentation aggregation (Groovydoc + Asciidoctor + GitHub Pages index)                              |
-| `assets.gradle`               | Asset pipeline with Bootstrap/jQuery/Bootstrap-Icons WebJars                                          |
-| `run.gradle`                  | Debug/debugWait JVM flags for `bootRun`                                                               |
-| `coverage-aggregation.gradle` | JaCoCo coverage aggregation across subprojects (XML + HTML reports)                                   |
-| `style.gradle`                | Checkstyle + CodeNarc code style checking; configs in `build-logic/config/`                           |
+| Plugin                           | Purpose                                                                              |
+|----------------------------------|--------------------------------------------------------------------------------------|
+| `app-run.gradle`                 | Debug flags for `bootRun`                                                            |
+| `code-coverage.gradle`           | JaCoCo coverage for project (XML + HTML reports)                                     |
+| `code-coverage-aggregate.gradle` | JaCoCo coverage aggregation across subprojects (XML + HTML reports)                  |
+| `code-style.gradle`              | Checkstyle + CodeNarc code style checking (configs in `build-logic/config/`)         |
+| `compile.gradle`                 | Java/Groovy compilation settings (UTF-8, incremental, Java release from `.sdkmanrc`) |
+| `docs.gradle`                    | Documentation aggregation (Groovydoc + Asciidoctor)                                  |
+| `example-app.gradle`             | Example app config (grails-web, GSP, assets)                                         |
+| `grails-assets.gradle`           | Asset pipeline with Bootstrap/jQuery WebJars                                         |
+| `grails-plugin.gradle`           | Grails plugin application                                                            |
+| `publish.gradle`                 | Per-project Maven publishing metadata                                                |
+| `publish-root.gradle`            | Root-level Nexus publishing workaround                                               |
+| `testing.gradle`                 | Test framework config (Spock, JUnit Platform, test-logger)                           |
 
 ## When to Create a New Convention Plugin
 

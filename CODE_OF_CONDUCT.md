@@ -33,7 +33,7 @@ We strive to:
     - Sharing private communications without consent
     - Personal insults
     - Unwelcome sexual attention
-    - Repeated harassment -- if someone asks you to stop, then stop
+    - Repeated harassment – if someone asks you to stop, then stop
     - Advocating for or encouraging any of the above behavior
 
 6. **Be concise.** Respect others' time. Write clearly so conversations stay productive. When a long explanation is

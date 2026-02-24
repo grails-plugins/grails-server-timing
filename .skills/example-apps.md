@@ -47,14 +47,14 @@ The `examples/` directory can contain more than one app. Different apps can test
 All apps under `examples/` are auto-discovered by `settings.gradle`:
 
 ```groovy
-def examples = file('examples').list()
+def examples = file('examples').listFiles({ it.directory } as FileFilter)
 examples.each { example ->
-    include example
-    project(":$example").projectDir = file("examples/$example")
+    include example.name
+    project(":$example.name").projectDir = file("examples/$example.name")
 }
 ```
 
-New apps are also automatically included in coverage aggregation -- `coverage/build.gradle` discovers all example apps
+New apps are also automatically included in coverage aggregation -- `code-coverage/build.gradle` discovers all example apps
 under `examples/` at configuration time, so no manual registration is needed.
 
 ## Project Structure
@@ -90,9 +90,7 @@ Example apps apply convention plugins and declare their own dependencies:
 
 ```groovy
 plugins {
-    id 'org.grails.plugins.servertiming.compile'
-    id 'org.grails.plugins.servertiming.testing'
-    id 'org.grails.plugins.servertiming.example'
+    id 'config.example-app'
 }
 
 version = projectVersion
@@ -119,7 +117,7 @@ dependencies {
 
 Key patterns:
 
-- Apply `compile`, `testing`, and `example` convention plugins
+- Apply `example-app` convention plugin
 - Depend on the plugin via `project(':grails-server-timing')`
 - NEVER apply `project-publish` -- example apps are not published
 - NEVER apply `plugin` -- example apps are applications, not plugins
@@ -159,7 +157,7 @@ class ServerTimingIntegrationSpec extends Specification {
 ### What to test in integration tests
 
 - HTTP headers are present and correctly formatted
-- Timing values are within expected ranges (e.g., slow action >= 200ms)
+- Timing values are within expected ranges (e.g., slow action >= 200 ms)
 - Different response types (GSP views, JSON, plain text) all include headers
 - Static assets include `other`/`total` metrics but not `action`/`view`
 - Header format matches the W3C Server Timing specification
@@ -169,10 +167,10 @@ class ServerTimingIntegrationSpec extends Specification {
 ### Integration test patterns
 
 1. **Use `RestTemplate` or similar HTTP client** -- test real HTTP round-trips
-2. **Verify headers, not internals** -- assert on `Server-Timing` header values, not internal class state
+2. **Verify headers, not internals** – assert on `Server-Timing` header values, not internal class state
 3. **Use timing thresholds, not exact values** -- assert `>= 200ms`, never `== 203ms`
-4. **Test edge cases** -- static assets, JSON responses, redirects, errors
-5. **Extract helper methods** -- centralize header parsing (e.g., `extractDuration()`)
+4. **Test edge cases** – static assets, JSON responses, redirects, errors
+5. **Extract helper methods** – centralize header parsing (e.g., `extractDuration()`)
 
 ### Test organization
 
@@ -185,12 +183,12 @@ class ServerTimingIntegrationSpec extends Specification {
 
 Example apps should include purpose-built controllers and views that exercise the plugin's features:
 
-- **Fast actions** -- verify baseline header presence
-- **Slow actions** (with `Thread.sleep()`) -- verify timing accuracy
-- **Variable delay actions** -- parameterized timing tests
-- **Slow views** (GSP with embedded sleep) -- verify view timing separation
-- **JSON/text responses** -- verify non-GSP response types
-- **Multiple operations** -- verify timing accumulation
+- **Fast actions** – verify baseline header presence
+- **Slow actions** (with `Thread.sleep()`) – verify timing accuracy
+- **Variable delay actions** – parameterized timing tests
+- **Slow views** (GSP with embedded sleep) – verify view timing separation
+- **JSON/text responses** – verify non-GSP response types
+- **Multiple operations** – verify timing accumulation
 
 These are test fixtures that live in the example app, NOT in the plugin project.
 
