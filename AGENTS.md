@@ -16,12 +16,12 @@ rendering time, and total request time, surfacing them in browser DevTools.
 
 Detailed best practices are documented in `.skills/`:
 
-| Skill File                                                                     | Purpose                                               |
-|--------------------------------------------------------------------------------|-------------------------------------------------------|
-| [`.skills/repository-structure.md`](.skills/repository-structure.md)           | Canonical directory layout and architectural rules    |
-| [`.skills/gradle-best-practices.md`](.skills/gradle-best-practices.md)         | Gradle best practices, convention plugins, and idioms |
-| [`.skills/plugin-project.md`](.skills/plugin-project.md)                       | Plugin project scope: source code + unit tests only   |
-| [`.skills/example-apps.md`](.skills/example-apps.md)                           | Example app patterns: integration & functional tests  |
+| Skill File                                                             | Purpose                                               |
+|------------------------------------------------------------------------|-------------------------------------------------------|
+| [`.skills/repository-structure.md`](.skills/repository-structure.md)   | Canonical directory layout and architectural rules    |
+| [`.skills/gradle-best-practices.md`](.skills/gradle-best-practices.md) | Gradle best practices, convention plugins, and idioms |
+| [`.skills/plugin-project.md`](.skills/plugin-project.md)               | Plugin project scope: source code + unit tests only   |
+| [`.skills/example-apps.md`](.skills/example-apps.md)                   | Example app patterns: integration & functional tests  |
 
 **Read these skill files before making structural changes to the repository.**
 
@@ -48,7 +48,7 @@ grails-server-timing/
 │   └── src/test/        #   Unit tests ONLY
 ├── examples/app1/       # Example Grails app
 │   └── src/integration-test/  # Integration & functional tests
-├── coverage/            # JaCoCo coverage aggregation
+├── code-coverage/       # JaCoCo coverage aggregation
 ├── docs/                # Asciidoctor documentation
 ├── build-logic/         # Gradle convention plugins (composite build)
 │   └── config/          #   Code style configs (checkstyle, codenarc)
@@ -71,7 +71,7 @@ grails-server-timing/
 ./gradlew :app1:integrationTest
 
 # Aggregated coverage report (unit + integration)
-./gradlew :coverage:jacocoAggregatedReport
+./gradlew jacocoAggregatedReport
 
 # Skip tests
 ./gradlew build -PskipTests
@@ -116,15 +116,14 @@ The plugin intercepts HTTP requests via a servlet filter and Grails interceptor:
 
 ### Core Classes (plugin/src/main/groovy/org/grails/plugins/servertiming/)
 
-| Class                            | Purpose                                                            |
-|----------------------------------|--------------------------------------------------------------------|
-| `GrailsServerTimingGrailsPlugin` | Plugin descriptor; registers the filter bean when enabled          |
-| `ServerTimingFilter`             | Servlet filter; creates `TimingMetric` per request, wraps response |
-| `ServerTimingResponseWrapper`    | Response wrapper; injects `Server-Timing` header on commit         |
-| `ServerTimingInterceptor`        | Grails interceptor; tracks action and view timing                  |
-| `ServerTimingUtils`              | Reads plugin configuration; auto-enables in DEV/TEST environments  |
-| `core/Metric`                    | Single timing metric model with RFC 7230 name validation           |
-| `core/TimingMetric`              | Collection of metrics; generates header value                      |
+| Class                         | Purpose                                                            |
+|-------------------------------|--------------------------------------------------------------------|
+| `ServerTimingGrailsPlugin`    | Plugin descriptor; registers the filter bean when enabled          |
+| `ServerTimingFilter`          | Servlet filter; creates `TimingMetric` per request, wraps response |
+| `ServerTimingResponseWrapper` | Response wrapper; injects `Server-Timing` header on commit         |
+| `ServerTimingInterceptor`     | Grails interceptor; tracks action and view timing                  |
+| `core/Metric`                 | Single timing metric model with RFC 7230 name validation           |
+| `core/TimingMetric`           | Collection of metrics; generates header value                      |
 
 ## Configuration
 
@@ -157,19 +156,20 @@ Tests use the **Spock Framework** and run on JUnit Platform.
 
 Convention plugins in `build-logic/src/main/groovy/` standardize build configuration:
 
-| Plugin                        | Purpose                                                                              |
-|-------------------------------|--------------------------------------------------------------------------------------|
-| `compile.gradle`              | Java/Groovy compilation settings (UTF-8, incremental, Java release from `.sdkmanrc`) |
-| `testing.gradle`              | Test framework config (Spock, JUnit Platform, test-logger)                           |
-| `plugin.gradle`               | Grails plugin application                                                            |
-| `example.gradle`              | Example app config (grails-web, GSP, assets)                                         |
-| `project-publish.gradle`      | Per-project Maven publishing metadata                                                |
-| `root-publish.gradle`         | Root-level Nexus publishing workaround                                               |
-| `docs.gradle`                 | Documentation aggregation (Groovydoc + Asciidoctor)                                  |
-| `assets.gradle`               | Asset pipeline with Bootstrap/jQuery WebJars                                         |
-| `run.gradle`                  | Debug flags for `bootRun`                                                            |
-| `coverage-aggregation.gradle` | JaCoCo coverage aggregation across subprojects (XML + HTML reports)                  |
-| `style.gradle`                | Checkstyle + CodeNarc code style checking (configs in `build-logic/config/`)         |
+| Plugin                           | Purpose                                                                              |
+|----------------------------------|--------------------------------------------------------------------------------------|
+| `app-run.gradle`                 | Debug flags for `bootRun`                                                            |
+| `code-coverage.gradle`           | JaCoCo coverage for project (XML + HTML reports)                                     |
+| `code-coverage-aggregate.gradle` | JaCoCo coverage aggregation across subprojects (XML + HTML reports)                  |
+| `code-style.gradle`              | Checkstyle + CodeNarc code style checking (configs in `build-logic/config/`)         |
+| `compile.gradle`                 | Java/Groovy compilation settings (UTF-8, incremental, Java release from `.sdkmanrc`) |
+| `docs.gradle`                    | Documentation aggregation (Groovydoc + Asciidoctor)                                  |
+| `example-app.gradle`             | Example app config (grails-web, GSP, assets)                                         |
+| `grails-assets.gradle`           | Asset pipeline with Bootstrap/jQuery WebJars                                         |
+| `grails-plugin.gradle`           | Grails plugin application                                                            |
+| `publish.gradle`                 | Per-project Maven publishing metadata                                                |
+| `publish-root.gradle`            | Root-level Nexus publishing workaround                                               |
+| `testing.gradle`                 | Test framework config (Spock, JUnit Platform, test-logger)                           |
 
 ## CI/CD
 
@@ -186,9 +186,9 @@ Convention plugins in `build-logic/src/main/groovy/` standardize build configura
 
 - Groovy source files use standard Grails conventions (domain classes, controllers, interceptors, services in
   `grails-app/`, other classes in `src/main/groovy/`).
-- **Use `def` for local variables** where the type is inferred from the right-hand side (e.g., constructor calls, casts,
-  factory methods). Explicit types should only be used for local variables when the type cannot be inferred or when
-  needed for `@CompileStatic` compilation. This applies to both production code and tests.
+- **Use `def` for local variables** where the type is inferred from the right-hand side (e.g., constructor calls,
+  method calls, casts, factory methods). Explicit types should only be used for local variables when the type cannot
+  be inferred or when needed for `@CompileStatic` compilation. This applies to both production code and tests.
 - Metric names must conform to RFC 7230 token rules (alphanumeric plus `!#$%&'*+-.^_`|~`).
 - Description strings follow HTTP quoted-string escaping rules.
 - The plugin uses `System.nanoTime()` for timing precision.

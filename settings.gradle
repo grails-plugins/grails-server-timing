@@ -22,8 +22,11 @@ def isLocal = !isCI
 def isReproducibleBuild = System.getenv('SOURCE_DATE_EPOCH') != null
 if (isReproducibleBuild) {
     gradle.settingsEvaluated {
-        logger.warn('*************** Remote Build Cache Disabled due to Reproducible Build ********************')
-        logger.warn("Build date will be set to (SOURCE_DATE_EPOCH=${System.getenv("SOURCE_DATE_EPOCH")})")
+        logger.warn(
+                '***** Remote Build Cache Disabled due to Reproducible Build *****\n' +
+                'Build date will be set to (SOURCE_DATE_EPOCH={})',
+                System.getenv('SOURCE_DATE_EPOCH')
+        )
     }
 }
 
@@ -33,16 +36,15 @@ buildCache {
 
 rootProject.name = 'grails-server-timing-root'
 
-include 'plugin'
+include('plugin')
 project(':plugin').name = 'grails-server-timing'
-include 'docs'
+include('docs')
 project(':docs').name = 'grails-server-timing-docs'
-include 'coverage'
+include('code-coverage')
 
-def examples = file('examples').list()
-examples.each { example ->
-    include example
-    project(":$example").projectDir = file("examples/$example")
+file('examples').listFiles({ it.directory } as FileFilter).each {
+    include(it.name)
+    project(":$it.name").projectDir = file("examples/$it.name")
 }
 
 dependencyResolutionManagement {

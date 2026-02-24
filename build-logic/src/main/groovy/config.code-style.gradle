@@ -1,15 +1,12 @@
-import org.gradle.api.plugins.quality.CheckstyleExtension
-import org.gradle.api.plugins.quality.CodeNarcExtension
-
 plugins {
     id 'checkstyle'
     id 'codenarc'
 }
 
 // Resolved relative to the root project directory, which is the parent of build-logic/.
-def codeStyleConfigDir = rootProject.file('build-logic/config')
-def checkstyleConfigDir = new File(codeStyleConfigDir, 'checkstyle')
-def codenarcConfigDir = new File(codeStyleConfigDir, 'codenarc')
+def codeStyleConfigDir = rootProject.layout.settingsDirectory.dir('build-logic/config')
+def checkstyleConfigDir = codeStyleConfigDir.dir('checkstyle')
+def codenarcConfigDir = codeStyleConfigDir.dir('codenarc')
 
 extensions.configure(CheckstyleExtension) {
     it.toolVersion = checkstyleVersion
@@ -26,7 +23,7 @@ tasks.withType(Checkstyle).configureEach {
 
 extensions.configure(CodeNarcExtension) {
     it.toolVersion = codenarcVersion
-    it.configFile = new File(codenarcConfigDir, 'codenarc.groovy')
+    it.configFile = codenarcConfigDir.file('codenarc.groovy').getAsFile()
     it.maxPriority1Violations = 0
     it.maxPriority2Violations = 0
     it.maxPriority3Violations = 0
@@ -40,6 +37,6 @@ tasks.withType(CodeNarc).configureEach {
 tasks.register('codeStyle') {
     group = 'verification'
     description = 'Runs all code style checks (Checkstyle + CodeNarc).'
-    dependsOn tasks.withType(Checkstyle)
-    dependsOn tasks.withType(CodeNarc)
+    dependsOn(tasks.withType(Checkstyle))
+    dependsOn(tasks.withType(CodeNarc))
 }

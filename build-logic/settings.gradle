@@ -1,6 +1,6 @@
 import org.gradle.api.initialization.resolve.RepositoriesMode
 
-rootProject.name = "build-logic"
+rootProject.name = 'build-logic'
 
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS

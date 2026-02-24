@@ -4,13 +4,9 @@
 version = projectVersion
 group = 'this.will.be.overridden'
 
-def publishedProjects = [
-        (project.name - '-root')
-]
-
-subprojects {
-    if (name in publishedProjects) {
+subprojects { sub ->
+    sub.pluginManager.withPlugin('config.publish') {
         // This has to be applied here in the root project due to the nexus plugin requirements
-        apply plugin: 'org.apache.grails.gradle.grails-publish'
+        sub.apply(plugin: 'org.apache.grails.gradle.grails-publish')
     }
 }

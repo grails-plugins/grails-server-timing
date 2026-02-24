@@ -37,7 +37,7 @@ sdk env install
 grails-server-timing/
 ├── plugin/              # The publishable Grails plugin (source + unit tests ONLY)
 ├── examples/app1/       # Example app with integration tests
-├── coverage/            # JaCoCo coverage aggregation
+├── code-coverage/       # JaCoCo coverage aggregation
 ├── build-logic/         # Gradle convention plugins (shared build configuration)
 ├── docs/                # Asciidoctor documentation
 └── .skills/             # AI agent best-practice docs
@@ -45,7 +45,7 @@ grails-server-timing/
 
 Key architectural rules:
 
-- **Plugin module** contains only plugin source code and unit tests -- no integration tests, no example controllers.
+- **Plugin module** contains only plugin source code and unit tests – no integration tests, no example controllers.
 - **Example apps** under `examples/` host all integration and functional tests. They depend on the plugin as a real
   consumer would.
 - **Convention plugins** in `build-logic/` deduplicate build configuration. Never use `subprojects {}`,
@@ -82,14 +82,14 @@ The project uses JaCoCo to aggregate coverage data from both plugin unit tests a
 
 ```bash
 # Generate the aggregated coverage report
-./gradlew :coverage:jacocoAggregatedReport
+./gradlew jacocoAggregatedReport
 ```
 
 Reports are generated at:
 
 | Report                          | Location                                                                         |
 |---------------------------------|----------------------------------------------------------------------------------|
-| Aggregated (unit + integration) | `coverage/build/reports/jacoco/jacocoAggregatedReport/html/index.html`           |
+| Aggregated (unit + integration) | `code-coverage/build/reports/jacoco/jacocoAggregatedReport/html/index.html`      |
 | Plugin unit tests               | `plugin/build/reports/jacoco/test/html/index.html`                               |
 | App1 integration tests          | `examples/app1/build/reports/jacoco/jacocoIntegrationTestReport/html/index.html` |
 

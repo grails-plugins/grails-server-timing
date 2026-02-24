@@ -4,7 +4,9 @@ on:
     types: [ published ]
 permissions: { }
 env:
-  # to prevent throttling of the github api, include the github token in an environment variable since the build will check for it
+  # To prevent throttling of the GitHub api,
+  # include the GitHub token in an environment variable
+  # since the build will check for it
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GRAILS_PUBLISH_RELEASE: 'true'
   JAVA_DISTRIBUTION: 'liberica'
@@ -19,7 +21,7 @@ jobs:
     name: "Stage Jar Files"
     permissions:
       packages: read  #  pre-release workflow
-      contents: write  #  to create release
+      contents: write  #  to create a release
       issues: write  #  to modify milestones
     runs-on: ubuntu-24.04
     steps:
@@ -28,7 +30,7 @@ jobs:
       - name: "Output Agent IP" # in the event RAO blocks this agent, this can be used to debug it
         run: curl -s https://api.ipify.org
       - name: "📥 Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.TAG }}
@@ -49,12 +51,18 @@ jobs:
       - name: "Determine Java Version"
         run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
       - name: "☕️ Setup JDK"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.SDKMANRC_java }}
+      - name: "Export gradle.properties properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
       - name: "🐘 Setup Gradle"
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          build-scan-publish: ${{ env.ciBuildScanPublish }}
+          build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
+          build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "⚙️ Run pre-release"
         uses: apache/grails-github-actions/pre-release@asf
         env:
@@ -71,7 +79,6 @@ jobs:
           ./gradlew
           -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg
           publishMavenPublicationToSonatypeRepository
-          publishPluginMavenPublicationToSonatypeRepository 
           closeSonatypeStagingRepository
       - name: "Generate Build Date file"
         run: echo "$SOURCE_DATE_EPOCH" >> build/BUILD_DATE.txt
@@ -92,7 +99,7 @@ jobs:
       - name: "📝 Establish release version"
         run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
       - name: "📥 Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.TAG }}
@@ -104,12 +111,18 @@ jobs:
       - name: "Determine Java Version"
         run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
       - name: "☕️ Setup JDK"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.SDKMANRC_java }}
+      - name: "Export gradle.properties properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
       - name: "🐘 Setup Gradle"
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          build-scan-publish: ${{ env.ciBuildScanPublish }}
+          build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
+          build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "📤 Release staging repository"
         env:
           NEXUS_PUBLISH_USERNAME: ${{ secrets.MAVEN_USERNAME }}
@@ -131,7 +144,7 @@ jobs:
       - name: "📝 Establish release version"
         run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
       - name: "📥 Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ env.TAG }}
@@ -143,12 +156,18 @@ jobs:
       - name: "Determine Java Version"
         run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
       - name: "☕️ Setup JDK"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.SDKMANRC_java }}
+      - name: "Export gradle.properties properties"
+        uses: apache/grails-github-actions/export-gradle-properties@asf
       - name: "🐘 Setup Gradle"
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          build-scan-publish: ${{ env.ciBuildScanPublish }}
+          build-scan-terms-of-use-url: ${{ env.ciBuildScanTermsOfUseUrl }}
+          build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "🔨 Build Documentation"
         run: ./gradlew docs
       - name: "🚀 Publish to Github Pages"
@@ -168,26 +187,5 @@ jobs:
       issues: write # required for milestone closing
       pull-requests: write # to create the PR that will increment the version
     steps:
-      - name: "📝 Establish release version"
-        run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
-      - name: "📥 Checkout repository"
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ env.TAG }}
-      - name: "Export .sdkmanrc properties"
-        uses: apache/grails-github-actions/export-gradle-properties@asf
-        with:
-          file: ".sdkmanrc"
-          prefix: "SDKMANRC_"
-      - name: "Determine Java Version"
-        run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
-      - name: "☕️ Setup JDK"
-        uses: actions/setup-java@v4
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.SDKMANRC_java }}
-      - name: "🐘 Setup Gradle"
-        uses: gradle/actions/setup-gradle@v4
       - name: "⚙️ Run post-release"
         uses: apache/grails-github-actions/post-release@asf
