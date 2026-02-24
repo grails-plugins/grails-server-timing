@@ -187,26 +187,5 @@ jobs:
       issues: write # required for milestone closing
       pull-requests: write # to create the PR that will increment the version
     steps:
-      - name: "📝 Establish release version"
-        run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
-      - name: "📥 Checkout repository"
-        uses: actions/checkout@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ env.TAG }}
-      - name: "Export .sdkmanrc properties"
-        uses: apache/grails-github-actions/export-gradle-properties@asf
-        with:
-          file: ".sdkmanrc"
-          prefix: "SDKMANRC_"
-      - name: "Determine Java Version"
-        run: echo "SDKMANRC_java=${{ env.SDKMANRC_java }}" | sed 's/-.*//' >> $GITHUB_ENV
-      - name: "☕️ Setup JDK"
-        uses: actions/setup-java@v5
-        with:
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          java-version: ${{ env.SDKMANRC_java }}
-      - name: "🐘 Setup Gradle"
-        uses: gradle/actions/setup-gradle@v5
       - name: "⚙️ Run post-release"
         uses: apache/grails-github-actions/post-release@asf
