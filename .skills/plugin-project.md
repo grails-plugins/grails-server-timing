@@ -27,7 +27,7 @@ The plugin project must NOT contain:
 
 Keeping integration/functional tests out of the plugin project ensures:
 
-1. The plugin artifact is clean -- no test dependencies or test code leaks into the published JAR
+1. The plugin artifact is clean – no test dependencies or test code leaks into the published JAR
 2. Tests that require a running Grails application exercise the plugin as a real consumer would
 3. The plugin's API surface is validated from the outside, not the inside
 4. Different example apps can test different configurations of the plugin
@@ -40,23 +40,26 @@ plugin/
 ├── grails-app/
 │   ├── conf/
 │   │   ├── application.yml               # Plugin-specific config defaults
-│   │   └── logback-spring.xml            # Logging config
 │   ├── controllers/                      # Interceptors, controller-scoped artifacts
 │   │   └── org/grails/plugins/servertiming/
 │   │       └── ServerTimingInterceptor.groovy
-│   └── init/                             # Plugin application class
-│       └── org/grails/plugins/servertiming/
-│           └── Application.groovy
 └── src/
     ├── main/groovy/                      # Core plugin classes
     │   └── org/grails/plugins/servertiming/
-    │       ├── GrailsServerTimingGrailsPlugin.groovy
+    │       ├── ServerTimingAutoConfiguration.groovy
     │       ├── ServerTimingFilter.groovy
+    │       ├── ServerTimingGrailsPlugin.groovy
     │       ├── ServerTimingResponseWrapper.groovy
-    │       ├── ServerTimingUtils.groovy
+    │       ├── config/
+    │       │    ├── EnabledCondition.groovy
+    │       │    └── ServerTimingConfig.groovy
     │       └── core/
     │           ├── Metric.groovy
     │           └── TimingMetric.groovy
+    ├── main/resources/  
+    │   ├── META-INF/spring
+    │   │    └── org.springframework.boot.autoconfigure.AutoConfiguration.imports
+    │   └── spring-configuration-metadata.json    
     └── test/groovy/                      # Unit tests ONLY
         └── org/grails/plugins/servertiming/
             ├── MetricSpec.groovy
@@ -69,25 +72,26 @@ The plugin's `build.gradle` should be minimal -- apply convention plugins and de
 
 ```groovy
 plugins {
-    id 'org.grails.plugins.servertiming.compile'
-    id 'org.grails.plugins.servertiming.testing'
-    id 'org.grails.plugins.servertiming.plugin'
-    id 'org.grails.plugins.servertiming.project-publish'
+    id 'config.compile'
+    id 'config.testing'
+    id 'config.grails-plugin'
+    id 'config.publish'
 }
 
 version = projectVersion
-group = "org.grails.plugins"
+group = 'org.grails.plugins'
 
 dependencies {
+
+    profile 'org.apache.grails.profiles:web-plugin'
+    console 'org.apache.grails:grails-console'
+
     compileOnly platform("org.apache.grails:grails-bom:$grailsVersion")
     compileOnly 'org.apache.grails:grails-dependencies-starter-web'
 
-    console "org.apache.grails:grails-console"
-    profile "org.apache.grails.profiles:web-plugin"
-
     testImplementation platform("org.apache.grails:grails-bom:$grailsVersion")
-    testImplementation "org.apache.grails:grails-dependencies-starter-web"
-    testImplementation "org.apache.grails:grails-dependencies-test"
+    testImplementation 'org.apache.grails:grails-dependencies-starter-web'
+    testImplementation 'org.apache.grails:grails-dependencies-test'
 }
 ```
 
@@ -95,8 +99,8 @@ Key patterns:
 
 - Use `compileOnly` for framework dependencies the consuming application will provide
 - Use `testImplementation` for test-only dependencies
-- Apply `project-publish` to configure Maven publishing metadata
-- NEVER add custom task configuration here - move it to a convention plugin
+- Apply `config.publish` to configure Maven publishing metadata
+- NEVER add custom task configuration here – move it to a convention plugin
 
 ## Unit Test Guidelines
 
@@ -127,18 +131,8 @@ Unit tests in the plugin project test individual classes in isolation:
 
 ## Plugin Descriptor
 
-The `GrailsServerTimingGrailsPlugin` class extends `grails.plugins.Plugin` and registers Spring beans. It uses
-`ServerTimingUtils` to check whether the plugin is enabled before registering the filter:
-
-```groovy
-Closure doWithSpring() {
-    { ->
-        if (ServerTimingUtils.instance.isEnabled(grailsApplication)) {
-            // register filter beans
-        }
-    }
-}
-```
+The `ServerTimingGrailsPlugin` class extends `grails.plugins.Plugin` and exposes important
+information about the plugin to the Grails framework.
 
 ## Dependency Scoping
 

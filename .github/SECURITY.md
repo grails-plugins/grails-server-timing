@@ -22,7 +22,7 @@ using [GitHub's private vulnerability reporting](https://github.com/grails-plugi
 
 ## Security Considerations
 
-This plugin injects `Server-Timing` headers that expose server-side timing information. By default, the plugin is *
+This plugin injects `Server-Timing` header that expose server-side timing information. By default, the plugin is *
 *disabled in production** to mitigate the risk
 of [timing attacks](https://w3c.github.io/server-timing/#security-considerations).
 
@@ -30,7 +30,7 @@ If you enable the plugin in production, be aware that:
 
 - Timing data may help attackers infer information about server-side operations (e.g., whether a database lookup found a
   record)
-- Cross-origin access to `Server-Timing` data requires the `Timing-Allow-Origin` header, which this plugin does **not**
+- Cross-origin access to Server Timing data requires the `Timing-Allow-Origin` header, which this plugin does **not**
   set automatically
 
 See the [W3C Server Timing Security Considerations](https://w3c.github.io/server-timing/#security-considerations) for

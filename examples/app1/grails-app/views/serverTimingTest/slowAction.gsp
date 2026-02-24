@@ -11,7 +11,7 @@
 
     <p>${message}</p>
 
-    <p>The Server-Timing header should show the action time being significantly longer than the view time.</p>
+    <p>The Server Timing header should show the action time being significantly longer than the view time.</p>
     <p class="text-muted">This action took approximately 200ms to execute.</p>
 </div>
 </body>

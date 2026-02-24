@@ -3,7 +3,7 @@ package app1
 import grails.converters.JSON
 
 /**
- * A controller to test the Server-Timing HTTP header functionality.
+ * A controller to test the Server Timing HTTP header functionality.
  * Various actions simulate slow operations to verify timing is captured correctly.
  */
 class ServerTimingTestController {
@@ -90,7 +90,7 @@ class ServerTimingTestController {
 
     /**
      * An action that redirects to the fast action.
-     * This tests that the Server-Timing header is present on the redirect (302) response.
+     * This tests that the Server Timing header is present on the redirect (302) response.
      */
     def redirectToFast() {
         Thread.sleep(50)
@@ -99,7 +99,7 @@ class ServerTimingTestController {
 
     /**
      * An action that forwards to the forwardTarget action.
-     * This tests that the Server-Timing header is present when using server-side forward.
+     * This tests that the Server Timing header is present when using server-side forward.
      */
     def forwardToTarget() {
         Thread.sleep(50)
@@ -116,7 +116,7 @@ class ServerTimingTestController {
 
     /**
      * An action that chains to the chainTarget action, passing model data.
-     * This tests that the Server-Timing header is present when using Grails chain.
+     * This tests that the Server Timing header is present when using Grails chain.
      */
     def chainToTarget() {
         Thread.sleep(50)

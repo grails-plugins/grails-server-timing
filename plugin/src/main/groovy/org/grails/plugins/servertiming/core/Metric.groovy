@@ -6,7 +6,7 @@ import grails.validation.Validateable
 import java.time.Duration
 
 /**
- * Implements a metric for the Server-Timing header
+ * Implements a metric for the Server Timing header
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Server-Timing
  */
@@ -49,7 +49,7 @@ class Metric implements Validateable, Serializable {
     }
 
     Metric start() {
-        if (duration) {
+        if (startTimeNanos || duration) {
             throw new IllegalStateException('The metric has already started.')
         }
 
@@ -62,13 +62,13 @@ class Metric implements Validateable, Serializable {
             throw new IllegalStateException('The metric has not been started yet.')
         }
 
-        long elapsedNanos = System.nanoTime() - startTimeNanos
+        def elapsedNanos = System.nanoTime() - startTimeNanos
         return Duration.ofNanos(elapsedNanos)
     }
 
     Metric stop() {
         if (startTimeNanos != null) {
-            long elapsedNanos = System.nanoTime() - startTimeNanos
+            def elapsedNanos = System.nanoTime() - startTimeNanos
             duration = Duration.ofNanos(elapsedNanos)
         }
         return this
@@ -83,21 +83,21 @@ class Metric implements Validateable, Serializable {
     }
 
     String toHeaderValue() {
-        List<String> parts = [name]
+        def parts = [name]
         if (running) {
             // if started, require a stop()
             throw new IllegalStateException("The metric [${name}] has not been stopped yet.")
         }
 
         if (ran) {
-            long nanos = duration.toNanos()
-            double millis = nanos / 1_000_000.0d
+            def nanos = duration.toNanos()
+            def millis = nanos / 1_000_000.0d
             parts << "dur=${millis.round(1)}".toString()
         }
 
         if (description) {
             // Escape backslashes first, then quotes per RFC 7230 quoted-string
-            String escapedDesc = description
+            def escapedDesc = description
                     .replace('\\', '\\\\')
                     .replace('"', '\\"')
             parts << "desc=\"${escapedDesc}\"".toString()
@@ -110,7 +110,7 @@ class Metric implements Validateable, Serializable {
         if (this.is(o)) return true
         if (o == null || getClass() != o.class) return false
 
-        Metric metric = (Metric) o
+        def metric = (Metric) o
 
         if (key != metric.key) return false
 

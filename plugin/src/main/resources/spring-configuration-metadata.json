@@ -1,0 +1,15 @@
+{
+  "properties": [
+    {
+      "name": "grails.plugins.server-timing.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether Server Timing is enabled. If not set, resolves to true in development and test, false in production"
+    },
+    {
+      "name": "grails.plugins.server-timing.metric-key",
+      "type": "java.lang.String",
+      "description": "Request attribute key for storing metrics. Change only if you have a naming conflict.",
+      "defaultValue": "GrailsServerTiming"
+    }
+  ]
+}

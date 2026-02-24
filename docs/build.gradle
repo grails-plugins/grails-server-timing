@@ -1,19 +1,11 @@
 import org.asciidoctor.gradle.jvm.AsciidoctorTask
 
 plugins {
-    id "org.asciidoctor.jvm.convert" version "4.0.5"
+    id 'org.asciidoctor.jvm.convert'
 }
 
 version = projectVersion
 group = 'org.grails.plugins'
-
-String getGrailsDocumentationVersion(String version) {
-    if (version.endsWith('-SNAPSHOT')) {
-        return 'snapshot'
-    }
-
-    return version
-}
 
 def asciidoctorAttributes = [
         'source-highlighter': 'coderay',
@@ -21,24 +13,33 @@ def asciidoctorAttributes = [
         toclevels           : '2',
         'toc-title'         : 'Table of Contents',
         icons               : 'font',
-        id                  : (project.name - '-docs') + ':' + project.version,
+        id                  : "${project.name - '-docs'}:${project.version}",
         idprefix            : '',
         idseparator         : '-',
         version             : project.version,
-        projectUrl          : "https://github.com/grails-plugins/grails-server-timing",
+        projectUrl          : 'https://github.com/grails-plugins/grails-server-timing',
         sourcedir           : "${rootProject.allprojects.find { it.name == 'grails-server-timing' }.projectDir}/src/main/groovy",
-        grailsDocBase       : "https://grails.apache.org/docs/${getGrailsDocumentationVersion(project.grailsVersion)}"
+        grailsDocBase       : "https://grails.apache.org/docs/${resolveGrailsDocsDirName(project.grailsVersion)}"
 ]
 
-tasks.named('asciidoctor', AsciidoctorTask) { AsciidoctorTask it ->
-    it.jvm {
-        jvmArgs("--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED", "--add-opens", "java.base/java.io=ALL-UNNAMED")
-    }
+tasks.named('asciidoctor', AsciidoctorTask) {
 
-    it.baseDirFollowsSourceDir()
-    it.sourceDir project.file('src/docs')
-    it.sources { include 'index.adoc' }
-    it.outputDir = project.layout.buildDirectory.dir('docs')
-    it.options doctype: 'book'
-    it.attributes asciidoctorAttributes
+    outputDir = project.layout.buildDirectory.dir('docs')
+    sourceDir = project.layout.projectDirectory.dir('src/docs')
+
+    attributes(asciidoctorAttributes)
+    baseDirFollowsSourceDir()
+    options(doctype: 'book')
+    sources { include 'index.adoc' }
+
+    jvm {
+        jvmArgs(
+                '--add-opens', 'java.base/java.io=ALL-UNNAMED',
+                '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED'
+        )
+    }
+}
+
+static String resolveGrailsDocsDirName(String version) {
+    version.endsWith('-SNAPSHOT') ? 'snapshot' : version
 }

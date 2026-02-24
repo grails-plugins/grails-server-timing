@@ -10,7 +10,7 @@ class MetricSpec extends Specification {
 
     def "test basic metric creation with name"() {
         when:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         then:
         metric.name == 'testMetric'
@@ -19,7 +19,7 @@ class MetricSpec extends Specification {
 
     def "test metric creation with name and description"() {
         when:
-        Metric metric = new Metric(name: 'testMetric', description: 'Test Description')
+        def metric = new Metric(name: 'testMetric', description: 'Test Description')
 
         then:
         metric.name == 'testMetric'
@@ -30,7 +30,7 @@ class MetricSpec extends Specification {
     @Unroll
     def "test valid metric names: #name"() {
         when:
-        Metric metric = new Metric(name: name)
+        def metric = new Metric(name: name)
 
         then:
         metric.validate()
@@ -64,7 +64,7 @@ class MetricSpec extends Specification {
     @Unroll
     def "test invalid metric names: #name"() {
         when:
-        Metric metric = new Metric(name: name)
+        def metric = new Metric(name: name)
 
         then:
         !metric.validate()
@@ -98,7 +98,7 @@ class MetricSpec extends Specification {
 
     def "test description can be null"() {
         when:
-        Metric metric = new Metric(name: 'testMetric', description: null)
+        def metric = new Metric(name: 'testMetric', description: null)
 
         then:
         metric.validate()
@@ -106,7 +106,7 @@ class MetricSpec extends Specification {
 
     def "test description cannot be blank"() {
         when:
-        Metric metric = new Metric(name: 'testMetric', description: '')
+        def metric = new Metric(name: 'testMetric', description: '')
 
         then:
         !metric.validate()
@@ -115,7 +115,7 @@ class MetricSpec extends Specification {
 
     def "test start() initializes timing"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
         def result = metric.start()
@@ -126,7 +126,7 @@ class MetricSpec extends Specification {
 
     def "test start() throws exception if already started"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
         metric.start()
         metric.stop()
 
@@ -139,7 +139,7 @@ class MetricSpec extends Specification {
 
     def "test stop() calculates duration"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
         metric.start()
@@ -153,7 +153,7 @@ class MetricSpec extends Specification {
 
     def "test stop() returns self for chaining"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
         metric.start()
 
         when:
@@ -165,7 +165,7 @@ class MetricSpec extends Specification {
 
     def "test stop() does nothing if not started"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
         metric.stop()
@@ -176,12 +176,12 @@ class MetricSpec extends Specification {
 
     def "test calculateElapsedTime() returns elapsed time while running"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
         metric.start()
 
         when:
         Thread.sleep(50)
-        Duration elapsed = metric.calculateElapsedTime()
+        def elapsed = metric.calculateElapsedTime()
 
         then:
         elapsed != null
@@ -190,7 +190,7 @@ class MetricSpec extends Specification {
 
     def "test calculateElapsedTime() throws an exception if not started"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
         metric.calculateElapsedTime()
@@ -201,10 +201,10 @@ class MetricSpec extends Specification {
 
     def "test toHeaderValue() with name only"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'testMetric'
@@ -212,10 +212,10 @@ class MetricSpec extends Specification {
 
     def "test toHeaderValue() with name and description"() {
         given:
-        Metric metric = new Metric(name: 'testMetric', description: 'Test Description')
+        def metric = new Metric(name: 'testMetric', description: 'Test Description')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'testMetric;desc="Test Description"'
@@ -223,12 +223,12 @@ class MetricSpec extends Specification {
 
     def "test toHeaderValue() with name and duration"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
         metric.start()
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header.startsWith('testMetric;dur=')
@@ -236,12 +236,12 @@ class MetricSpec extends Specification {
 
     def "test toHeaderValue() with name, description and duration"() {
         given:
-        Metric metric = new Metric(name: 'testMetric', description: 'Test Description')
+        def metric = new Metric(name: 'testMetric', description: 'Test Description')
         metric.start()
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header.startsWith('testMetric;dur=')
@@ -250,7 +250,7 @@ class MetricSpec extends Specification {
 
     def "test toHeaderValue() throws exception if started but not stopped"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
         metric.start()
 
         when:
@@ -262,8 +262,8 @@ class MetricSpec extends Specification {
 
     def "test equals() with same name (case insensitive)"() {
         given:
-        Metric metric1 = new Metric(name: 'testMetric')
-        Metric metric2 = new Metric(name: 'TESTMETRIC')
+        def metric1 = new Metric(name: 'testMetric')
+        def metric2 = new Metric(name: 'TESTMETRIC')
 
         expect:
         metric1 == metric2
@@ -271,8 +271,8 @@ class MetricSpec extends Specification {
 
     def "test equals() with different names"() {
         given:
-        Metric metric1 = new Metric(name: 'testMetric1')
-        Metric metric2 = new Metric(name: 'testMetric2')
+        def metric1 = new Metric(name: 'testMetric1')
+        def metric2 = new Metric(name: 'testMetric2')
 
         expect:
         metric1 != metric2
@@ -280,7 +280,7 @@ class MetricSpec extends Specification {
 
     def "test equals() with same instance"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         expect:
         metric == metric
@@ -288,7 +288,7 @@ class MetricSpec extends Specification {
 
     def "test equals() with null"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         expect:
         metric != null
@@ -296,7 +296,7 @@ class MetricSpec extends Specification {
 
     def "test equals() with different class"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         expect:
         !metric.equals('testMetric')
@@ -304,8 +304,8 @@ class MetricSpec extends Specification {
 
     def "test hashCode() consistency"() {
         given:
-        Metric metric1 = new Metric(name: 'testMetric')
-        Metric metric2 = new Metric(name: 'TESTMETRIC')
+        def metric1 = new Metric(name: 'testMetric')
+        def metric2 = new Metric(name: 'TESTMETRIC')
 
         expect:
         metric1.hashCode() == metric2.hashCode()
@@ -313,7 +313,7 @@ class MetricSpec extends Specification {
 
     def "test hashCode() with null key"() {
         given:
-        Metric metric = new Metric()
+        def metric = new Metric()
 
         expect:
         metric.hashCode() == 0
@@ -321,17 +321,17 @@ class MetricSpec extends Specification {
 
     def "test metric is serializable"() {
         given:
-        Metric metric = new Metric(name: 'testMetric', description: 'Test Description')
+        def metric = new Metric(name: 'testMetric', description: 'Test Description')
 
         when:
-        ByteArrayOutputStream bos = new ByteArrayOutputStream()
-        ObjectOutputStream oos = new ObjectOutputStream(bos)
+        def bos = new ByteArrayOutputStream()
+        def oos = new ObjectOutputStream(bos)
         oos.writeObject(metric)
         oos.close()
 
-        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray())
-        ObjectInputStream ois = new ObjectInputStream(bis)
-        Metric deserializedMetric = (Metric) ois.readObject()
+        def bis = new ByteArrayInputStream(bos.toByteArray())
+        def ois = new ObjectInputStream(bis)
+        def deserializedMetric = (Metric) ois.readObject()
 
         then:
         deserializedMetric.name == 'testMetric'
@@ -340,7 +340,7 @@ class MetricSpec extends Specification {
 
     def "test start() and stop() chaining"() {
         given:
-        Metric metric = new Metric(name: 'testMetric')
+        def metric = new Metric(name: 'testMetric')
 
         when:
         metric.start().stop()
@@ -349,32 +349,32 @@ class MetricSpec extends Specification {
         metric.duration != null
     }
 
-    // Server-Timing spec compliance tests
+    // Server Timing spec compliance tests
     // See: https://w3c.github.io/server-timing/#the-server-timing-header-field
 
     def "test toHeaderValue() duration is in milliseconds with decimal precision"() {
         given:
-        Metric metric = new Metric(name: 'db')
+        def metric = new Metric(name: 'db')
         metric.start()
         Thread.sleep(10)
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         // Should be in format: name;dur=X.X where X.X is milliseconds
         header ==~ /db;dur=\d+\.\d/
     }
 
-    def "test toHeaderValue() format matches Server-Timing spec"() {
+    def "test toHeaderValue() format matches Server Timing spec"() {
         given:
-        Metric metric = new Metric(name: 'cache', description: 'Cache Read')
+        def metric = new Metric(name: 'cache', description: 'Cache Read')
         metric.start()
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         // Format should be: metric-name;dur=value;desc="description"
@@ -383,10 +383,10 @@ class MetricSpec extends Specification {
 
     def "test description with special characters is properly quoted"() {
         given:
-        Metric metric = new Metric(name: 'api', description: 'API Call: GET /users')
+        def metric = new Metric(name: 'api', description: 'API Call: GET /users')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'api;desc="API Call: GET /users"'
@@ -394,12 +394,12 @@ class MetricSpec extends Specification {
 
     def "test metric with zero duration"() {
         given:
-        Metric metric = new Metric(name: 'instant')
+        def metric = new Metric(name: 'instant')
         metric.start()
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         // Even very small durations should output dur=
@@ -408,8 +408,8 @@ class MetricSpec extends Specification {
 
     def "test multiple metrics can be created independently"() {
         given:
-        Metric metric1 = new Metric(name: 'db', description: 'Database')
-        Metric metric2 = new Metric(name: 'cache', description: 'Cache')
+        def metric1 = new Metric(name: 'db', description: 'Database')
+        def metric2 = new Metric(name: 'cache', description: 'Cache')
 
         metric1.start()
         metric2.start()
@@ -427,7 +427,7 @@ class MetricSpec extends Specification {
 
     def "test metric name follows token format per RFC 7230"() {
         when:
-        Metric metric = new Metric(name: 'my-metric_123')
+        def metric = new Metric(name: 'my-metric_123')
 
         then:
         metric.validate()
@@ -436,10 +436,10 @@ class MetricSpec extends Specification {
 
     def "test duration is not included if metric was never started"() {
         given:
-        Metric metric = new Metric(name: 'skipped', description: 'Skipped operation')
+        def metric = new Metric(name: 'skipped', description: 'Skipped operation')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'skipped;desc="Skipped operation"'
@@ -447,12 +447,12 @@ class MetricSpec extends Specification {
     }
 
     def "test header value with only name is valid per spec"() {
-        // Server-Timing allows metrics with just a name (no dur or desc)
+        // Server Timing allows metrics with just a name (no dur or desc)
         given:
-        Metric metric = new Metric(name: 'miss')
+        def metric = new Metric(name: 'miss')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'miss'
@@ -460,12 +460,12 @@ class MetricSpec extends Specification {
 
     def "test header value with name and duration only"() {
         given:
-        Metric metric = new Metric(name: 'total')
+        def metric = new Metric(name: 'total')
         metric.start()
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header ==~ /total;dur=\d+\.\d/
@@ -475,10 +475,10 @@ class MetricSpec extends Specification {
     def "test description with embedded quotes should be escaped"() {
         // Per RFC 7230, quoted strings must escape embedded quotes with backslash
         given:
-        Metric metric = new Metric(name: 'api', description: 'Said "Hello"')
+        def metric = new Metric(name: 'api', description: 'Said "Hello"')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'api;desc="Said \\"Hello\\""'
@@ -487,10 +487,10 @@ class MetricSpec extends Specification {
     def "test description with backslashes should be escaped"() {
         // Per RFC 7230, backslashes in quoted strings must be escaped
         given:
-        Metric metric = new Metric(name: 'path', description: 'C:\\Users\\test')
+        def metric = new Metric(name: 'path', description: 'C:\\Users\\test')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'path;desc="C:\\\\Users\\\\test"'
@@ -498,10 +498,10 @@ class MetricSpec extends Specification {
 
     def "test description with both quotes and backslashes"() {
         given:
-        Metric metric = new Metric(name: 'complex', description: 'Path: "C:\\temp"')
+        def metric = new Metric(name: 'complex', description: 'Path: "C:\\temp"')
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         header == 'complex;desc="Path: \\"C:\\\\temp\\""'
@@ -509,13 +509,13 @@ class MetricSpec extends Specification {
 
     def "test sub-millisecond duration precision"() {
         given:
-        Metric metric = new Metric(name: 'fast')
+        def metric = new Metric(name: 'fast')
         metric.start()
         // Don't sleep - capture very fast operation
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
+        def header = metric.toHeaderValue()
 
         then:
         // Should still produce valid output even for sub-millisecond durations
@@ -524,14 +524,14 @@ class MetricSpec extends Specification {
 
     def "test duration value format is decimal"() {
         given:
-        Metric metric = new Metric(name: 'test')
+        def metric = new Metric(name: 'test')
         metric.start()
         Thread.sleep(5)
         metric.stop()
 
         when:
-        String header = metric.toHeaderValue()
-        String durValue = (header =~ /dur=(\d+\.\d)/)[0][1]
+        def header = metric.toHeaderValue()
+        def durValue = (header =~ /dur=(\d+\.\d)/)[0][1]
 
         then:
         // Duration should be parseable as a decimal number
@@ -540,10 +540,10 @@ class MetricSpec extends Specification {
 
     def "test metric can be used in Set due to equals/hashCode contract"() {
         given:
-        Set<Metric> metrics = new HashSet<>()
-        Metric metric1 = new Metric(name: 'db')
-        Metric metric2 = new Metric(name: 'DB') // Same key (case insensitive)
-        Metric metric3 = new Metric(name: 'cache')
+        def metrics = new HashSet<Metric>()
+        def metric1 = new Metric(name: 'db')
+        def metric2 = new Metric(name: 'DB') // Same key (case insensitive)
+        def metric3 = new Metric(name: 'cache')
 
         when:
         metrics.add(metric1)

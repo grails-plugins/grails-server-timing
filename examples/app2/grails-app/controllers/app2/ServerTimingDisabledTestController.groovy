@@ -3,7 +3,7 @@ package app2
 import grails.converters.JSON
 
 /**
- * A controller to test that the Server-Timing HTTP header is NOT present
+ * A controller to test that the Server Timing HTTP header is NOT present
  * when the plugin is explicitly disabled via configuration.
  */
 class ServerTimingDisabledTestController {

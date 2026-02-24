@@ -1,0 +1,10 @@
+plugins {
+    id 'config.app-run'
+    id 'config.code-coverage'
+    id 'config.code-style'
+    id 'config.compile'
+    id 'config.grails-assets'
+    id 'config.testing'
+    id 'org.apache.grails.gradle.grails-web'
+    id 'org.apache.grails.gradle.grails-gsp'
+}

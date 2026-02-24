@@ -1,8 +1,14 @@
 package org.grails.plugins.servertiming
 
-import grails.artefact.Interceptor
-import grails.compiler.GrailsCompileStatic
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
+
+import grails.artefact.Interceptor
+import org.grails.plugins.servertiming.config.EnabledCondition
+import org.grails.plugins.servertiming.config.ServerTimingConfig
 import org.grails.plugins.servertiming.core.TimingMetric
 
 /**
@@ -10,25 +16,26 @@ import org.grails.plugins.servertiming.core.TimingMetric
  * Works in conjunction with ServerTimingFilter which handles adding the HTTP header.
  */
 @Slf4j
-@GrailsCompileStatic
+@CompileStatic
 class ServerTimingInterceptor implements Interceptor {
 
-    static String HEADER_NAME = 'Server-Timing'
+    private String metricKey
 
-    String metricKey = ServerTimingUtils.instance.metricKey
-
-    ServerTimingInterceptor() {
-        if (ServerTimingUtils.instance.enabled) {
-            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.servertiming.enabled' to false to disable them.")
+    @Autowired
+    ServerTimingInterceptor(Environment env, ServerTimingConfig config) {
+        if (EnabledCondition.matches(env)) {
+            log.debug("Server Timing metrics are enabled. Set 'grails.plugins.serverTiming.enabled' to false to disable them.")
             matchAll()
         } else {
-            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.servertiming.enabled' to true to enable them.")
+            log.debug("Server Timing metrics are disabled. Set 'grails.plugins.serverTiming.enabled' to true to enable them.")
         }
+
+        metricKey = config.metricKey
     }
 
     @Override
     boolean before() {
-        TimingMetric timing = request.getAttribute(metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.create('action', 'Action')
                     .start()
@@ -43,7 +50,7 @@ class ServerTimingInterceptor implements Interceptor {
             return true
         }
 
-        TimingMetric timing = request.getAttribute(metricKey) as TimingMetric
+        def timing = request.getAttribute(metricKey) as TimingMetric
         if (timing) {
             timing.get('action')?.stop()
             timing.create('view', 'View')

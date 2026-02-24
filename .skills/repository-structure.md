@@ -13,6 +13,8 @@ grails-server-timing/
 ├── .github/                    # CI/CD workflows and GitHub config
 │   ├── workflows/
 │   │   ├── ci.yml              # Build, test, publish snapshots
+│   │   ├── code-coverage.yml   # Create a code coverage report
+│   │   ├── code-style.yml      # Check code style
 │   │   ├── release.yml         # Multi-stage release pipeline
 │   │   └── release-notes.yml   # Automated release draft notes
 │   ├── release-drafter.yml     # Release drafter categories/labels
@@ -26,24 +28,24 @@ grails-server-timing/
 │   │   ├── checkstyle/         #   Checkstyle XML configs
 │   │   └── codenarc/           #   CodeNarc ruleset
 │   └── src/main/groovy/        # Convention plugin files (*.gradle)
-│       ├── ...compile.gradle
-│       ├── ...testing.gradle
-│       ├── ...plugin.gradle
-│       ├── ...example.gradle
-│       ├── ...project-publish.gradle
-│       ├── ...root-publish.gradle
-│       ├── ...docs.gradle
-│       ├── ...assets.gradle
-│       ├── ...run.gradle
-│       ├── ...coverage-aggregation.gradle
-│       └── ...style.gradle
+│       ├── config.app-run.gradle
+│       ├── config.code-coverage.gradle
+│       ├── config.code-coverage-aggregate.gradle
+│       ├── config.code-style.gradle
+│       ├── config.compile.gradle
+│       ├── config.docs.gradle
+│       ├── config.example-app.gradle
+│       ├── config.grails-assets.gradle
+│       ├── config.grails-plugin.gradle
+│       ├── config.publish.gradle
+│       ├── config.publish-root.gradle
+│       └── config.testing.gradle
 │
 ├── plugin/                     # The Grails plugin artifact
 │   ├── build.gradle            # Convention plugins + dependencies only
 │   ├── grails-app/
 │   │   ├── conf/               # Plugin config (application.yml, logback)
-│   │   ├── controllers/        # Interceptors and controller artifacts
-│   │   └── init/               # Plugin Application class
+│   │   └── controllers/        # Interceptors and controller artifacts
 │   └── src/
 │       ├── main/groovy/        # Plugin source code
 │       └── test/groovy/        # Unit tests ONLY
@@ -72,7 +74,7 @@ grails-server-timing/
 │       └── src/
 │           └── integration-test/  # Integration & functional tests
 │
-├── coverage/                    # JaCoCo coverage aggregation
+├── code-coverage/              # JaCoCo coverage aggregation
 │   └── build.gradle            # Declares which projects contribute coverage data
 │
 ├── docs/                       # Asciidoctor documentation
@@ -100,9 +102,9 @@ flows through convention plugins.
 ```groovy
 // Root build.gradle -- this is all that should be here
 plugins {
-    id "idea"
-    id 'org.grails.plugins.servertiming.docs'
-    id 'org.grails.plugins.servertiming.root-publish'
+    id 'idea'
+    id 'config.docs'
+    id 'config.root-publish'
 }
 ```
 
@@ -128,13 +130,13 @@ All tests requiring a running Grails application live in example apps under `exa
 
 Convention plugins in `build-logic/` eliminate all duplication:
 
-- Compilation settings: `compile.gradle`
-- Test configuration: `testing.gradle`
-- Plugin setup: `plugin.gradle`
-- Example app setup: `example.gradle`
-- Publishing: `project-publish.gradle`
-- Coverage aggregation: `coverage-aggregation.gradle`
-- Code style checking: `style.gradle`
+- Compilation settings: `config.compile.gradle`
+- Test configuration: `config.testing.gradle`
+- Plugin setup: `config.grails-plugin.gradle`
+- Example app setup: `config.example-app.gradle`
+- Publishing: `config.publish.gradle`
+- Coverage aggregation: `config.coverage-aggregate.gradle`
+- Code style checking: `config.code-style.gradle`
 
 ### 5. Centralized dependency resolution
 
@@ -158,9 +160,7 @@ These are available in all subprojects as project properties (`projectVersion`, 
 2. Add a `build.gradle` applying the convention plugins:
    ```groovy
    plugins {
-       id 'org.grails.plugins.servertiming.compile'
-       id 'org.grails.plugins.servertiming.testing'
-       id 'org.grails.plugins.servertiming.example'
+       id 'config.example-app'
    }
    ```
 3. Add standard Grails app structure under `grails-app/`
@@ -170,7 +170,7 @@ These are available in all subprojects as project properties (`projectVersion`, 
 
 ## Adding a New Convention Plugin
 
-1. Create a new file: `build-logic/src/main/groovy/org.grails.plugins.servertiming.<name>.gradle`
+1. Create a new file: `build-logic/src/main/groovy/config.<name>.gradle`
 2. If the plugin applies third-party plugins, add their dependencies to `build-logic/build.gradle`
 3. Apply the new plugin ID in the relevant subproject(s)
 4. Keep the plugin focused on a single concern
@@ -188,7 +188,7 @@ These are available in all subprojects as project properties (`projectVersion`, 
 ./gradlew :app1:integrationTest
 
 # Aggregated coverage report (unit + integration)
-./gradlew :coverage:jacocoAggregatedReport
+./gradlew jacocoAggregatedReport
 
 # Run an example app
 ./gradlew :app1:bootRun

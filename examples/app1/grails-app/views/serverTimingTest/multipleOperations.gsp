@@ -20,7 +20,7 @@
 
     <p>Total simulated delay: <strong>${totalDelay}ms</strong></p>
 
-    <p class="text-muted">The Server-Timing header should show the cumulative action time.</p>
+    <p class="text-muted">The Server Timing header should show the cumulative action time.</p>
 </div>
 </body>
 </html>

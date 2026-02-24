@@ -42,7 +42,7 @@ When a request hits a Grails controller action, the following sequence occurs:
    - Stops 'action' timer if still running (edge case: action committed the response directly)
    - Stops 'view' timer if still running
    - Stops 'total' timer
-   - Adds Server-Timing header to response
+   - Adds Server Timing header to response
 ----
 
 ==== Static Resources and Other Requests
@@ -66,22 +66,46 @@ For requests that do not hit a Grails controller (static assets, images, CSS, Ja
    - ServerTimingResponseWrapper intercepts the commit
    - Stops 'other' timer
    - Stops 'total' timer
-   - Adds Server-Timing header to response
+   - Adds Server Timing header to response
 ----
 
 === The Response Wrapper
 
-A key technical challenge with Server-Timing is that HTTP headers must be sent *before* the response body.
+A key technical challenge with Server Timing is that HTTP headers must be sent *before* the response body.
 However, we do not know the final timing values until *after* the view has rendered.
 
-The `ServerTimingResponseWrapper` solves this by:
+The `ServerTimingResponseWrapper` solves this by wrapping the original `HttpServletResponse` and deferring the
+`Server-Timing` header injection until the last possible moment -- just before the first byte of body content is
+written. This maximizes timing accuracy because all metrics (action, view, etc.) have as much time as possible to
+accumulate before the header value is computed and frozen.
 
-1. Wrapping the original `HttpServletResponse`
-2. Intercepting calls to `getOutputStream()`, `getWriter()`, `flushBuffer()`, etc.
-3. Adding the `Server-Timing` header just before the first byte is written
-4. Delegating all other operations to the original response
+==== Deferred Header Injection
 
-This ensures the header is always present, regardless of how the response is generated.
+Both output paths use the same deferred strategy:
+
+* **`getOutputStream()`** returns a `ServerTimingServletOutputStream` that intercepts `write()`, `flush()`, and
+`close()`. On the first call, it triggers header injection before delegating to the underlying stream.
+* **`getWriter()`** returns a `ServerTimingPrintWriter` that intercepts `write()`, `flush()`, and `close()` in the
+same way. All higher-level `PrintWriter` methods (`print()`, `println()`, `printf()`, etc.) route through the
+overridden `write()` methods, so they are also covered.
+
+In both cases, subsequent writes pass through directly without any overhead.
+
+==== Other Commit Points
+
+The wrapper also intercepts methods that commit the response without writing body content:
+
+* `sendError()` -- error responses
+* `sendRedirect()` -- redirect responses
+* `flushBuffer()` -- explicit buffer flushes
+
+These inject the header eagerly since the response is being committed immediately.
+
+==== Safety Net
+
+As a final safeguard, the `ServerTimingFilter` calls `beforeCommit()` in a `finally` block after the filter chain
+completes. This handles edge cases where no output was written (e.g., 204 No Content responses). The header
+injection is idempotent -- a boolean flag ensures it only runs once regardless of how many commit points are hit.
 
 === Metric Descriptions
 
