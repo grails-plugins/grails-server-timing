@@ -43,3 +43,10 @@ tasks.withType(Test).configureEach {
         showCauses = true
     }
 }
+
+pluginManager.withPlugin('groovy') {
+    project.dependencies.add(
+            'testRuntimeOnly',
+            'org.junit.jupiter:junit-jupiter-api'
+    )
+}
