@@ -1,4 +1,5 @@
 plugins {
+    id 'base'
     id 'jacoco'
 }
 
@@ -78,9 +79,6 @@ afterEvaluate {
     }
 }
 
-pluginManager.withPlugin('base') {
-    tasks.named('check') {
-        dependsOn('jacocoAggregatedReport')
-    }
+tasks.named('check') {
+    dependsOn('jacocoAggregatedReport')
 }
-
