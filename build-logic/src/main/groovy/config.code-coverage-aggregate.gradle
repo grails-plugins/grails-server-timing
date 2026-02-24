@@ -10,8 +10,19 @@ extensions.configure(JacocoPluginExtension) {
 // Configuration for declaring which projects contribute coverage data.
 def coverageDataProjects = configurations.register('coverageDataProjects') {
     canBeConsumed = false
-    canBeResolved = true
+    canBeResolved = false
 }
+
+def aggregateProject = project
+rootProject.subprojects { sub ->
+    sub.pluginManager.withPlugin('config.code-coverage') {
+        aggregateProject.dependencies.add(
+                'coverageDataProjects',
+                project(sub.path)
+        )
+    }
+}
+
 
 // Lazily collect source directories and class files from all coverageDataProjects dependencies.
 def covProjectList = coverageDataProjects.map {
