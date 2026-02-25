@@ -74,7 +74,7 @@ jobs:
           NEXUS_PUBLISH_URL: 'https://ossrh-staging-api.central.sonatype.com/service/local/'
           NEXUS_PUBLISH_DESCRIPTION: '${{ env.REPO_NAME }}:${{ env.VERSION }}'
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PASSPHRASE: ${{ secrets.SECRING_PASSPHRASE }}
+          SIGNING_PASSPHRASE: ${{ secrets.SIGNING_PASSPHRASE }}
         run: >
           ./gradlew
           -Psigning.secretKeyRingFile=${{ github.workspace }}/secring.gpg
@@ -125,8 +125,8 @@ jobs:
           build-scan-terms-of-use-agree: ${{ env.ciBuildScanTermsOfUseAgree }}
       - name: "📤 Release staging repository"
         env:
-          NEXUS_PUBLISH_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          NEXUS_PUBLISH_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          NEXUS_PUBLISH_USERNAME: ${{ secrets.NEXUS_PUBLISH_USERNAME }}
+          NEXUS_PUBLISH_PASSWORD: ${{ secrets.NEXUS_PUBLISH_PASSWORD }}
           NEXUS_PUBLISH_URL: 'https://ossrh-staging-api.central.sonatype.com/service/local/'
           NEXUS_PUBLISH_DESCRIPTION: '${{ env.REPO_NAME }}:${{ env.VERSION }}'
         run: >
@@ -139,7 +139,7 @@ jobs:
     needs: [ publish, release ]
     runs-on: ubuntu-24.04
     permissions:
-      contents: write # required to publish documentation to github pages branches
+      contents: write # required to publish documentation to GitHub pages branches
     steps:
       - name: "📝 Establish release version"
         run: echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
