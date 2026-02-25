@@ -2,11 +2,15 @@
 // version and group must be specified in the root project
 // https://github.com/gradle-nexus/publish-plugin/issues/310
 version = projectVersion
-group = 'this.will.be.overridden'
+group = 'org.grails.plugins'
 
-subprojects { sub ->
-    sub.pluginManager.withPlugin('config.publish') {
-        // This has to be applied here in the root project due to the nexus plugin requirements
-        sub.apply(plugin: 'org.apache.grails.gradle.grails-publish')
+def publishedProjects = projectsToPublish
+        .tokenize(',')
+        .collect { it.trim() }
+        .findAll()
+
+subprojects {
+    if (name in publishedProjects) {
+        apply(plugin: 'org.apache.grails.gradle.grails-publish')
     }
 }
