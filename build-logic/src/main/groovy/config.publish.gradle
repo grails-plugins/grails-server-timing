@@ -1,7 +1,3 @@
-plugins {
-    id 'org.apache.grails.gradle.grails-publish'
-}
-
 // Useful when testing a release version locally and not wanting to setup signing
 pluginManager.withPlugin('signing') {
     if (System.getenv('DISABLE_BUILD_SIGNING')) {
