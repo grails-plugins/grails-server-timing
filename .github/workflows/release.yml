@@ -188,5 +188,10 @@ jobs:
       issues: write # required for milestone closing
       pull-requests: write # to create the PR that will increment the version
     steps:
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TAG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: "⚙️ Run post-release"
         uses: apache/grails-github-actions/post-release@asf
